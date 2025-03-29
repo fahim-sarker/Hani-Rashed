@@ -1,0 +1,93 @@
+[
+    {
+      "id": 1,
+      "company_profile": "https://i.ibb.co.com/LhdPknWN/company-profile.png",
+      "company_name": "Company Name",
+      "desc": "Lorem ipsum dolor sit amet consectetur. Etiam faucibus magnis at nibh ultricies consequat. Enim felis dui luctus in fringilla. Quis amet ac egestas velit orci.",
+      "following_date": "1 day ago",
+      "following_time": "09:00 PM",
+      "active": true
+    },
+    {
+      "id": 2,
+      "company_profile": "https://i.ibb.co.com/LhdPknWN/company-profile.png",
+      "company_name": "Company Name",
+      "desc": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium.",
+      "following_date": "2 days ago",
+      "following_time": "10:00 AM",
+      "active": false
+    },
+    {
+      "id": 3,
+      "company_profile": "https://i.ibb.co.com/LhdPknWN/company-profile.png",
+      "company_name": "Company Name",
+      "desc": "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis.",
+      "following_date": "3 days ago",
+      "following_time": "11:00 AM",
+      "active": true
+    },
+    {
+      "id": 4,
+      "company_profile": "https://i.ibb.co.com/LhdPknWN/company-profile.png",
+      "company_name": "Company Name",
+      "desc": "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet.",
+      "following_date": "4 days ago",
+      "following_time": "12:00 PM",
+      "active": false
+    },
+    {
+      "id": 5,
+      "company_profile": "https://i.ibb.co.com/LhdPknWN/company-profile.png",
+      "company_name": "Company Name",
+      "desc": "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur.",
+      "following_date": "5 days ago",
+      "following_time": "01:00 PM",
+      "active": true
+    },
+    {
+      "id": 6,
+      "company_profile": "https://i.ibb.co.com/LhdPknWN/company-profile.png",
+      "company_name": "Company Name",
+      "desc": "Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.",
+      "following_date": "6 days ago",
+      "following_time": "02:00 PM",
+      "active": false
+    },
+    {
+      "id": 7,
+      "company_profile": "https://i.ibb.co.com/LhdPknWN/company-profile.png",
+      "company_name": "Company Name",
+      "desc": "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae.",
+      "following_date": "1 week ago",
+      "following_time": "03:00 PM",
+      "active": true
+    },
+    {
+      "id": 8,
+      "company_profile": "https://i.ibb.co.com/LhdPknWN/company-profile.png",
+      "company_name": "Company Name",
+      "desc": "Et harum quidem rerum facilis est et expedita distinctio.",
+      "following_date": "8 days ago",
+      "following_time": "04:00 PM",
+      "active": false
+    },
+    {
+      "id": 9,
+      "company_profile": "https://i.ibb.co.com/LhdPknWN/company-profile.png",
+      "company_name": "Company Name",
+      "desc": "Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit.",
+      "following_date": "9 days ago",
+      "following_time": "05:00 PM",
+      "active": true
+    },
+    {
+      "id": 10,
+      "company_profile": "https://i.ibb.co.com/LhdPknWN/company-profile.png",
+      "company_name": "Company Name",
+      "desc": "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit.",
+      "following_date": "10 days ago",
+      "following_time": "06:00 PM",
+      "active": false
+    }
+  ]
+  

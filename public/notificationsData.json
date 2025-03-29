@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "company_logo": "https://i.ibb.co.com/XfsKXY7f/notifications.png",
+        "company_name": "Company Name News Asia",
+        "desc": "Company Name News Asia reposted an update: Lorem ipsum dolor sit amet consectetur.Tech Global shared a new article on AI innovations. Company Name News Asia reposted an update: Lorem ipsum dolor sit amet consectetur.Tech Global shared a new article on AI innovations Tech Global shared a new article on AI innovations",
+        "notification_time": "10:30 PM",
+        "notification_date": "Nov 21, 2024",
+        "notification_duration": "32 min"
+    },
+    {
+        "id": 2,
+        "company_logo": "https://i.ibb.co.com/XfsKXY7f/notifications.png",
+        "company_name": "Tech Global",
+        "desc": "Tech Global shared a new article on AI innovations.",
+       "notification_time": "13:30 PM",
+        "notification_date": "Nov 23, 2024",
+        "notification_duration": "2 min"
+    },
+    {
+        "id": 3,
+        "company_logo": "https://i.ibb.co.com/XfsKXY7f/notifications.png",
+        "company_name": "Finance Today",
+        "desc": "Finance Today posted a market update: Stocks rise after recent dip.",
+        "notification_time": "10:30 PM",
+        "notification_date": "Nov 21, 2024",
+        "notification_duration": "7 min"
+    },
+    {
+        "id": 4,
+        "company_logo": "https://i.ibb.co.com/XfsKXY7f/notifications.png",
+        "company_name": "Health Insights",
+        "desc": "Health Insights published an article: 10 Tips for a Healthy Lifestyle.",
+        "notification_time": "10:33 PM",
+        "notification_date": "Nov 21, 2024",
+        "notification_duration": "9 min"
+    },
+    {
+        "id": 5,
+        "company_logo": "https://i.ibb.co.com/XfsKXY7f/notifications.png",
+        "company_name": "Sports Daily",
+        "desc": "Sports Daily shared match highlights from yesterday’s game.",
+        "notification_time": "10:55 PM",
+        "notification_date": "Nov 22, 2024",
+        "notification_duration": "5 min"
+    },
+    {
+        "id": 6,
+        "company_logo": "https://i.ibb.co.com/XfsKXY7f/notifications.png",
+        "company_name": "Tech Reviews",
+        "desc": "Tech Reviews posted a new gadget review: Best smartphones of 2025.",
+        "notification_time": "10:30 PM",
+        "notification_date": "Nov 21, 2024",
+        "notification_duration": "32 min"
+    },
+    {
+        "id": 7,
+        "company_logo": "https://i.ibb.co.com/XfsKXY7f/notifications.png",
+        "company_name": "Entertainment Buzz",
+        "desc": "Entertainment Buzz announced a new movie release.",
+        "notification_time": "12:30 PM",
+        "notification_date": "Oct 21, 2024",
+        "notification_duration": "32 min"
+    },
+    {
+        "id": 8,
+        "company_logo": "https://i.ibb.co.com/XfsKXY7f/notifications.png",
+        "company_name": "Business Weekly",
+        "desc": "Business Weekly covered a story on global trade policies.",
+        "notification_time": "10:30 PM",
+        "notification_date": "Nov 21, 2024",
+        "notification_duration": "32 min"
+    },
+    {
+        "id": 9,
+        "company_logo": "https://i.ibb.co.com/XfsKXY7f/notifications.png",
+        "company_name": "Travel Explorer",
+        "desc": "Travel Explorer shared a new blog: Top 10 destinations for 2025.",
+        "notification_time": "11:30 PM",
+        "notification_date": "Dec 21, 2024",
+        "notification_duration": "5 min"
+    },
+    {
+        "id": 10,
+        "company_logo": "https://i.ibb.co.com/XfsKXY7f/notifications.png",
+        "company_name": "Science Now",
+        "desc": "Science Now reported on the latest space discoveries.",
+        "notification_time": "10:30 PM",
+        "notification_date": "Nov 21, 2024",
+        "notification_duration": "32 min"
+    }
+]

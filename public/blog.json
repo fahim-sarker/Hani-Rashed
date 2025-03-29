@@ -1,0 +1,101 @@
+[
+  {
+    "id": 1,
+    "thumbnail": "https://i.ibb.co.com/qBQtMMF/b1.jpg",
+    "category": "Technology",
+    "title": "The Future of AI",
+    "short_desc": "An exploration of how artificial intelligence will shape the future.",
+    "author_name": "Jane Doe",
+    "author_img": "https://i.ibb.co.com/s6B8T0W/author.jpg",
+    "date": "2025-01-01",
+    "time": "5 min read"
+  },
+  {
+    "id": 2,
+    "thumbnail": "https://i.ibb.co.com/T11GfF7/b2.jpg",
+    "category": "Lifestyle",
+    "title": "Living Sustainably in 2025",
+    "short_desc": "Practical tips on reducing your carbon footprint in everyday life.",
+    "author_name": "John Smith",
+    "author_img": "https://i.ibb.co.com/s6B8T0W/author.jpg",
+    "date": "2025-01-05",
+    "time": "5 min read"
+  },
+  {
+    "id": 3,
+    "thumbnail": "https://i.ibb.co.com/KwyPG8c/b3.jpg",
+    "category": "Health",
+    "title": "Boost Your Naturally",
+    "short_desc": "Simple lifestyle changes to strengthen your immune system.",
+    "author_name": "Alice Johnson",
+    "author_img": "https://i.ibb.co.com/s6B8T0W/author.jpg",
+    "date": "2025-01-08",
+    "time": "5 min read"
+  },
+  {
+    "id": 4,
+    "thumbnail": "https://i.ibb.co.com/qBQtMMF/b1.jpg",
+    "category": "Business",
+    "title": "Maximizing Profits Market",
+    "short_desc": "Strategies for adapting your business to the new market trends.",
+    "author_name": "Mark Wilson",
+    "author_img": "https://i.ibb.co.com/s6B8T0W/author.jpg",
+    "date": "2025-01-10",
+    "time": "5 min read"
+  },
+  {
+    "id": 5,
+    "thumbnail": "https://i.ibb.co.com/KwyPG8c/b3.jpg",
+    "category": "Travel",
+    "title": "Top 10 Destinations for 2025",
+    "short_desc": "A list of must-visit travel destinations this year.",
+    "author_name": "Sara Lee",
+    "author_img": "https://i.ibb.co.com/s6B8T0W/author.jpg",
+    "date": "2025-01-12",
+    "time": "5 min read"
+  },
+  {
+    "id": 6,
+    "thumbnail": "https://i.ibb.co.com/qBQtMMF/b1.jpg",
+    "category": "Finance",
+    "title": "Smart Investments for Young",
+    "short_desc": "A guide to growing wealth for the next generation.",
+    "author_name": "David Brown",
+    "author_img": "https://i.ibb.co.com/s6B8T0W/author.jpg",
+    "date": "2025-01-14",
+    "time": "5 min read"
+  },
+  {
+    "id": 7,
+    "thumbnail": "https://i.ibb.co.com/T11GfF7/b2.jpg",
+    "category": "Food",
+    "title": "Healthy Meal Prep Ideas",
+    "short_desc": "Easy meal prep ideas for a balanced and healthy diet.",
+    "author_name": "Emily White",
+    "author_img": "https://i.ibb.co.com/s6B8T0W/author.jpg",
+    "date": "2025-01-16",
+    "time": "5 min read"
+  },
+  {
+    "id": 8,
+    "thumbnail": "https://i.ibb.co.com/KwyPG8c/b3.jpg",
+    "category": "Education",
+    "title": "Effective Study Habits",
+    "short_desc": "How to study smarter, not harder, in college.",
+    "author_name": "Michael Green",
+    "author_img": "https://i.ibb.co.com/s6B8T0W/author.jpg",
+    "date": "2025-01-18",
+    "time": "5 min read"
+  },
+  {
+    "id": 9,
+    "thumbnail": "https://i.ibb.co.com/qBQtMMF/b1.jpg",
+    "category": "Entertainment",
+    "title": "The Best Movies of 2025",
+    "short_desc": "A roundup of the most anticipated films for the year.",
+    "author_name": "Sophia Harris",
+    "author_img": "https://i.ibb.co.com/s6B8T0W/author.jpg",
+    "date": "2025-01-20",
+    "time": "5 min read"
+  }
+]

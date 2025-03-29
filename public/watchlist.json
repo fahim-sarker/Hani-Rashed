@@ -1,0 +1,152 @@
+[
+    {
+        "id": "1",
+        "company_logo": "https://i.ibb.co/v4rpf4nF/company-logo.png",
+        "company_name": "Company Name",
+        "time": "5h",
+        "date": "November",
+        "thumbnail": "https://i.ibb.co.com/nqDYr0GM/w4.png",
+        "post_title": "Consultancy Criteria",
+        "author_name": "Hani Rashid",
+        "more": {
+            "react": 1.2,
+            "comment": 500,
+            "offers": 24
+        }
+    },
+    {
+        "id": "2",
+        "company_logo": "https://i.ibb.co/v4rpf4nF/company-logo.png",
+        "company_name": "Tech Solutions",
+        "time": "3h",
+        "date": "November",
+        "thumbnail": "https://i.ibb.co/p8Jj6LZ/w1.png",
+        "post_title": "Software Development Trends",
+        "author_name": "Ava Smith",
+        "more": {
+            "react": 2.5,
+            "comment": 300,
+            "offers": 15
+        }
+    },
+    {
+        "id": "3",
+        "company_logo": "https://i.ibb.co/v4rpf4nF/company-logo.png",
+        "company_name": "Finance Corp",
+        "time": "1d",
+        "date": "November",
+        "thumbnail": "https://i.ibb.co.com/yvWL8cH/w3.png",
+        "post_title": "Investment Strategies",
+        "author_name": "John Doe",
+        "more": {
+            "react": 3.8,
+            "comment": 620,
+            "offers": 32
+        }
+    },
+    {
+        "id": "4",
+        "company_logo": "https://i.ibb.co/v4rpf4nF/company-logo.png",
+        "company_name": "HealthFirst",
+        "time": "2h",
+        "date": "November",
+        "thumbnail": "https://i.ibb.co.com/v4S1j9y6/w2.png",
+        "post_title": "Healthcare Innovations",
+        "author_name": "Emily Johnson",
+        "more": {
+            "react": 4.1,
+            "comment": 410,
+            "offers": 21
+        }
+    },
+    {
+        "id": "5",
+        "company_logo": "https://i.ibb.co/v4rpf4nF/company-logo.png",
+        "company_name": "Eco Energy",
+        "time": "6h",
+        "date": "November",
+        "thumbnail": "https://i.ibb.co.com/nqDYr0GM/w4.png",
+        "post_title": "Sustainable Solutions",
+        "author_name": "Liam Brown",
+        "more": {
+            "react": 2.2,
+            "comment": 150,
+            "offers": 9
+        }
+    },
+    {
+        "id": "6",
+        "company_logo": "https://i.ibb.co/v4rpf4nF/company-logo.png",
+        "company_name": "AI Systems",
+        "time": "8h",
+        "date": "November",
+        "thumbnail": "https://i.ibb.co.com/yvWL8cH/w3.png",
+        "post_title": "Future of AI",
+        "author_name": "Sophia Martinez",
+        "more": {
+            "react": 5.0,
+            "comment": 980,
+            "offers": 50
+        }
+    },
+    {
+        "id": "7",
+        "company_logo": "https://i.ibb.co/v4rpf4nF/company-logo.png",
+        "company_name": "Marketing Pro",
+        "time": "12h",
+        "date": "November",
+        "thumbnail": "https://i.ibb.co.com/yvWL8cH/w3.png",
+        "post_title": "Social Media Strategy",
+        "author_name": "Olivia Wilson",
+        "more": {
+            "react": 3.3,
+            "comment": 520,
+            "offers": 28
+        }
+    },
+    {
+        "id": "8",
+        "company_logo": "https://i.ibb.co/v4rpf4nF/company-logo.png",
+        "company_name": "EdTech Global",
+        "time": "15h",
+        "date": "November",
+        "thumbnail": "https://i.ibb.co.com/nqDYr0GM/w4.png",
+        "post_title": "EdTech Innovations",
+        "author_name": "Noah Carter",
+        "more": {
+            "react": 4.7,
+            "comment": 640,
+            "offers": 33
+        }
+    },
+    {
+        "id": "9",
+        "company_logo": "https://i.ibb.co/v4rpf4nF/company-logo.png",
+        "company_name": "Retail Masters",
+        "time": "1d",
+        "date": "November",
+        "thumbnail": "https://i.ibb.co.com/v4S1j9y6/w2.png",
+        "post_title": "E-commerce Growth",
+        "author_name": "Emma Roberts",
+        "more": {
+            "react": 2.9,
+            "comment": 480,
+            "offers": 19
+        }
+    },
+    {
+        "id": "10",
+        "company_logo": "https://i.ibb.co/v4rpf4nF/company-logo.png",
+        "company_name": "AutoTech",
+        "time": "2d",
+        "date": "November",
+        "thumbnail": "https://i.ibb.co/p8Jj6LZ/w1.png",
+        "post_title": "Automotive Tech Trends",
+        "author_name": "William Davis",
+        "more": {
+            "react": 3.6,
+            "comment": 710,
+            "offers": 40
+        }
+    }
+]

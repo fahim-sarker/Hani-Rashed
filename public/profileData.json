@@ -1,0 +1,72 @@
+[
+    {
+        "id": 1,
+        "brand_logo": "https://i.ibb.co/3YNpJpXv/f1.png",
+        "brand_name": "LEGO",
+        "brand_type": "Consultancy",
+        "active": true
+    },
+    {
+        "id": 2,
+        "brand_logo": "https://i.ibb.co.com/NgzkcdFS/f2.png",
+        "brand_name": "Nike",
+        "brand_type": "Retail",
+        "active": false
+    },
+    {
+        "id": 3,
+        "brand_logo": "https://i.ibb.co.com/xSYW31bw/f3.png",
+        "brand_name": "Apple",
+        "brand_type": "Technology",
+        "active": true
+    },
+    {
+        "id": 4,
+        "brand_logo": "https://i.ibb.co.com/NgzkcdFS/f2.png",
+        "brand_name": "Amazon",
+        "brand_type": "E-commerce",
+        "active": true
+    },
+    {
+        "id": 5,
+        "brand_logo": "https://i.ibb.co/3YNpJpXv/f1.png",
+        "brand_name": "Google",
+        "brand_type": "Technology",
+        "active": false
+    },
+    {
+        "id": 6,
+        "brand_logo": "https://i.ibb.co.com/xSYW31bw/f3.png",
+        "brand_name": "Microsoft",
+        "brand_type": "Technology",
+        "active": true
+    },
+    {
+        "id": 7,
+        "brand_logo": "https://i.ibb.co.com/xSYW31bw/f3.png",
+        "brand_name": "Coca-Cola",
+        "brand_type": "Beverage",
+        "active": false
+    },
+    {
+        "id": 8,
+        "brand_logo": "https://i.ibb.co.com/NgzkcdFS/f2.png",
+        "brand_name": "Samsung",
+        "brand_type": "Technology",
+        "active": true
+    },
+    {
+        "id": 9,
+        "brand_logo": "https://i.ibb.co/3YNpJpXv/f1.png",
+        "brand_name": "Pepsi",
+        "brand_type": "Beverage",
+        "active": false
+    },
+    {
+        "id": 10,
+        "brand_logo": "https://i.ibb.co.com/xSYW31bw/f3.png",
+        "brand_name": "Sony",
+        "brand_type": "Entertainment",
+        "active": true
+    }
+]
