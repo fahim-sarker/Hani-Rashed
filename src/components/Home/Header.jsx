@@ -30,7 +30,7 @@ const Header = () => {
           quam et lacus netus.
         </p>
         <Link
-          to="/registration"
+          to="/auth/registration"
           className="px-5 py-2 sm:px-8 sm:py-3 rounded font-medium inline-flex hover:bg-transparent border-2 duration-500 hover:text-primaryGreen border-primaryGreen items-center gap-2 text-gray-100 bg-primaryGreen"
         >
           <FaRegUserCircle className="text-xl" />
