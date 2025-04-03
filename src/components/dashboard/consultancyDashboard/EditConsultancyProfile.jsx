@@ -3,16 +3,36 @@ import profile from "../../../assets/profile.png";
 import update from "../../../assets/icons/update.png";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAxios from "@/components/Hooks/Api/UseAxios";
 import { useNavigate } from "react-router-dom";
 
 const EditConsultancyProfile = () => {
   const navigate = useNavigate();
   const Axiosinstance = useAxios();
+  const [profiledata, setProfiledata] = useState({});
   const [uploadedFile, setUploadedFile] = useState(null);
   const token = JSON.parse(localStorage.getItem("authToken"));
   console.log(token);
+
+
+  useEffect(() => {
+    Axiosinstance.get("me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        setProfiledata(response.data.data);
+        console.log(response.data.data);
+
+      })
+
+      .catch((error) => {
+        console.error("Error fetching profile data:", error);
+      });
+  }, []);
+
 
   const {
     register,
@@ -57,7 +77,7 @@ const EditConsultancyProfile = () => {
         },
       });
       setTimeout(() => {
-        navigate("/dashboard/smallBusiness/profile")
+        navigate("/dashboard/consultancyFirms/profile")
       }, 1000);
       toast.success("Successfully updated profile!");
     } catch (error) {
@@ -65,6 +85,8 @@ const EditConsultancyProfile = () => {
       toast.error("Failed to update profile. Please try again.");
     }
   };
+
+  
 
   return (
     <>
@@ -103,7 +125,7 @@ const EditConsultancyProfile = () => {
         {/* Profile image */}
         <figure className="sm:w-40 sm:h-40 w-32 h-32 relative z-50 rounded-full -mt-20 ml-7 sm:ml-10 border-[3px]">
           <img
-            src={uploadedFile ? URL.createObjectURL(uploadedFile) : profile}
+            src={profiledata?.avatar|| profile}
             alt="profile"
             className="w-full h-full object-cover rounded-full"
           />
@@ -120,14 +142,13 @@ const EditConsultancyProfile = () => {
             onChange={(e) => {
               const file = e.target.files[0];
               if (file) {
-                setUploadedFile(file); // Update the state with the selected file
+                setUploadedFile(file); 
               }
             }}
           />
         </figure>
-        {/* Company Name */}
         <h3 className="text-[#141414] mt-3 font-medium text-lg sm:text-2xl">
-          Company Name
+            {profiledata?.name|| "profile"}
         </h3>
       </div>
 
@@ -142,37 +163,37 @@ const EditConsultancyProfile = () => {
                 label: "Company Name",
                 name: "name",
                 type: "text",
-                defaultValue: "Company Name",
+                defaultValue: profiledata?.name 
               },
               {
                 label: "Description",
                 name: "description",
                 type: "text",
-                defaultValue: "Your Consultancy Name is a forward-thinking...",
+                defaultValue: profiledata?.description ,
               },
               {
                 label: "Website",
                 name: "website_url",
                 type: "text",
-                defaultValue: "www.xyz.com",
+                defaultValue: profiledata?.website_url,
               },
               {
                 label: "Primary Contact Name",
                 name: "primary_contact_name",
                 type: "text",
-                defaultValue: "Jane Cooper",
+                defaultValue: profiledata?.primary_contact_name,
               },
               {
                 label: "Email Address",
                 name: "primary_email",
                 type: "email",
-                defaultValue: "hanirashed@gmail.com",
+                defaultValue: profiledata?.primary_email,
               },
               {
                 label: "Phone Number",
                 name: "phone",
                 type: "number",
-                // defaultValue: "+966-2-6067221",
+                defaultValue: profiledata?.phone,
               },
             ].map(({ label, name, type, defaultValue }) => (
               <div key={name} className="w-full">
@@ -201,19 +222,19 @@ const EditConsultancyProfile = () => {
                 label: "Country",
                 name: "country",
                 options: ["Saudi Arabia", "USA", "UK", "UAE"],
-                defaultValue: "Saudi Arabia",
+                defaultValue: profiledata?.country,
               },
               {
                 label: "Industry",
                 name: "company_type",
                 options: ["small", "medium", "big"],
-                defaultValue: "small",
+                defaultValue: profiledata?.company_type,
               },
               {
                 label: "Company Stage",
                 name: "company_stage",
                 options: ["Incorporation", "Corporation", "N/A"],
-                defaultValue: "Incorporation",
+                defaultValue: profiledata?.profile_type,
               },
             ].map(({ label, name, options, defaultValue }) => (
               <div key={name} className="w-full">

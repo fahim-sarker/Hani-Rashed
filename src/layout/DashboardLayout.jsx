@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Link,
   NavLink,
@@ -33,12 +33,31 @@ import useAxios from "@/components/Hooks/Api/UseAxios";
 const role = "smallBusiness";
 // const role = 'consultancy';
 
+
 const DashboardLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const Axiosinstance = useAxios();
   const [isActive, setIsActive] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [profiledata, setProfiledata] = useState();
+  const token = JSON.parse(localStorage.getItem("authToken"));
+  
+    useEffect(() => {
+      Axiosinstance.get("me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((response) => {
+          setProfiledata(response.data.data);
+          console.log(response.data.data);
+        })
+        
+        .catch((error) => {
+          console.error("Error fetching profile data:", error);
+        });
+    }, []);
 
   const handleLogout = async () => {
     const token = JSON.parse(localStorage.getItem("authToken"));
@@ -49,7 +68,6 @@ const DashboardLayout = () => {
         navigate("/auth/login");
         return;
       }
-
       await Axiosinstance.post(
         "logout",
         {},
@@ -272,13 +290,13 @@ const DashboardLayout = () => {
               )}
               <figure className="w-10 h-10 outline outline-2 outline-primaryGreen outline-offset-2 rounded-full">
                 <img
-                  src={profileImg}
+                  src={profiledata?.avatar|| profileImg}
                   alt="profile"
                   className="w-full h-full rounded-full object-cover"
                 />
               </figure>
               <p className="font-roboto font-medium text-[#334155]">
-                youSENTit
+                {profiledata?.email || "youSENTit"}
               </p>
             </div>
 

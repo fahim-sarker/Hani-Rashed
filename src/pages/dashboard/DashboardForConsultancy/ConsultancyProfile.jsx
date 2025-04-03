@@ -2,15 +2,40 @@ import WhoToFollow from "@/components/dashboard/profile/WhoToFollow";
 import cover from "../../../assets/companyCover.png"
 import profile from "../../../assets/profile.png"
 import update from "../../../assets/icons/update.png"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import role from "../../../assets/role.png"
 import g1 from "../../../assets/g1.png"
 import { Link } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
+import useAxios from "@/components/Hooks/Api/UseAxios";
 
 const ConsultancyProfile = () => {
     const [uploadedFile, setUploadedFile] = useState(null);
+    const Axiosinstance =  useAxios();
+    const [profiledata, setProfiledata] = useState();
+    const token = JSON.parse(localStorage.getItem("authToken"));
+    console.log(token);
     console.log(uploadedFile)
+
+
+      useEffect(() => {
+        Axiosinstance.get("me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            setProfiledata(response.data.data);
+            console.log(response.data.data);
+          })
+          
+          .catch((error) => {
+            console.error("Error fetching profile data:", error);
+          });
+      }, []);
+
+
+      
     return (
         <div className="grid lg:grid-cols-12 gap-5">
             <div className="lg:col-span-8 2xl:col-span-9">
@@ -31,7 +56,7 @@ const ConsultancyProfile = () => {
                 <div className="flex z-50 gap-3 sm:gap-7">
                     {/* Profile image */}
                     <figure className="w-32 h-32 sm:w-40 sm:h-40 relative z-50 rounded-full -mt-16 sm:-mt-20 ml-10 border-[3px]">
-                        <img src={profile} alt="profile" className="w-full h-full object-cover rounded-full" />
+                        <img src={profiledata?.avatar || profile} alt="profile" className="w-full h-full object-cover rounded-full" />
                         <label htmlFor="fileUpload">
                             <div className="absolute top-2/3 right-0 border rounded-full cursor-pointer">
                                 <img src={update} alt="update" />
@@ -40,7 +65,7 @@ const ConsultancyProfile = () => {
                         <input id="fileUpload" type="file" className="hidden" onChange={(e) => setUploadedFile(e.target.files[0])} />
                     </figure>
                     {/* Company Name */}
-                    <h3 className="text-[#141414] mt-3 font-medium text-lg sm:text-2xl">Company Name</h3>
+                    <h3 className="text-[#141414] mt-3 font-medium text-lg sm:text-2xl">{profiledata?.name}</h3>
                 </div>
                 <div className="p-5 shadow-sm rounded mt-5 flex bg-white gap-5 flex-wrap items-center justify-between">
                     <p className="text-[#141414] font-medium">Transforming Visions into Success!</p>
