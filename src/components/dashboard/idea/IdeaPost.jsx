@@ -1,25 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import share from "../../../assets/icons/share.png";
 import eye from "../../../assets/icons/eye.png";
 import likeImg from "../../../assets/icons/like.png";
 import comment from "../../../assets/icons/comment.png";
 import { FcLike } from "react-icons/fc";
+import useAxios from "@/components/Hooks/Api/UseAxios";
 
 const IdeaPost = ({ data }) => {
-    const { user_name, user_profile, posted_time, desc, thumbnail, interaction } = data;
+    const { user_name, posted_time, desc, thumbnail, interaction } = data;
     const [isExpanded, setIsExpanded] = useState(false);
     const [like, setLike] = useState(false);
+    const Axiosinstance =  useAxios();
+    const token = JSON.parse(localStorage.getItem("authToken"));
+    const [profiledata, setProfiledata] = useState(null);
     const toggleReadMore = () => {
         setIsExpanded(true);
     };
     const shouldTruncate = desc.length > 150;
+
+     useEffect(() => {
+        Axiosinstance.get("me", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            setProfiledata(response.data.data);
+            console.log(response.data.data);
+          })
+    
+          .catch((error) => {
+            console.error("Error fetching profile data:", error);
+          });
+      }, []);
 
     return (
         <div>
             <div className="flex items-center justify-between mb-5">
                 <div className="flex gap-3 sm:gap-5">
                     <figure className="sm:w-14 sm:h-14 w-12 h-12 rounded-full">
-                        <img src={user_profile} alt="user_profile" className="w-full h-full rounded-full object-cover" />
+                        <img src={profiledata?.avatar} alt="user_profile" className="w-full h-full rounded-full object-cover" />
                     </figure>
                     <h3 className="text-lg sm:text-2xl text-[#212B36] font-medium font-roboto">{user_name}</h3>
                 </div>
