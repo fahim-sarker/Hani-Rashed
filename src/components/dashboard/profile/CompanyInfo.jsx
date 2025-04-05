@@ -238,7 +238,7 @@ const CompanyInfo = () => {
               readOnly
               id="stage"
               className="block w-full text-gray-400 px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={profiledata?.company_stage || "Incorporation"}
+              defaultValue={profiledata?.company_stage}
               {...register("stage", { required: true })}
             />
             {errors.stage && <span>This field is required</span>}
@@ -266,7 +266,7 @@ const CompanyInfo = () => {
               readOnly
               id="contactName"
               className="block w-full text-gray-400 px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={profiledata?.primary_contact_name || "Jane Cooper"}
+              defaultValue={profiledata?.primary_contact_name}
               {...register("contactName", { required: true })}
             />
             {errors.contactName && <span>This field is required</span>}
@@ -283,7 +283,7 @@ const CompanyInfo = () => {
               id="email"
               className="block w-full px-3 sm:px-5 sm:py-3 py-2  text-gray-400 border outline-none rounded"
               defaultValue={
-                profiledata?.primary_email || "hanirashed@gmail.com"
+                profiledata?.primary_email
               }
               {...register("email", { required: true })}
             />
@@ -300,7 +300,7 @@ const CompanyInfo = () => {
               readOnly
               id="phoneNumber"
               className="block text-gray-400 w-full px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={profiledata?.phone || "+966-2-6067221"}
+              defaultValue={profiledata?.phone}
               {...register("phoneNumber", { required: true })}
             />
             {errors.phoneNumber && <span>This field is required</span>}

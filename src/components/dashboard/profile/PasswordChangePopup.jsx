@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
+import { ImSpinner3 } from "react-icons/im";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +24,7 @@ export function PasswordChangePopup() {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: { errors,isSubmitted },
     getValues,
   } = useForm();
   const password = watch("password");
@@ -194,7 +195,8 @@ export function PasswordChangePopup() {
             type="submit"
             className="px-5 w-full block mt-5 mx-auto py-3 text-center rounded shadow bg-primaryGreen text-white"
           >
-            Change Password
+            {isSubmitted ? <ImSpinner3  className="animate-spin text-xl fill-white" /> : "Change Password" }
+           
           </button>
         </form>
       </DialogContent>

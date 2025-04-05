@@ -112,11 +112,6 @@ const Login = () => {
                   type={isPasswordVisible ? "text" : "password"}
                   {...register("password", {
                     required: "Password is required",
-                    pattern: {
-                      value: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}$/,
-                      message:
-                        "Password must be 6-15 characters long, include at least one uppercase letter, one lowercase letter, and one number.",
-                    },
                   })}
                 />
                 {errors.password && (

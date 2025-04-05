@@ -15,7 +15,6 @@ const EditConsultancyProfile = () => {
   const token = JSON.parse(localStorage.getItem("authToken"));
   console.log(token);
 
-
   useEffect(() => {
     Axiosinstance.get("me", {
       headers: {
@@ -25,14 +24,12 @@ const EditConsultancyProfile = () => {
       .then((response) => {
         setProfiledata(response.data.data);
         console.log(response.data.data);
-
       })
 
       .catch((error) => {
         console.error("Error fetching profile data:", error);
       });
   }, []);
-
 
   const {
     register,
@@ -77,7 +74,7 @@ const EditConsultancyProfile = () => {
         },
       });
       setTimeout(() => {
-        navigate("/dashboard/consultancyFirms/profile")
+        navigate("/dashboard/consultancyFirms/profile");
       }, 1000);
       toast.success("Successfully updated profile!");
     } catch (error) {
@@ -85,8 +82,6 @@ const EditConsultancyProfile = () => {
       toast.error("Failed to update profile. Please try again.");
     }
   };
-
-  
 
   return (
     <>
@@ -125,7 +120,7 @@ const EditConsultancyProfile = () => {
         {/* Profile image */}
         <figure className="sm:w-40 sm:h-40 w-32 h-32 relative z-50 rounded-full -mt-20 ml-7 sm:ml-10 border-[3px]">
           <img
-            src={profiledata?.avatar|| profile}
+            src={uploadedFile ? URL.createObjectURL(uploadedFile) : profile}
             alt="profile"
             className="w-full h-full object-cover rounded-full"
           />
@@ -142,13 +137,13 @@ const EditConsultancyProfile = () => {
             onChange={(e) => {
               const file = e.target.files[0];
               if (file) {
-                setUploadedFile(file); 
+                setUploadedFile(file); // Update the state with the selected file
               }
             }}
           />
         </figure>
         <h3 className="text-[#141414] mt-3 font-medium text-lg sm:text-2xl">
-            {profiledata?.name|| "profile"}
+          {profiledata?.name || "profile"}
         </h3>
       </div>
 
@@ -163,13 +158,13 @@ const EditConsultancyProfile = () => {
                 label: "Company Name",
                 name: "name",
                 type: "text",
-                defaultValue: profiledata?.name 
+                defaultValue: profiledata?.name,
               },
               {
                 label: "Description",
                 name: "description",
                 type: "text",
-                defaultValue: profiledata?.description ,
+                defaultValue: profiledata?.description,
               },
               {
                 label: "Website",

@@ -213,7 +213,7 @@ const ProfileInformation = () => {
               readOnly
               id="website"
               className="block w-full text-gray-400 px-5 py-3 border outline-none rounded"
-              defaultValue={profiledata?.company_type}
+              defaultValue={profiledata?.website_url}
               {...register("website", { required: true })}
             />
             {errors.website && <span>This field is required</span>}

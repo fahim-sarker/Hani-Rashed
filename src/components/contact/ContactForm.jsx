@@ -20,7 +20,6 @@ const ContactForm = () => {
           'Content-Type': 'application/json',
         },
       });
-  
       console.log(response.data);
       toast.success("Your message has been sent successfully.");
       reset();

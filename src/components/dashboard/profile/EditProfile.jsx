@@ -56,7 +56,7 @@ const EditProfile = () => {
         },
       });
       setTimeout(() => {
-        navigate("/dashboard/smallBusiness/profile")
+        navigate("/dashboard/smallBusiness/profile");
       }, 1000);
       toast.success("Successfully updated profile!");
     } catch (error) {
@@ -136,44 +136,44 @@ const EditProfile = () => {
         </h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="sm:grid grid-cols-2 gap-x-5 sm:gap-x-8 space-y-3 sm:gap-y-5 mb-10">
-            {[
+            {[  
               {
                 label: "Company Name",
                 name: "name",
                 type: "text",
-                defaultValue: "Company Name",
+                placeholder: "Company Name",
               },
               {
                 label: "Description",
                 name: "description",
                 type: "text",
-                defaultValue: "Your Consultancy Name is a forward-thinking...",
+                placeholder: "Your Consultancy Name is a forward-thinking...",
               },
               {
                 label: "Website",
                 name: "website_url",
                 type: "text",
-                defaultValue: "www.xyz.com",
+                placeholder: "www.xyz.com",
               },
               {
                 label: "Primary Contact Name",
                 name: "primary_contact_name",
                 type: "text",
-                defaultValue: "Jane Cooper",
+                placeholder: "Jane Cooper",
               },
               {
                 label: "Email Address",
                 name: "primary_email",
                 type: "email",
-                defaultValue: "hanirashed@gmail.com",
+                placeholder: "hanirashed@gmail.com",
               },
               {
                 label: "Phone Number",
                 name: "phone",
                 type: "number",
-                // defaultValue: "+966-2-6067221",
+                placeholder: "+966-2-6067221",
               },
-            ].map(({ label, name, type, defaultValue }) => (
+            ].map(({ label, name, type, placeholder }) => (
               <div key={name} className="w-full">
                 <label
                   htmlFor={name}
@@ -184,8 +184,8 @@ const EditProfile = () => {
                 <input
                   id={name}
                   type={type}
+                  placeholder={placeholder}
                   className="block w-full text-gray-400 px-3 py-2 sm:px-5 sm:py-3 border outline-none rounded"
-                  defaultValue={defaultValue}
                   {...register(name, { required: true })}
                 />
                 {errors[name] && (
@@ -195,35 +195,35 @@ const EditProfile = () => {
             ))}
 
             {/* Dropdowns */}
-            {[
+            {[  
               {
                 label: "Country",
                 name: "country",
                 options: ["Saudi Arabia", "USA", "UK", "UAE"],
-                defaultValue: "Saudi Arabia",
+                placeholder: "Select Country",
               },
               {
                 label: "Industry",
                 name: "company_type",
                 options: ["small", "medium", "big"],
-                defaultValue: "small",
+                placeholder: "Select Industry",
               },
               {
                 label: "Company Stage",
                 name: "company_stage",
-                options: ["Incorporation", "Corporation", "N/A"],
-                defaultValue: "Incorporation",
+                options: ["Incorporation", "Corporation"],
+                placeholder: "Select Stage",
               },
-            ].map(({ label, name, options, defaultValue }) => (
+            ].map(({ label, name, options, placeholder }) => (
               <div key={name} className="w-full">
                 <label className="text-[#252C32] block font-medium text-lg mb-2">
                   {label}
                 </label>
                 <select
                   className="block w-full px-3 py-2 sm:px-5 sm:py-3 border outline-none rounded"
-                  defaultValue={defaultValue}
                   {...register(name, { required: true })}
                 >
+                  <option value="" disabled>{placeholder}</option>
                   {options.map((option) => (
                     <option key={option} value={option}>
                       {option}
