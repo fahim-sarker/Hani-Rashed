@@ -19,30 +19,40 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-        const response = await Axiosinstance.post("login", data, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-        if (response.status === 200 && response.data?.token) {
-          localStorage.setItem("authToken", JSON.stringify(response.data.token));
-            
-            toast.success("Login successful");
-            reset();
-            navigate("/dashboard");
-
+      const response = await Axiosinstance.post("login", data, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  
+      if (response.status === 200 && response.data?.token) {
+        const { token, role } = response.data;
+        localStorage.setItem("authToken", JSON.stringify(token));
+  
+        if (role === "smallbusiness") {
+          navigate("/dashboard/smallBusiness/profile"); 
+        } else if (role === "consultant") {
+          navigate("/dashboard/consultancyFirms/profile"); 
         } else {
-            toast.error("Unexpected response structure.");
-            console.error("Unexpected Response:", response);
+          toast.error("Unknown role, cannot redirect.");
+          console.error("Unknown role:", role);
         }
+  
+        toast.success("Login successful");
+        reset();
+      } else {
+        toast.error("Unexpected response structure.");
+        console.error("Unexpected Response:", response);
+      }
     } catch (error) {
-        if (error.response?.data?.message) {
-            toast.error(error.response.data.message);
-        } else {
-            toast.error("An error occurred. Please try again.");
-        }
+      if (error.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An error occurred. Please try again.");
+      }
     }
-};
+  };
+  
 
 
   return (

@@ -288,8 +288,8 @@ const ProfileInformation = () => {
             <input
               readOnly
               id="phoneNumber"
-              className="block text-gray-400 w-full px-5 py-3 border outline-none rounded"
               defaultValue={profiledata?.phone}
+              className="block text-gray-400 w-full px-5 py-3 border outline-none rounded"
               {...register("phoneNumber", { required: true })}
             />
             {errors.phoneNumber && <span>This field is required</span>}

@@ -8,14 +8,12 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useAxios from "@/components/Hooks/Api/UseAxios";
 
-
 const CompanyInfo = () => {
-  const [setUploadedFile] = useState(null);
   const Axiosinstance = useAxios();
   const [profiledata, setProfiledata] = useState();
   const token = JSON.parse(localStorage.getItem("authToken"));
   console.log(token);
-  
+  const [uploadedFile, setUploadedFile] = useState(null);
 
   const {
     register,
@@ -23,7 +21,6 @@ const CompanyInfo = () => {
     formState: { errors },
   } = useForm();
   const onSubmit = (data) => console.log(data);
-
 
   useEffect(() => {
     Axiosinstance.get("me", {
@@ -35,14 +32,11 @@ const CompanyInfo = () => {
         setProfiledata(response.data.data);
         console.log(response.data.data);
       })
-      
+
       .catch((error) => {
         console.error("Error fetching profile data:", error);
       });
   }, []);
-
-
-
 
   return (
     <div>
@@ -72,7 +66,11 @@ const CompanyInfo = () => {
         {/* Profile image */}
         <figure className="w-28 h-28 sm:w-40 sm:h-40 flex-shrink-0 relative z-50 rounded-full -mt-16 sm:-mt-20 ml-5 sm:ml-10 border-[3px]">
           <img
-            src={profiledata?.avatar || profile}
+            src={
+              uploadedFile
+                ? URL.createObjectURL(uploadedFile)
+                : profiledata?.avatar || profile
+            }
             alt="profile"
             className="w-full h-full object-cover rounded-full"
           />
@@ -88,6 +86,7 @@ const CompanyInfo = () => {
             onChange={(e) => setUploadedFile(e.target.files[0])}
           />
         </figure>
+
         {/* Company Name */}
         <h3 className="text-[#141414] mt-3 font-medium text-[22px] sm:text-2xl">
           {profiledata?.name}
@@ -283,7 +282,9 @@ const CompanyInfo = () => {
               readOnly
               id="email"
               className="block w-full px-3 sm:px-5 sm:py-3 py-2  text-gray-400 border outline-none rounded"
-              defaultValue={profiledata?.primary_email||"hanirashed@gmail.com"}
+              defaultValue={
+                profiledata?.primary_email || "hanirashed@gmail.com"
+              }
               {...register("email", { required: true })}
             />
             {errors.email && <span>This field is required</span>}
@@ -299,7 +300,7 @@ const CompanyInfo = () => {
               readOnly
               id="phoneNumber"
               className="block text-gray-400 w-full px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={profiledata?.phone ||"+966-2-6067221"}
+              defaultValue={profiledata?.phone || "+966-2-6067221"}
               {...register("phoneNumber", { required: true })}
             />
             {errors.phoneNumber && <span>This field is required</span>}
