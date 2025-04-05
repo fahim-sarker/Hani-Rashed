@@ -15,7 +15,12 @@ const ContactForm = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const response = await Axiosinatance.post("contact-mail", data);
+      const response = await Axiosinatance.post("contact-mail", data, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
       console.log(response.data);
       toast.success("Your message has been sent successfully.");
       reset();
@@ -23,7 +28,7 @@ const ContactForm = () => {
       toast.error(error.message);
     }
   };
-
+  
   return (
     <section className="container max-w-5xl my-20">
       <div className="mb-5 text-center">

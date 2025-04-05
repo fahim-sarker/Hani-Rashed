@@ -233,7 +233,7 @@ const EditConsultancyProfile = () => {
               {
                 label: "Company Stage",
                 name: "company_stage",
-                options: ["Incorporation", "Corporation", "N/A"],
+                options: ["Incorporation", "Corporation"],
                 defaultValue: profiledata?.profile_type,
               },
             ].map(({ label, name, options, defaultValue }) => (
