@@ -34,6 +34,7 @@ import ProfileInformation from "@/components/dashboard/consultancyDashboard/Prof
 import EditConsultancyProfile from "@/components/dashboard/consultancyDashboard/EditConsultancyProfile";
 import ConsultancyIdeaDetails from "@/pages/dashboard/DashboardForConsultancy/ConsultancyIdeaDetails";
 import VerifyOtp from "@/pages/VerifyOtp";
+import PrivateRoute from "@/components/Private/PrivateRoute";
 
 const Router = createBrowserRouter([
   // Main Layout
@@ -110,83 +111,87 @@ const Router = createBrowserRouter([
   },
 
   //  #################### Dashboard Layout ####################
-
   {
-    path: "/dashboard",
-    element: <DashboardLayout />,
+    element: <PrivateRoute />, // Wrap the dashboard routes with PrivateRoute
     children: [
+      {
+        path: "/dashboard",
+        element: <DashboardLayout />,
+        children: [
 
-      // Small Business Dashboard (Type A)
-      {
-        path: '/dashboard/smallBusiness/timeline',
-        element: <Timeline />,
-      },
-      {
-        path: '/dashboard/smallBusiness/profile',
-        element: <Profile />,
-      },
-      {
-        path: '/dashboard/smallBusiness/idea',
-        element: <Idea />,
-      },
-      {
-        path: '/dashboard/smallBusiness/following',
-        element: <Following />,
-      },
-      {
-        path: '/dashboard/smallBusiness/follower',
-        element: <Follower />,
-      },
-      {
-        path: '/dashboard/smallBusiness/notifications',
-        element: <Notifications />,
-      },
-      {
-        path: '/dashboard/smallBusiness/messages',
-        element: <Messages />,
-      },
-      {
-        path: '/dashboard/smallBusiness/statics',
-        element: <Statics />,
-      },
-      {
-        path: '/dashboard/smallBusiness/editProfile',
-        element: <EditProfile />,
-      },
-      {
-        path: '/dashboard/smallBusiness/otherCompany',
-        element: <OtherCompany />,
-      },
+          // Small Business Dashboard (Type A)
+          {
+            path: '/dashboard/smallBusiness/timeline',
+            element: <Timeline />,
+          },
+          {
+            path: '/dashboard/smallBusiness/profile',
+            element: <Profile />,
+          },
+          {
+            path: '/dashboard/smallBusiness/idea',
+            element: <Idea />,
+          },
+          {
+            path: '/dashboard/smallBusiness/following',
+            element: <Following />,
+          },
+          {
+            path: '/dashboard/smallBusiness/follower',
+            element: <Follower />,
+          },
+          {
+            path: '/dashboard/smallBusiness/notifications',
+            element: <Notifications />,
+          },
+          {
+            path: '/dashboard/smallBusiness/messages',
+            element: <Messages />,
+          },
+          {
+            path: '/dashboard/smallBusiness/statics',
+            element: <Statics />,
+          },
+          {
+            path: '/dashboard/smallBusiness/editProfile',
+            element: <EditProfile />,
+          },
+          {
+            path: '/dashboard/smallBusiness/otherCompany',
+            element: <OtherCompany />,
+          },
 
-      // Consultancy Firms Dashboard (Type B)
-      {
-        path: '/dashboard/consultancyFirms/timeline',
-        element: <ConsultancyTimeline />,
-      },
-      {
-        path: '/dashboard/consultancyFirms/profile',
-        element: <ConsultancyProfile />,
-      },
-      {
-        path: '/dashboard/consultancyFirms/idea',
-        element: <ConsultancyIdea />,
-      },
-      {
-        path: '/dashboard/consultancyFirms/ideaDetails/:id',
-        element: <ConsultancyIdeaDetails />,
-      },
-      {
-        path: '/dashboard/consultancyFirms/watchList',
-        element: <WatchList />,
-      },
-      {
-        path: '/dashboard/consultancyFirms/profileInformation',
-        element: <ProfileInformation />,
-      },
-      {
-        path: '/dashboard/consultancyFirms/editProfile',
-        element: <EditConsultancyProfile />,
-      },
+          // Consultancy Firms Dashboard (Type B)
+          {
+            path: '/dashboard/consultancyFirms/timeline',
+            element: <ConsultancyTimeline />,
+          },
+          {
+            path: '/dashboard/consultancyFirms/profile',
+            element: <ConsultancyProfile />,
+          },
+          {
+            path: '/dashboard/consultancyFirms/idea',
+            element: <ConsultancyIdea />,
+          },
+          {
+            path: '/dashboard/consultancyFirms/ideaDetails/:id',
+            element: <ConsultancyIdeaDetails />,
+          },
+          {
+            path: '/dashboard/consultancyFirms/watchList',
+            element: <WatchList />,
+          },
+          {
+            path: '/dashboard/consultancyFirms/profileInformation',
+            element: <ProfileInformation />,
+          },
+          {
+            path: '/dashboard/consultancyFirms/editProfile',
+            element: <EditConsultancyProfile />,
+          },
+        ]
+      }
     ]
   }
 ]);
