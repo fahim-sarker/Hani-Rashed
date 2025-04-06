@@ -86,7 +86,7 @@ header {
 #about,
 #contact,
 #blog {
-  background: url("../src/assets/aboutBg.png") no-repeat center / cover;
+  /* background: url("../src/assets/aboutBg.png") no-repeat center / cover; */
   background-color: #0033858f;
   background-blend-mode: overlay;
   object-fit: cover;
