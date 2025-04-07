@@ -112,7 +112,7 @@ const Router = createBrowserRouter([
 
   //  #################### Dashboard Layout ####################
   {
-    element: <PrivateRoute />, // Wrap the dashboard routes with PrivateRoute
+    element: <PrivateRoute />, 
     children: [
       {
         path: "/dashboard",

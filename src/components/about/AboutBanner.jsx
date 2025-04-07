@@ -1,15 +1,15 @@
-// import aboutBg from "../../assets/aboutBg.png";
+import aboutBg from "../../assets/aboutBg.png";
 
 const AboutBanner = () => {
   return (
     <section
-      // style={{
-      //   backgroundImage: `url(${aboutBg})`,
-      //   backgroundRepeat: "no-repeat",
-      //   backgroundPosition: "center",
-      //   backgroundSize: "cover",
-      //   objectFit: "cover",
-      // }}
+      style={{
+        backgroundImage: `url(${aboutBg})`,
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        backgroundSize: "cover",
+        objectFit: "cover",
+      }}
       id="about"
       className="h-52 sm:h-96 flex justify-center items-center"
     >

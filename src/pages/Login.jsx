@@ -9,8 +9,10 @@ import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import useAxios from "@/components/Hooks/Api/UseAxios";
 import { FaSpinner } from "react-icons/fa";
+import { useRole } from "./Context/RoleContext";
 
 const Login = () => {
+  const {setRole} = useRole();
   const navigate = useNavigate();
   const Axiosinstance = useAxios();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -28,11 +30,11 @@ const Login = () => {
       if (response.status === 200 && response.data?.token) {
         const { token, role } = response.data;
         localStorage.setItem("authToken", JSON.stringify(token));
-  
+        setRole(role);
         if (role === "smallbusiness") {
-          navigate("/dashboard/smallBusiness/profile"); 
+          navigate("/dashboard/smallBusiness/profile");
         } else if (role === "consultant") {
-          navigate("/dashboard/consultancyFirms/profile"); 
+          navigate("/dashboard/consultancyFirms/profile");
         } else {
           toast.error("Unknown role, cannot redirect.");
           console.error("Unknown role:", role);
@@ -52,6 +54,7 @@ const Login = () => {
       }
     }
   };
+  
   
 
 

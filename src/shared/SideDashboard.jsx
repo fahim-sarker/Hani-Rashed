@@ -19,34 +19,32 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
 
   const handleLogout = async () => {
     try {
-        const token = localStorage.getItem("authToken"); 
+      const token = localStorage.getItem("authToken");
 
-        if (!token) {
-            toast.error("No token found, redirecting to login.");
-            navigate("/login");
-            return;
-        }
-
-        await Axiosinstance.post(
-            "logout",
-            {}, 
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
-
-        localStorage.removeItem("authToken");
-        toast.success("Logged out successfully!");
+      if (!token) {
+        toast.error("No token found, redirecting to login.");
         navigate("/login");
+        return;
+      }
+
+      await Axiosinstance.post(
+        "logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      localStorage.removeItem("authToken");
+      toast.success("Logged out successfully!");
+      navigate("/login");
     } catch (error) {
-        console.error("Logout failed:", error);
-        toast.error("Logout failed. Please try again.");
+      console.error("Logout failed:", error);
+      toast.error("Logout failed. Please try again.");
     }
-};
-
-
+  };
 
   return (
     <div>
@@ -71,12 +69,11 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
         {/* Nav links */}
         <ul
           id="dashboardLinks"
-          className="font-roboto mt-10 font-medium space-y-4 text-[19px]"
+          className="font-roboto mt-10 font-medium space-y-5 text-[19px]"
         >
-          {role === "smallBusiness" ? (
+          {role === "smallbusiness" ? (
             <li>
               <NavLink
-                onClick={() => setIsActive(false)}
                 to="/dashboard/smallBusiness/timeline"
                 className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
               >
@@ -87,7 +84,6 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
           ) : (
             <li>
               <NavLink
-                onClick={() => setIsActive(false)}
                 to="/dashboard/consultancyFirms/timeline"
                 className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
               >
@@ -96,10 +92,9 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
               </NavLink>
             </li>
           )}
-          {role === "smallBusiness" ? (
+          {role === "smallbusiness" ? (
             <li>
               <NavLink
-                onClick={() => setIsActive(false)}
                 to="/dashboard/smallBusiness/profile"
                 className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
               >
@@ -110,7 +105,6 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
           ) : (
             <li>
               <NavLink
-                onClick={() => setIsActive(false)}
                 to="/dashboard/consultancyFirms/profile"
                 className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
               >
@@ -119,10 +113,9 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
               </NavLink>
             </li>
           )}
-          {role === "smallBusiness" ? (
+          {role === "smallbusiness" ? (
             <li>
               <NavLink
-                onClick={() => setIsActive(false)}
                 to="/dashboard/smallBusiness/idea"
                 className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
               >
@@ -133,7 +126,6 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
           ) : (
             <li>
               <NavLink
-                onClick={() => setIsActive(false)}
                 to="/dashboard/consultancyFirms/idea"
                 className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
               >
@@ -142,9 +134,9 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
               </NavLink>
             </li>
           )}
+
           <li>
             <NavLink
-              onClick={() => setIsActive(false)}
               to="/dashboard/smallBusiness/following"
               className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
             >
@@ -152,9 +144,9 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
               <span>Following</span>
             </NavLink>
           </li>
+
           <li>
             <NavLink
-              onClick={() => setIsActive(false)}
               to="/dashboard/smallBusiness/follower"
               className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
             >
@@ -162,9 +154,9 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
               <span>Follower</span>
             </NavLink>
           </li>
+
           <li>
             <NavLink
-              onClick={() => setIsActive(false)}
               to="/dashboard/smallBusiness/messages"
               className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
             >
@@ -172,9 +164,9 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
               <span>Messages</span>
             </NavLink>
           </li>
+
           <li>
             <NavLink
-              onClick={() => setIsActive(false)}
               to="/dashboard/smallBusiness/notifications"
               className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
             >
@@ -182,9 +174,9 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
               <span>Notifications</span>
             </NavLink>
           </li>
+
           <li>
             <NavLink
-              onClick={() => setIsActive(false)}
               to="/dashboard/smallBusiness/statics"
               className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
             >
@@ -192,19 +184,18 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
               <span>Statics</span>
             </NavLink>
           </li>
-          {role !== "smallBusiness" && (
-            <li>
-              <NavLink
-                onClick={() => setIsActive(false)}
-                to="/dashboard/consultancyFirms/watchList"
-                className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
-              >
-                <img src={d9} alt="d9" />
-                <span>Watch List</span>
-              </NavLink>
-            </li>
-          )}
-          <li className="mx-5 pt-5">
+
+          <li>
+            <NavLink
+              to="/dashboard/consultancyFirms/watchList"
+              className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
+            >
+              <img src={d9} alt="d9" />
+              <span>Watch List</span>
+            </NavLink>
+          </li>
+
+          <li className="mx-5 pt-4">
             <button
               onClick={handleLogout}
               className="flex w-full text-lg justify-center text-center bg-white text-[#0A3760] font-medium rounded-lg py-[10px] px-10 gap-3 items-center"

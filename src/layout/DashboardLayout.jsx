@@ -27,37 +27,34 @@ import { FaBars } from "react-icons/fa";
 import SideDashboard from "@/shared/SideDashboard";
 import toast from "react-hot-toast";
 import useAxios from "@/components/Hooks/Api/UseAxios";
-
-// ############# This is role #############
-
-const role = "smallBusiness";
-// const role = 'consultancy';
-
+import { useRole } from "@/pages/Context/RoleContext";
 
 const DashboardLayout = () => {
+  const { role } = useRole();
+  console.log(role);
   const location = useLocation();
   const navigate = useNavigate();
   const Axiosinstance = useAxios();
   const [isActive, setIsActive] = useState(false);
-  const [showNotification, setShowNotification] = useState(false);
   const [profiledata, setProfiledata] = useState();
+  const [showNotification, setShowNotification] = useState(false);
   const token = JSON.parse(localStorage.getItem("authToken"));
-  
-    useEffect(() => {
-      Axiosinstance.get("me", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+
+  useEffect(() => {
+    Axiosinstance.get("me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        setProfiledata(response.data.data);
+        console.log(response.data.data);
       })
-        .then((response) => {
-          setProfiledata(response.data.data);
-          console.log(response.data.data);
-        })
-        
-        .catch((error) => {
-          console.error("Error fetching profile data:", error);
-        });
-    }, []);
+
+      .catch((error) => {
+        console.error("Error fetching profile data:", error);
+      });
+  }, []);
 
   const handleLogout = async () => {
     const token = JSON.parse(localStorage.getItem("authToken"));
@@ -120,7 +117,7 @@ const DashboardLayout = () => {
           id="dashboardLinks"
           className="font-roboto mt-10 font-medium space-y-5 text-[19px]"
         >
-          {role === "smallBusiness" ? (
+          {role === "smallbusiness" ? (
             <li>
               <NavLink
                 to="/dashboard/smallBusiness/timeline"
@@ -141,7 +138,7 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
           )}
-          {role === "smallBusiness" ? (
+          {role === "smallbusiness" ? (
             <li>
               <NavLink
                 to="/dashboard/smallBusiness/profile"
@@ -162,7 +159,7 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
           )}
-          {role === "smallBusiness" ? (
+          {role === "smallbusiness" ? (
             <li>
               <NavLink
                 to="/dashboard/smallBusiness/idea"
@@ -183,6 +180,7 @@ const DashboardLayout = () => {
               </NavLink>
             </li>
           )}
+
           <li>
             <NavLink
               to="/dashboard/smallBusiness/following"
@@ -192,6 +190,7 @@ const DashboardLayout = () => {
               <span>Following</span>
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to="/dashboard/smallBusiness/follower"
@@ -201,6 +200,7 @@ const DashboardLayout = () => {
               <span>Follower</span>
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to="/dashboard/smallBusiness/messages"
@@ -210,6 +210,7 @@ const DashboardLayout = () => {
               <span>Messages</span>
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to="/dashboard/smallBusiness/notifications"
@@ -219,6 +220,7 @@ const DashboardLayout = () => {
               <span>Notifications</span>
             </NavLink>
           </li>
+
           <li>
             <NavLink
               to="/dashboard/smallBusiness/statics"
@@ -228,17 +230,17 @@ const DashboardLayout = () => {
               <span>Statics</span>
             </NavLink>
           </li>
-          {role !== "smallBusiness" && (
-            <li>
-              <NavLink
-                to="/dashboard/consultancyFirms/watchList"
-                className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
-              >
-                <img src={d9} alt="d9" />
-                <span>Watch List</span>
-              </NavLink>
-            </li>
-          )}
+
+          <li>
+            <NavLink
+              to="/dashboard/consultancyFirms/watchList"
+              className="flex hover:bg-primaryGreen hover:text-white duration-300 transition-all py-[10px] px-10 gap-3 items-center"
+            >
+              <img src={d9} alt="d9" />
+              <span>Watch List</span>
+            </NavLink>
+          </li>
+
           <li className="mx-5 pt-4">
             <button
               onClick={handleLogout}
@@ -290,7 +292,7 @@ const DashboardLayout = () => {
               )}
               <figure className="w-10 h-10 outline outline-2 outline-primaryGreen outline-offset-2 rounded-full">
                 <img
-                  src={profiledata?.avatar|| profileImg}
+                  src={profiledata?.avatar || profileImg}
                   alt="profile"
                   className="w-full h-full rounded-full object-cover"
                 />
