@@ -9,16 +9,12 @@ const useFetchData = (url, token = null) => {
     return response.data;
   };
 
-  const { data, error, isLoading, refetch } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: [url],  
-    queryFn: fetchData,
-    refetchOnWindowFocus: true, 
-    refetchInterval: 10000, 
-    refetchOnMount: true, 
-    cacheTime: 0, 
+    queryFn: fetchData, 
   });
 
-  return { data, error, isLoading, refetch };
+  return { data, error, isLoading };
 };
 
 export default useFetchData;
