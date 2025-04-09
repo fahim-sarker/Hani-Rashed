@@ -13,6 +13,7 @@ import { useRole } from "./Context/RoleContext";
 
 const Login = () => {
   const {setRole} = useRole();
+  console.log(setRole);
   const navigate = useNavigate();
   const Axiosinstance = useAxios();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -26,10 +27,12 @@ const Login = () => {
           "Content-Type": "application/json",
         },
       });
-  
+      console.log(response.data);
+      
       if (response.status === 200 && response.data?.token) {
         const { token, role } = response.data;
         localStorage.setItem("authToken", JSON.stringify(token));
+        localStorage.setItem("role", JSON.stringify(role));
         setRole(role);
         if (role === "smallbusiness") {
           navigate("/dashboard/smallBusiness/profile");

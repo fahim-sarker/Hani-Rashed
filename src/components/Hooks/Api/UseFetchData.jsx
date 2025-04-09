@@ -10,10 +10,9 @@ const useFetchData = (url, token = null) => {
   };
 
   const { data, error, isLoading } = useQuery({
-    queryKey: [url],  
-    queryFn: fetchData, 
+    queryKey: [url],
+    queryFn: fetchData,
   });
-
   return { data, error, isLoading };
 };
 

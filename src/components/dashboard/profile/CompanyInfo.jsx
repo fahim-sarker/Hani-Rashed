@@ -5,14 +5,11 @@ import { FaRegEdit } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { PasswordChangePopup } from "./PasswordChangePopup";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import useAxios from "@/components/Hooks/Api/UseAxios";
+import { useState } from "react";
+import useFetchData from "@/components/Hooks/Api/UseFetchData";
 
 const CompanyInfo = () => {
-  const Axiosinstance = useAxios();
-  const [profiledata, setProfiledata] = useState();
   const token = JSON.parse(localStorage.getItem("authToken"));
-  console.log(token);
   const [uploadedFile, setUploadedFile] = useState(null);
 
   const {
@@ -22,21 +19,7 @@ const CompanyInfo = () => {
   } = useForm();
   const onSubmit = (data) => console.log(data);
 
-  useEffect(() => {
-    Axiosinstance.get("me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        setProfiledata(response.data.data);
-        console.log(response.data.data);
-      })
-
-      .catch((error) => {
-        console.error("Error fetching profile data:", error);
-      });
-  }, []);
+  const { data } = useFetchData("/me", token);
 
   return (
     <div>
@@ -69,7 +52,7 @@ const CompanyInfo = () => {
             src={
               uploadedFile
                 ? URL.createObjectURL(uploadedFile)
-                : profiledata?.avatar || profile
+                : data?.data?.avatar || profile
             }
             alt="profile"
             className="w-full h-full object-cover rounded-full"
@@ -89,7 +72,7 @@ const CompanyInfo = () => {
 
         {/* Company Name */}
         <h3 className="text-[#141414] mt-3 font-medium text-[22px] sm:text-2xl">
-          {profiledata?.name}
+          {data?.data?.name}
         </h3>
       </div>
       {/* Company Bio */}
@@ -158,7 +141,7 @@ const CompanyInfo = () => {
               readOnly
               id="companyName"
               className="block text-gray-400 w-full px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={profiledata?.name}
+              defaultValue={data?.data?.name}
               {...register("companyName", { required: true })}
             />
             {errors.companyName && <span>This field is required</span>}
@@ -174,7 +157,7 @@ const CompanyInfo = () => {
               readOnly
               id="country"
               className="block text-gray-400 w-full px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={profiledata?.country}
+              defaultValue={data?.data?.country}
               {...register("country", { required: true })}
             />
             {errors.country && <span>This field is required</span>}
@@ -190,7 +173,7 @@ const CompanyInfo = () => {
               readOnly
               id="description"
               className="block text-gray-400 w-full px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={profiledata?.description}
+              defaultValue={data?.data?.description}
               {...register("description", { required: true })}
             />
             {errors.description && <span>This field is required</span>}
@@ -206,7 +189,7 @@ const CompanyInfo = () => {
               readOnly
               id="industry"
               className="block w-full text-gray-400 px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={profiledata?.company_type}
+              defaultValue={data?.data?.company_type}
               {...register("industry", { required: true })}
             />
             {errors.industry && <span>This field is required</span>}
@@ -222,7 +205,7 @@ const CompanyInfo = () => {
               readOnly
               id="website"
               className="block w-full text-gray-400 px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={profiledata?.company_type || "www.xyz.com"}
+              defaultValue={data?.data?.company_type || "www.xyz.com"}
               {...register("website", { required: true })}
             />
             {errors.website && <span>This field is required</span>}
@@ -238,7 +221,7 @@ const CompanyInfo = () => {
               readOnly
               id="stage"
               className="block w-full text-gray-400 px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={profiledata?.company_stage}
+              defaultValue={data?.data?.company_stage}
               {...register("stage", { required: true })}
             />
             {errors.stage && <span>This field is required</span>}
@@ -266,7 +249,7 @@ const CompanyInfo = () => {
               readOnly
               id="contactName"
               className="block w-full text-gray-400 px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={profiledata?.primary_contact_name}
+              defaultValue={data?.data?.primary_contact_name}
               {...register("contactName", { required: true })}
             />
             {errors.contactName && <span>This field is required</span>}
@@ -283,7 +266,7 @@ const CompanyInfo = () => {
               id="email"
               className="block w-full px-3 sm:px-5 sm:py-3 py-2  text-gray-400 border outline-none rounded"
               defaultValue={
-                profiledata?.primary_email
+                data?.data?.primary_email
               }
               {...register("email", { required: true })}
             />
@@ -300,7 +283,7 @@ const CompanyInfo = () => {
               readOnly
               id="phoneNumber"
               className="block text-gray-400 w-full px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={profiledata?.phone}
+              defaultValue={data?.data?.phone}
               {...register("phoneNumber", { required: true })}
             />
             {errors.phoneNumber && <span>This field is required</span>}

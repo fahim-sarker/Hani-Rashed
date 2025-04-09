@@ -47,8 +47,6 @@ const EditProfile = () => {
         toast.error("Authentication token missing!");
         return;
       }
-
-      // Send the form data to the backend
       await Axiosinstance.post("/update-profile", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
@@ -136,7 +134,7 @@ const EditProfile = () => {
         </h3>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="sm:grid grid-cols-2 gap-x-5 sm:gap-x-8 space-y-3 sm:gap-y-5 mb-10">
-            {[  
+            {[
               {
                 label: "Company Name",
                 name: "name",
@@ -195,7 +193,7 @@ const EditProfile = () => {
             ))}
 
             {/* Dropdowns */}
-            {[  
+            {[
               {
                 label: "Country",
                 name: "country",
@@ -223,7 +221,9 @@ const EditProfile = () => {
                   className="block w-full px-3 py-2 sm:px-5 sm:py-3 border outline-none rounded"
                   {...register(name, { required: true })}
                 >
-                  <option value="" disabled>{placeholder}</option>
+                  <option value="" disabled>
+                    {placeholder}
+                  </option>
                   {options.map((option) => (
                     <option key={option} value={option}>
                       {option}

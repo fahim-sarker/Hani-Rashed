@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Link,
   NavLink,
@@ -27,34 +27,19 @@ import { FaBars } from "react-icons/fa";
 import SideDashboard from "@/shared/SideDashboard";
 import toast from "react-hot-toast";
 import useAxios from "@/components/Hooks/Api/UseAxios";
-import { useRole } from "@/pages/Context/RoleContext";
+import useFetchData from "@/components/Hooks/Api/UseFetchData";
 
 const DashboardLayout = () => {
-  const { role } = useRole();
-  console.log(role);
   const location = useLocation();
   const navigate = useNavigate();
   const Axiosinstance = useAxios();
   const [isActive, setIsActive] = useState(false);
-  const [profiledata, setProfiledata] = useState();
   const [showNotification, setShowNotification] = useState(false);
   const token = JSON.parse(localStorage.getItem("authToken"));
+  const role = JSON.parse(localStorage.getItem("role"));
 
-  useEffect(() => {
-    Axiosinstance.get("me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        setProfiledata(response.data.data);
-        console.log(response.data.data);
-      })
-
-      .catch((error) => {
-        console.error("Error fetching profile data:", error);
-      });
-  }, []);
+  const { data } = useFetchData("/me", token);
+  console.log("jsagdehasgf", data?.data?.avatar);
 
   const handleLogout = async () => {
     const token = JSON.parse(localStorage.getItem("authToken"));
@@ -103,7 +88,7 @@ const DashboardLayout = () => {
             </figure>
             <div className="">
               <p className="font-roboto font-medium text-lg text-[#161C24]">
-                Walid Khan
+                {data?.name}
               </p>
               <span className="text-sm -mt-[2px] block text-[#212B36] font-publicSans">
                 YouSendIt
@@ -261,11 +246,10 @@ const DashboardLayout = () => {
             <SearchPopup />
           </div>
           <ul className="hidden lg:flex gap-10 justify-self-center text-primaryGreen">
-            {role === "smallBusiness" && (
-              <li>
-                <NavLink to="/aboutUs">About Us</NavLink>
-              </li>
-            )}
+            <li>
+              <NavLink to="/aboutUs">About Us</NavLink>
+            </li>
+
             <li>
               <NavLink to="/contactUs">Contact Us</NavLink>
             </li>
@@ -292,13 +276,13 @@ const DashboardLayout = () => {
               )}
               <figure className="w-10 h-10 outline outline-2 outline-primaryGreen outline-offset-2 rounded-full">
                 <img
-                  src={profiledata?.avatar || profileImg}
+                  src={data?.data?.avatar || profileImg}
                   alt="profile"
                   className="w-full h-full rounded-full object-cover"
                 />
               </figure>
               <p className="font-roboto font-medium text-[#334155]">
-                {profiledata?.email || "youSENTit"}
+                {data?.data?.email || "youSENTit"}
               </p>
             </div>
 
