@@ -1,34 +1,46 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import share from "../../../assets/icons/share.png";
 import eye from "../../../assets/icons/eye.png";
 import likeImg from "../../../assets/icons/like.png";
 import comment from "../../../assets/icons/comment.png";
 import { FcLike } from "react-icons/fc";
-import useAxios from "@/components/Hooks/Api/UseAxios";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
+import useAxios from "@/components/Hooks/Api/UseAxios";
 
 const IdeaPost = () => {
-  const [like, setLike] = useState(false);
-  const [profiledata, setProfiledata] = useState(null);
+
+
   const [expandedItem, setExpandedItem] = useState(null);
 
-  const Axiosinstance = useAxios();
   const token = JSON.parse(localStorage.getItem("authToken"));
   const { data: ideas } = useFetchData("/show-idea", token);
+  const { data } = useFetchData("/me", token);
+  const [like, setLike] = useState(false);
+  const [likeCount, setLikeCount] = useState();
+  const Axios = useAxios();
 
-  useEffect(() => {
-    Axiosinstance.get("me", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((response) => {
-        setProfiledata(response.data.data);
-      })
-      .catch((error) => {
-        console.error("Error fetching profile data:", error);
-      });
-  }, []);
+  const handleLike = async () => {
+
+    try {
+      setLike(prev => !prev);
+      setLikeCount(prev => (like ? prev - 1 : prev + 1));
+
+      await Axios.post(
+        `/smallbusiness/like-idea/2`, 
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    } catch (error) {
+      console.error('Error liking post:', error);
+      setLike(prev => !prev);
+      setLikeCount(prev => (like ? prev + 1 : prev - 1));
+    }
+  };
+
 
   return (
     <>
@@ -42,13 +54,13 @@ const IdeaPost = () => {
               <div className="flex gap-3 sm:gap-5">
                 <figure className="sm:w-14 sm:h-14 w-12 h-12 rounded-full">
                   <img
-                    src={profiledata?.avatar}
+                    src={data?.data?.avatar}
                     alt="user_profile"
                     className="w-full h-full rounded-full object-cover"
                   />
                 </figure>
                 <h3 className="text-lg sm:text-2xl text-[#212B36] font-medium font-roboto">
-                  {profiledata?.email}
+                  {data?.data?.name}
                 </h3>
               </div>
               <p className="text-gray-500 text-sm">{item?.created_at_diff}</p>
@@ -86,7 +98,7 @@ const IdeaPost = () => {
 
             <div className="inline-flex px-2 py-2 sm:px-3 sm:py-[6px] border-gray-200 gap-4 sm:gap-6 items-center border rounded-full">
               <button
-                onClick={() => setLike(!like)}
+                onClick={handleLike}
                 className="flex text-xs sm:text-base gap-1 items-center"
               >
                 {like ? (
@@ -94,7 +106,7 @@ const IdeaPost = () => {
                 ) : (
                   <img src={likeImg} alt="like" className="w-5 h-5" />
                 )}
-                <p>{item.interaction?.like ?? 0}k</p>
+                <p>{likeCount}k</p>
               </button>
               <button className="flex text-xs sm:text-base gap-1 items-center">
                 <img src={comment} alt="comment" className="w-5 h-5" />

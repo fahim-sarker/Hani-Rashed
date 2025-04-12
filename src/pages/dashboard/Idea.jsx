@@ -2,7 +2,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { IdeaPopup } from "@/components/dashboard/idea/IdeaPopup";
 import IdeaPost from "@/components/dashboard/idea/IdeaPost";
 
-
 const Idea = () => {
   const queryClient = useQueryClient();
 

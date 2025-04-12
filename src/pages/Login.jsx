@@ -12,13 +12,20 @@ import { FaSpinner } from "react-icons/fa";
 import { useRole } from "./Context/RoleContext";
 
 const Login = () => {
-  const {setRole} = useRole();
+  const { setRole } = useRole();
   console.log(setRole);
   const navigate = useNavigate();
   const Axiosinstance = useAxios();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const {register,handleSubmit,reset,formState: { errors, isSubmitting }} = useForm();
-  const togglePasswordVisibility = () => {setIsPasswordVisible((prevState) => !prevState);};
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm();
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible((prevState) => !prevState);
+  };
 
   const onSubmit = async (data) => {
     try {
@@ -28,7 +35,7 @@ const Login = () => {
         },
       });
       console.log(response.data);
-      
+
       if (response.status === 200 && response.data?.token) {
         const { token, role } = response.data;
         localStorage.setItem("authToken", JSON.stringify(token));
@@ -42,7 +49,7 @@ const Login = () => {
           toast.error("Unknown role, cannot redirect.");
           console.error("Unknown role:", role);
         }
-  
+
         toast.success("Login successful");
         reset();
       } else {
@@ -57,9 +64,6 @@ const Login = () => {
       }
     }
   };
-  
-  
-
 
   return (
     <div className="lg:flex w-full min-h-screen sm:py-12 md:py-0 ">
@@ -172,8 +176,7 @@ const Login = () => {
               >
                 {isSubmitting ? (
                   <>
-                    <FaSpinner className="animate-spin mr-2" />{" "}
-                    Logging in...
+                    <FaSpinner className="animate-spin mr-2" /> Logging in...
                   </>
                 ) : (
                   "Login"

@@ -107,93 +107,92 @@ const Router = createBrowserRouter([
         path: "/auth/passwordSetSuccessfully",
         element: <PasswordSetSuccessfully />,
       },
-    ]
+    ],
   },
 
   //  #################### Dashboard Layout ####################
   {
-    element: <PrivateRoute />, 
+    element: <PrivateRoute />,
     children: [
       {
         path: "/dashboard",
         element: <DashboardLayout />,
         children: [
-
           // Small Business Dashboard (Type A)
           {
-            path: '/dashboard/smallBusiness/timeline',
+            path: "/dashboard/smallBusiness/timeline",
             element: <Timeline />,
           },
           {
-            path: '/dashboard/smallBusiness/profile',
+            path: "/dashboard/smallBusiness/profile",
             element: <Profile />,
           },
           {
-            path: '/dashboard/smallBusiness/idea',
+            path: "/dashboard/smallBusiness/idea",
             element: <Idea />,
           },
           {
-            path: '/dashboard/smallBusiness/following',
+            path: "/dashboard/smallBusiness/following",
             element: <Following />,
           },
           {
-            path: '/dashboard/smallBusiness/follower',
+            path: "/dashboard/smallBusiness/follower",
             element: <Follower />,
           },
           {
-            path: '/dashboard/smallBusiness/notifications',
+            path: "/dashboard/smallBusiness/notifications",
             element: <Notifications />,
           },
           {
-            path: '/dashboard/smallBusiness/messages',
+            path: "/dashboard/smallBusiness/messages",
             element: <Messages />,
           },
           {
-            path: '/dashboard/smallBusiness/statics',
+            path: "/dashboard/smallBusiness/statics",
             element: <Statics />,
           },
           {
-            path: '/dashboard/smallBusiness/editProfile',
+            path: "/dashboard/smallBusiness/editProfile",
             element: <EditProfile />,
           },
           {
-            path: '/dashboard/smallBusiness/otherCompany',
+            path: "/dashboard/smallBusiness/otherCompany",
             element: <OtherCompany />,
           },
 
           // Consultancy Firms Dashboard (Type B)
           {
-            path: '/dashboard/consultancyFirms/timeline',
+            path: "/dashboard/consultancyFirms/timeline",
             element: <ConsultancyTimeline />,
           },
           {
-            path: '/dashboard/consultancyFirms/profile',
+            path: "/dashboard/consultancyFirms/profile",
             element: <ConsultancyProfile />,
           },
           {
-            path: '/dashboard/consultancyFirms/idea',
+            path: "/dashboard/consultancyFirms/idea",
             element: <ConsultancyIdea />,
           },
           {
-            path: '/dashboard/consultancyFirms/ideaDetails/:id',
+            path: "/dashboard/consultancyFirms/ideaDetails/:id",
             element: <ConsultancyIdeaDetails />,
           },
           {
-            path: '/dashboard/consultancyFirms/watchList',
+            path: "/dashboard/consultancyFirms/watchList",
             element: <WatchList />,
           },
           {
-            path: '/dashboard/consultancyFirms/profileInformation',
+            path: "/dashboard/consultancyFirms/profileInformation",
             element: <ProfileInformation />,
           },
           {
-            path: '/dashboard/consultancyFirms/editProfile',
+            path: "/dashboard/consultancyFirms/editProfile",
             element: <EditConsultancyProfile />,
           },
-        ]
-      }
-    ]
-  }
+        ],
+      },
+    ],
+  },
 ]);
 
 export default Router;

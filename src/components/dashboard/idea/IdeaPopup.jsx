@@ -19,9 +19,7 @@ export function IdeaPopup({ refetchIdeas }) {
   const [uploadedVideo, setUploadedVideo] = useState(null);
   const [uploadedPicture, setUploadedPicture] = useState(null);
   const [uploadedDocs, setUploadedDocs] = useState(null);
-  const [isOpen, setIsOpen] = useState(
-    false
-  );
+  const [isOpen, setIsOpen] = useState(false);
 
   const Axios = useAxios();
   const token = JSON.parse(localStorage.getItem("authToken"));
@@ -54,7 +52,6 @@ export function IdeaPopup({ refetchIdeas }) {
       console.log("Error:", error);
       toast.error("Upload failed:", error.message);
     },
-    
   });
   const onSubmit = (data) => {
     if (!uploadedVideo) {
@@ -83,7 +80,11 @@ export function IdeaPopup({ refetchIdeas }) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen} onDismiss={() => setIsOpen(true)}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      onDismiss={() => setIsOpen(true)}
+    >
       <DialogTrigger asChild>
         <button className="flex gap-2 items-center px-2 sm:px-3 py-1 text-sm sm:text-base sm:py-2 rounded text-white bg-primaryGreen">
           <span>Add new Idea</span>

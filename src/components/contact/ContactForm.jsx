@@ -15,7 +15,7 @@ const ContactForm = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const response = await Axiosinatance.post("contact-mail", data, {
+      const response = await Axiosinatance.post("/contact-mail", data, {
         headers: {
           'Content-Type': 'application/json',
         },
