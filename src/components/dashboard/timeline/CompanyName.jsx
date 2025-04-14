@@ -1,16 +1,22 @@
+import useFetchData from "@/components/Hooks/Api/UseFetchData";
 import companyBg from "../../../assets/companyBg.png"
-import companyLogo from "../../../assets/profile.png"
 
 const CompanyName = () => {
+    const token = JSON.parse(localStorage.getItem("authToken"));
+    const { data } = useFetchData("/me", token);
+    console.log(data);
+    
+
+    
     return (
         <div className="bg-white sm:rounded-lg border">
             <figure className="h-[100px]">
                 <img src={companyBg} alt="companyBg" className="w-full h-full object-cover sm:rounded-t-lg" />
             </figure>
             <div className="w-36 h-36 mx-auto -mt-14 z-50 rounded-full">
-                <img src={companyLogo} alt="companyLogo" className="w-full h-full object-cover rounded-full" />
+                <img src={data?.data?.avatar || "okkkkk"} alt="companyLogo" className="w-full h-full object-cover rounded-full" />
             </div>
-            <h3 className="text-2xl font-medium mt-2 text-center mb-10">Company name</h3>
+            <h3 className="text-2xl font-medium mt-2 text-center mb-10">{data?.data?.name}</h3>
             <div className="">
                 <p className="flex text-lg py-3 px-7 justify-between border-t border-b">
                     <span>Following</span>

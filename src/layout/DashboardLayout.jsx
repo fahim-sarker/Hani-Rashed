@@ -81,17 +81,14 @@ const DashboardLayout = () => {
           <div className="flex mt-8 px-3 py-1 max-w-[210px] ms-auto gap-3 bg-white rounded-tl rounded-bl shadow items-center">
             <figure className="w-10 h-10 rounded-full">
               <img
-                src={profileImg}
+                src={data?.data?.avatar}
                 alt="profile"
                 className="w-full h-full object-cover rounded-full"
               />
             </figure>
             <div className="">
-              <p className="font-roboto font-medium text-lg text-[#161C24]">
-                {data?.name}
-              </p>
-              <span className="text-sm -mt-[2px] block text-[#212B36] font-publicSans">
-                YouSendIt
+              <span className="text-xs -mt-[2px] block text-[#212B36] font-publicSans">
+                {data?.data?.name}
               </span>
             </div>
           </div>

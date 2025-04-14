@@ -3,8 +3,11 @@ import world from "../../assets/world.png"
 import CompanyPost from "../../components/dashboard/timeline/CompanyPost";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import useFetchData from "@/components/Hooks/Api/UseFetchData";
 
 const Timeline = () => {
+    const token = JSON.parse(localStorage.getItem("authToken"));
+    const { data } = useFetchData("/me", token);
     const { data: companyData, isPending, isFetching, isLoading } = useQuery({
         queryKey: ['companyData'],
         queryFn: async () => {
@@ -13,6 +16,7 @@ const Timeline = () => {
         }
     });
     if (isPending || isFetching || isLoading) return 'Loading...'
+ 
 
     return (
         <div className="grid lg:grid-cols-12 gap-5">
@@ -58,7 +62,7 @@ const Timeline = () => {
                 {/* Create post */}
                 <div className="bg-white gap-3 md:gap-5 rounded-lg border border-gray-100 mb-5 flex justify-between items-center p-4">
                     <figure className="!w-12 hidden sm:block flex-shrink-0 !h-12 rounded-full">
-                        <img src="https://i.ibb.co.com/4RMKSy7m/pexels-olly-3785079.jpg" alt="" className="w-full h-full rounded-full object-cover" />
+                        <img src={data?.data?.avatar} alt="" className="w-full h-full rounded-full object-cover" />
                     </figure>
                     <input type="text" placeholder="Start post an idea" className="md:w-[400px] w-full 2xl:w-[682px] px-3 sm:px-5 py-2 sm:py-3 outline-none border rounded" />
                     <button className="px-5 sm:px-10 font-roboto py-2 sm:py-3 rounded-[5px] shadow text-white bg-primaryGreen">Post</button>

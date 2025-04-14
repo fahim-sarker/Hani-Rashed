@@ -9,38 +9,41 @@ import useAxios from "@/components/Hooks/Api/UseAxios";
 
 const IdeaPost = () => {
 
-
   const [expandedItem, setExpandedItem] = useState(null);
-
   const token = JSON.parse(localStorage.getItem("authToken"));
   const { data: ideas } = useFetchData("/show-idea", token);
   const { data } = useFetchData("/me", token);
   const [like, setLike] = useState(false);
   const [likeCount, setLikeCount] = useState();
   const Axios = useAxios();
+  
 
-  const handleLike = async () => {
-
+  const handleLike = async (id) => {
+    console.log(id);
+    
     try {
-      setLike(prev => !prev);
-      setLikeCount(prev => (like ? prev - 1 : prev + 1));
-
+      const newLikeState = !like;
+      setLike(newLikeState);
+      setLikeCount(prev => (newLikeState ? prev + 1 : prev - 1));
+  
       await Axios.post(
-        `/smallbusiness/like-idea/2`, 
-        {},
+        `/like-idea/${id}`,
+        { type: newLikeState ? 'like' : 'dislike' },
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            Accept: "application/json",
           },
         }
       );
     } catch (error) {
       console.error('Error liking post:', error);
+  
       setLike(prev => !prev);
       setLikeCount(prev => (like ? prev + 1 : prev - 1));
     }
   };
-
+  
 
   return (
     <>
@@ -98,7 +101,7 @@ const IdeaPost = () => {
 
             <div className="inline-flex px-2 py-2 sm:px-3 sm:py-[6px] border-gray-200 gap-4 sm:gap-6 items-center border rounded-full">
               <button
-                onClick={handleLike}
+                onClick={() => handleLike(item.id)}
                 className="flex text-xs sm:text-base gap-1 items-center"
               >
                 {like ? (
