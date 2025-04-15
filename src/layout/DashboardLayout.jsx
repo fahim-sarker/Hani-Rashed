@@ -81,7 +81,7 @@ const DashboardLayout = () => {
           <div className="flex mt-8 px-3 py-1 max-w-[210px] ms-auto gap-3 bg-white rounded-tl rounded-bl shadow items-center">
             <figure className="w-10 h-10 rounded-full">
               <img
-                src={data?.data?.avatar}
+                src={data?.data?.avatar?.trim() || profileImg }
                 alt="profile"
                 className="w-full h-full object-cover rounded-full"
               />
@@ -272,11 +272,13 @@ const DashboardLayout = () => {
                 </button>
               )}
               <figure className="w-10 h-10 outline outline-2 outline-primaryGreen outline-offset-2 rounded-full">
+                <Link to='/dashboard/smallBusiness/editProfile'>
                 <img
                   src={data?.data?.avatar || profileImg}
                   alt="profile"
                   className="w-full h-full rounded-full object-cover"
                 />
+                </Link>
               </figure>
               <p className="font-roboto font-medium text-[#334155]">
                 {data?.data?.email || "youSENTit"}

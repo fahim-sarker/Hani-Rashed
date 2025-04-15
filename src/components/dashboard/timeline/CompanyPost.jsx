@@ -1,38 +1,78 @@
-import { useState } from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { useEffect, useState } from "react";
 import { IoIosSend } from "react-icons/io";
-import { FcLike } from "react-icons/fc";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import share from "../../../assets/icons/share.png";
 import eye from "../../../assets/icons/eye.png";
-import likeImg from "../../../assets/icons/like.png";
 import commentImg from "../../../assets/icons/comment.png";
 import { Link } from "react-router-dom";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
 import useAxios from "@/components/Hooks/Api/UseAxios";
+import profileImg from "../../../assets/profile.png";
+import toast from "react-hot-toast";
 
-const CompanyPost = ({ data }) => {
-  const { company_name, company_logo, posted_time, interaction } = data;
+const CompanyPost = () => {
+  const token = JSON.parse(localStorage.getItem("authToken"));
+  const axios = useAxios();
 
-  const [follow, setFollow] = useState(false);
+  const { data: userData } = useFetchData("/me", token);
+  const currentUserId = userData?.data?.id;
+
+  const { data: timelinedata } = useFetchData("/show-all-idea", token);
+  console.log(timelinedata);
+  
+
   const [comments, setComments] = useState({});
+  const [commentText, setCommentText] = useState({});
   const [showComment, setShowComment] = useState(null);
   const [expandedItem, setExpandedItem] = useState(null);
-  const token = JSON.parse(localStorage.getItem("authToken"));
-  const { data: timelinedata } = useFetchData("/show-all-idea", token);
-  const axios = useAxios();
-  const [commentText, setCommentText] = useState({});
 
-  const [likedPosts, setLikedPosts] = useState(() => {
-    const savedLikedPosts = localStorage.getItem("likedPosts");
-    return savedLikedPosts ? JSON.parse(savedLikedPosts) : {};
-  });
+  const followKey = `followStates-${currentUserId}`;
+  const likeKey = `likedPosts-${currentUserId}`;
+
+  const [followStates, setFollowStates] = useState({});
+  const [likedPosts, setLikedPosts] = useState({});
+
+  useEffect(() => {
+    const followStored = localStorage.getItem(followKey);
+    const likeStored = localStorage.getItem(likeKey);
+    setFollowStates(followStored ? JSON.parse(followStored) : {});
+    setLikedPosts(likeStored ? JSON.parse(likeStored) : {});
+  }, [currentUserId]);
+
+  const toggleFollow = async (postId) => {
+    const isFollowing = followStates[postId];
+
+    try {
+      const res = await axios.post(
+        `/follow/${postId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+
+      console.log(res);
+
+      const updated = { ...followStates, [postId]: !isFollowing };
+      setFollowStates(updated);
+      localStorage.setItem(followKey, JSON.stringify(updated));
+    } catch (error) {
+      console.error(
+        "Failed to toggle follow:",
+        error.response?.data || error.message
+      );
+    }
+  };
 
   const handleLike = async (postId) => {
-    try {
-      const currentType = likedPosts[postId]?.type;
-      const newType = currentType === "like" ? "dislike" : "like";
+    const currentType = likedPosts[postId]?.type;
+    const newType = currentType === "like" ? "dislike" : "like";
 
-      const response = await axios.post(
+    try {
+      const res = await axios.post(
         `/like-idea/${postId}`,
         { type: newType },
         {
@@ -42,23 +82,20 @@ const CompanyPost = ({ data }) => {
           },
         }
       );
-      const { type } = response.data.data;
-      const updatedLikedPosts = { ...likedPosts, [postId]: { type } };
-      setLikedPosts(updatedLikedPosts);
-      localStorage.setItem("likedPosts", JSON.stringify(updatedLikedPosts));
-    } catch (error) {
-      console.error("Error updating like status:", error);
+      const { type } = res.data.data;
+      const updated = { ...likedPosts, [postId]: { type } };
+      setLikedPosts(updated);
+      localStorage.setItem(likeKey, JSON.stringify(updated));
+    } catch (err) {
+      console.error("Error updating like:", err);
     }
   };
 
-  const handlecomment = async (postId, comment) => {
-    if (!comment?.trim()) {
-      console.warn("Comment is empty or undefined.");
-      return;
-    }
+  const handleComment = async (postId, comment) => {
+    if (!comment?.trim()) return;
 
     try {
-      const response = await axios.post(
+      const res = await axios.post(
         `/comment/${postId}`,
         { comment },
         {
@@ -68,21 +105,38 @@ const CompanyPost = ({ data }) => {
           },
         }
       );
-
-      const newComment = response.data.data;
+      const newComment = res.data.data;
 
       setComments((prev) => ({
         ...prev,
         [postId]: [...(prev[postId] || []), newComment],
       }));
 
-      setCommentText((prev) => ({
-        ...prev,
-        [postId]: "",
-      }));
+      setCommentText((prev) => ({ ...prev, [postId]: "" }));
+      setShowComment(null);
+    } catch (err) {
+      console.log("Error posting comment:", err.response?.data || err.message);
+    }
+  };
+
+  const handleshare = async (postId) => {
+    try {
+      const res = await axios.post(
+        `/share-idea/${postId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
+      toast.success("you shared this post")
+      console.log("Post shared:", res.data.message || res.data);
     } catch (error) {
-      console.log(
-        "Error posting comment:",
+      toast.error("Error sharing post")
+      console.error(
+        "Error sharing post:",
         error.response?.data || error.message
       );
     }
@@ -90,174 +144,158 @@ const CompanyPost = ({ data }) => {
 
   return (
     <>
-      {timelinedata?.data?.map((item, index) => {
+      {timelinedata?.data?.map((item) => {
         const isExpanded = expandedItem === item.id;
         const shouldTruncate = item.description.length > 150;
 
         return (
-          <div key={index} className="">
+          <div key={item.id} className="mb-6">
             <div className="border-b pb-5">
-              <div className="flex items-center justify-between mb-3 sm:mb-5 xl:mb-7">
-                <div className="flex gap-4 sm:gap-5 items-center">
+              {/* Top Section */}
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex gap-4 items-center">
                   <Link
                     to="/dashboard/smallBusiness/otherCompany"
-                    className="flex gap-3 sm:gap-5 items-center"
+                    className="flex gap-4 items-center"
                   >
-                    <figure className="w-12 h-12 sm:w-14 sm:h-14 rounded-full">
+                    <figure className="w-12 h-12 rounded-full overflow-hidden border-2">
                       <img
-                        src={item?.user.avatar}
-                        alt="company_logo"
-                        className="w-full h-full rounded-full object-cover"
+                        src={item.user?.avatar?.trim() || profileImg}
+                        alt="avatar"
+                        className="w-full h-full object-cover"
                       />
                     </figure>
-                    <h3 className="text-xl sm:text-2xl hover:underline text-[#212B36] font-medium font-roboto">
-                      {item?.user.name}
+                    <h3 className="text-xl hover:underline font-medium text-[#212B36]">
+                      {item.user?.name}
                     </h3>
                   </Link>
-                  <button
-                    onClick={() => setFollow(!follow)}
-                    className="text-[#3A83CD] text-sm sm:text-base font-medium"
-                  >
-                    {follow ? "Following" : "+ Follow"}
-                  </button>
+                  {currentUserId && (
+                    <button
+                      onClick={() => toggleFollow(item.id)}
+                      className="text-blue-500 text-sm"
+                    >
+                      {followStates[item.id] ? "Following" : "+ Follow"}
+                    </button>
+                  )}
                 </div>
-                <p className="text-gray-500 hidden sm:block">{posted_time}</p>
+                <p className="text-gray-500">{item.posted_time}</p>
               </div>
 
-              <p className="xl:text-lg 2xl:w-3/4 text-[#525252] mb-5">
+              {/* Description */}
+              <p className="text-gray-700 mb-5">
                 {isExpanded
                   ? item.description
                   : `${item.description.slice(0, 150)} `}
-                {!isExpanded && shouldTruncate && (
+                {shouldTruncate && (
                   <button
-                    onClick={() => setExpandedItem(item.id)}
-                    className="text-[#2F80ED]"
+                    onClick={() => setExpandedItem(isExpanded ? null : item.id)}
+                    className="text-blue-600 ml-2"
                   >
-                    .....view more
-                  </button>
-                )}
-                {isExpanded && shouldTruncate && (
-                  <button
-                    onClick={() => setExpandedItem(null)}
-                    className="text-[#2F80ED] ml-2"
-                  >
-                    show less
+                    {isExpanded ? "Show less" : "View more"}
                   </button>
                 )}
               </p>
 
-              <figure className="h-[200px] sm:h-[280px] xl:h-[350px] rounded mb-7">
-                <img
-                  src={item?.image}
-                  alt="thumbnail"
-                  className="w-full h-full object-cover rounded"
-                />
-              </figure>
+              {/* Image */}
+              {item.image && (
+                <figure className="h-64 rounded mb-5">
+                  <img
+                    src={item.image}
+                    alt="post"
+                    className="w-full h-full object-cover rounded"
+                  />
+                </figure>
+              )}
 
-              <div className="flex gap-3 sm:gap-6 items-center">
+              {/* Interaction buttons */}
+              <div className="flex gap-4 items-center">
                 <button
                   onClick={() => handleLike(item.id)}
-                  className="text-xs sm:text-base flex gap-1 items-center pr-3 sm:pr-5 border-r"
+                  className="flex items-center gap-1"
                 >
                   {likedPosts[item.id]?.type === "like" ? (
-                    <FcLike className="text-xl" />
-                  ) : likedPosts[item.id]?.type === "dislike" ? (
-                    <img src={likeImg} alt="like" className="w-5 h-5" />
+                    <AiFillHeart className="text-red-500 text-xl" />
                   ) : (
-                    <img
-                      src={likeImg}
-                      alt="like"
-                      className="w-5 h-5 opacity-50"
-                    />
+                    <AiOutlineHeart className="text-gray-500 text-xl" />
                   )}
-                  <p>{interaction.like}k</p>
+                  <p>{item.likes_count} likes</p>
                 </button>
 
                 <button
-                  onClick={() => setShowComment(item.id)}
-                  className="text-xs sm:text-base flex gap-1 items-center pr-3 sm:pr-5 border-r"
+                  onClick={() =>
+                    setShowComment((prev) =>
+                      prev === item.id ? null : item.id
+                    )
+                  }
+                  className="flex items-center gap-1"
                 >
-                  <img src={commentImg} alt="share" className="w-5 h-5" />
-                  <p>{interaction.comment}</p>
+                  <img src={commentImg} alt="comment" className="w-5 h-5" />
+                  <p>{item.comments?.length || 0} comments</p>
                 </button>
-                <button className="text-xs sm:text-base flex gap-1 items-center pr-3 sm:pr-5 border-r">
-                  <img src={eye} alt="eye" className="w-4 h-4" />
-                  <p>{interaction.view} views</p>
-                </button>
-                <button className="text-xs sm:text-base flex gap-1 items-center">
+
+                <div className="flex items-center gap-1">
+                  <img src={eye} alt="views" className="w-4 h-4" />
+                  <p>22 views</p>
+                </div>
+
+                <button
+                  onClick={() => handleshare(item.id)}
+                  className="flex items-center gap-1"
+                >
                   <img src={share} alt="share" className="w-4 h-4" />
-                  <p>{interaction.share} shared</p>
+                  <p>{item.share_count || 0} shares</p>
                 </button>
               </div>
             </div>
 
+            {/* Comment input and list */}
             {showComment === item.id && (
-              <div className="relative mb-3 sm:mb-4">
-                <textarea
-                  rows={1}
-                  id={`commentText-${item.id}`}
-                  type="text"
-                  className="border border-primaryGreen outline-none pr-16 pl-2 text-sm sm:text-base sm:pl-5 py-2 sm:py-5 rounded w-full"
-                  placeholder="Comment here...."
-                  value={commentText[item.id] || ""}
-                  onChange={(e) =>
-                    setCommentText((prev) => ({
-                      ...prev,
-                      [item.id]: e.target.value,
-                    }))
-                  }
-                />
+              <>
+                <div className="relative my-4">
+                  <textarea
+                    rows={1}
+                    className="w-full border p-2 rounded pr-16 h-[100px]"
+                    placeholder="Comment here..."
+                    value={commentText[item.id] || ""}
+                    onChange={(e) =>
+                      setCommentText((prev) => ({
+                        ...prev,
+                        [item.id]: e.target.value,
+                      }))
+                    }
+                  />
+                  <button
+                    onClick={() => handleComment(item.id, commentText[item.id])}
+                    className="absolute right-2 bottom-10 bg-primaryGreen text-white w-10 h-10 rounded-full grid place-items-center"
+                  >
+                    <IoIosSend className="text-xl" />
+                  </button>
+                </div>
 
-                <button
-                  onClick={() => handlecomment(item.id, commentText[item.id])}
-                  className="absolute right-2 sm:right-4 bottom-3 sm:bottom-5 bg-primaryGreen text-white w-8 h-7 sm:w-11 sm:h-10 grid place-items-center rounded"
-                >
-                  <IoIosSend className="text-lg sm:text-2xl text-white" />
-                </button>
-              </div>
+                <div className="mt-4">
+                  {(comments[item.id] || item.comments)?.map((c, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-white p-4 border rounded-lg mb-2"
+                    >
+                      <div className="flex gap-3 items-center mb-2">
+                        <figure className="w-9 h-9 rounded-full overflow-hidden">
+                          <img
+                            src={c.user?.avatar || commentImg}
+                            alt="user"
+                            className="w-full h-full object-cover"
+                          />
+                        </figure>
+                        <h4 className="text-base font-semibold">
+                          {c.user?.name || "User"}
+                        </h4>
+                      </div>
+                      <p className="text-gray-700">{c.comment}</p>
+                    </div>
+                  ))}
+                </div>
+              </>
             )}
-
-            {comments[data.id]?.map((c, idx) => (
-              <div
-                key={idx}
-                className="bg-white p-3 sm:p-5 border rounded-lg mb-3"
-              >
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex gap-3 sm:gap-5 items-center">
-                    <figure className="w-7 h-7 sm:w-11 sm:h-11 rounded-full">
-                      <img
-                        src={c.user?.avatar || company_logo}
-                        alt="user"
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    </figure>
-                    <h3 className="text-lg sm:text-xl text-[#212B36] font-medium font-roboto">
-                      {c.user?.name || company_name}
-                    </h3>
-                    <button className="text-sm sm:text-base text-[#3A83CD] font-medium">
-                      + Follow
-                    </button>
-                  </div>
-                  <div className="hidden sm:flex gap-1 sm:gap-3 items-center">
-                    <p className="text-gray-500">{posted_time}</p>
-                    <button>
-                      <BsThreeDotsVertical className="text-2xl" />
-                    </button>
-                  </div>
-                </div>
-                <p className="text-[#525252] mb-5">{c.comment}</p>
-                <div className="inline-flex px-2 sm:px-4 border py-1 sm:py-2 rounded-full gap-4 bg-[#F4F6FB] items-center">
-                  <button className="text-sm sm:text-base flex gap-1 items-center">
-                    <img src="dfdsf" alt="like" className="w-5 h-5" />
-                    <p>{interaction.like}k</p>
-                  </button>
-                  <button className="text-sm sm:text-base flex gap-1 items-center">
-                    <img src={commentImg} alt="comment" className="w-5 h-5" />
-                    <p>{interaction.comment}</p>
-                  </button>
-                </div>
-              </div>
-            ))}
           </div>
         );
       })}

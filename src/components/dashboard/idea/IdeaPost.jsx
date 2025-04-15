@@ -12,6 +12,8 @@ const IdeaPost = () => {
   const [expandedItem, setExpandedItem] = useState(null);
   const token = JSON.parse(localStorage.getItem("authToken"));
   const { data: ideas } = useFetchData("/show-idea", token);
+  console.log(ideas);
+  
   const { data } = useFetchData("/me", token);
   const [like, setLike] = useState(false);
   const [likeCount, setLikeCount] = useState();
@@ -39,8 +41,7 @@ const IdeaPost = () => {
     } catch (error) {
       console.error('Error liking post:', error);
   
-      setLike(prev => !prev);
-      setLikeCount(prev => (like ? prev + 1 : prev - 1));
+
     }
   };
   

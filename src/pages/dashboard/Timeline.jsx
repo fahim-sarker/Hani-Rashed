@@ -62,7 +62,7 @@ const Timeline = () => {
                 {/* Create post */}
                 <div className="bg-white gap-3 md:gap-5 rounded-lg border border-gray-100 mb-5 flex justify-between items-center p-4">
                     <figure className="!w-12 hidden sm:block flex-shrink-0 !h-12 rounded-full">
-                        <img src={data?.data?.avatar} alt="" className="w-full h-full rounded-full object-cover" />
+                        <img src={data?.data?.avatar?.trim() || world} alt="" className="w-full h-full rounded-full object-cover" />
                     </figure>
                     <input type="text" placeholder="Start post an idea" className="md:w-[400px] w-full 2xl:w-[682px] px-3 sm:px-5 py-2 sm:py-3 outline-none border rounded" />
                     <button className="px-5 sm:px-10 font-roboto py-2 sm:py-3 rounded-[5px] shadow text-white bg-primaryGreen">Post</button>
