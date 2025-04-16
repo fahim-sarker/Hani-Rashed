@@ -73,7 +73,7 @@ const CreateNewPassword = () => {
               <input
                 type={isPasswordVisible ? "text" : "password"}
                 className="bg-gray-50 border border-gray-300 text-Gray pr-12 text-sm rounded-lg block w-full p-2.5"
-                placeholder="•••••••••"
+
                 {...register("password", {
                   required: "Password is required",
                   pattern: {
@@ -108,7 +108,6 @@ const CreateNewPassword = () => {
               <input
                 type={isConfirmPasswordVisible ? "text" : "password"}
                 className="bg-gray-50 border border-gray-300 text-Gray pr-12 text-sm rounded-lg block w-full p-2.5"
-                placeholder="•••••••••"
                 {...register("password_confirmation", {
                   required: "Confirm Password is required",
                   validate: (value) =>

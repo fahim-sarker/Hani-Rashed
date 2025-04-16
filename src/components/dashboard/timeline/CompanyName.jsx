@@ -6,7 +6,8 @@ import profileImg from "../../../assets/profile.png";
 const CompanyName = () => {
   const token = JSON.parse(localStorage.getItem("authToken"));
   const { data } = useFetchData("/me", token);
-  console.log(data);
+  const { data: ideas } = useFetchData("/show-idea", token);
+  console.log(ideas);
 
   return (
     <div className="bg-white sm:rounded-lg border">
@@ -34,15 +35,15 @@ const CompanyName = () => {
       <div className="">
         <p className="flex text-lg py-3 px-7 justify-between border-t border-b">
           <span>Following</span>
-          <span>20</span>
+          <span>{ideas?.following_count}</span>
         </p>
         <p className="flex text-lg py-3 px-7 justify-between">
           <span>Follower</span>
-          <span>80</span>
+          <span>{ideas?.followers_count}</span>
         </p>
         <p className="flex text-lg py-3 pb-7 px-7 justify-between border-t">
           <span>Total Post</span>
-          <span>07</span>
+          <span>{ideas?.total_ideas}</span>
         </p>
       </div>
     </div>

@@ -8,7 +8,6 @@ const useFetchData = (url, token = null) => {
     const response = await axiosInstance.get(url);
     return response.data;
   };
-
   const { data, error, isLoading } = useQuery({
     queryKey: [url],
     queryFn: fetchData,

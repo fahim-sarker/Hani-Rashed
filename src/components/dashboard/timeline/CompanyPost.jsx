@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { IoIosSend } from "react-icons/io";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import share from "../../../assets/icons/share.png";
@@ -16,57 +16,75 @@ const CompanyPost = () => {
 
   const { data: userData } = useFetchData("/me", token);
   const currentUserId = userData?.data?.id;
-
   const { data: timelinedata } = useFetchData("/show-all-idea", token);
-  console.log(timelinedata);
-  
+
+  const followKey = `followStates-${currentUserId}`;
+  const likeKey = `likedPosts-${currentUserId}`;
 
   const [comments, setComments] = useState({});
   const [commentText, setCommentText] = useState({});
   const [showComment, setShowComment] = useState(null);
   const [expandedItem, setExpandedItem] = useState(null);
 
-  const followKey = `followStates-${currentUserId}`;
-  const likeKey = `likedPosts-${currentUserId}`;
+  const [followedUsers, setFollowedUsers] = useState(() => {
+    const stored = localStorage.getItem(followKey);
+    return stored ? JSON.parse(stored) : {};
+  });
 
-  const [followStates, setFollowStates] = useState({});
-  const [likedPosts, setLikedPosts] = useState({});
+  const [likedPosts, setLikedPosts] = useState(() => {
+    const stored = localStorage.getItem(likeKey);
+    return stored ? JSON.parse(stored) : {};
+  });
 
+  // Sync localStorage when current user changes
   useEffect(() => {
-    const followStored = localStorage.getItem(followKey);
-    const likeStored = localStorage.getItem(likeKey);
-    setFollowStates(followStored ? JSON.parse(followStored) : {});
-    setLikedPosts(likeStored ? JSON.parse(likeStored) : {});
+    if (currentUserId) {
+      const storedFollows = localStorage.getItem(`followStates-${currentUserId}`);
+      const storedLikes = localStorage.getItem(`likedPosts-${currentUserId}`);
+
+      setFollowedUsers(storedFollows ? JSON.parse(storedFollows) : {});
+      setLikedPosts(storedLikes ? JSON.parse(storedLikes) : {});
+    }
   }, [currentUserId]);
 
-  const toggleFollow = async (postId) => {
-    const isFollowing = followStates[postId];
+  // Handle follow/unfollow
+  const handleToggleFollow = async (userId) => {
+    const isFollowing = followedUsers[userId]?.following;
 
     try {
-      const res = await axios.post(
-        `/follow/${postId}`,
-        {},
-        {
+      if (isFollowing) {
+        await axios.delete(`/unfollow/${userId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             Accept: "application/json",
           },
-        }
-      );
+        });
+      } else {
+        await axios.post(
+          `/follow/${userId}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+          }
+        );
+      }
 
-      console.log(res);
+      const updated = {
+        ...followedUsers,
+        [userId]: { following: !isFollowing },
+      };
 
-      const updated = { ...followStates, [postId]: !isFollowing };
-      setFollowStates(updated);
+      setFollowedUsers(updated);
       localStorage.setItem(followKey, JSON.stringify(updated));
-    } catch (error) {
-      console.error(
-        "Failed to toggle follow:",
-        error.response?.data || error.message
-      );
+    } catch (err) {
+      console.error("Error toggling follow:", err);
     }
   };
 
+  // Handle Like
   const handleLike = async (postId) => {
     const currentType = likedPosts[postId]?.type;
     const newType = currentType === "like" ? "dislike" : "like";
@@ -91,6 +109,7 @@ const CompanyPost = () => {
     }
   };
 
+  // Handle Comment
   const handleComment = async (postId, comment) => {
     if (!comment?.trim()) return;
 
@@ -119,6 +138,7 @@ const CompanyPost = () => {
     }
   };
 
+  // Handle Share
   const handleshare = async (postId) => {
     try {
       const res = await axios.post(
@@ -131,14 +151,11 @@ const CompanyPost = () => {
           },
         }
       );
-      toast.success("you shared this post")
+      toast.success("You shared this post");
       console.log("Post shared:", res.data.message || res.data);
     } catch (error) {
-      toast.error("Error sharing post")
-      console.error(
-        "Error sharing post:",
-        error.response?.data || error.message
-      );
+      toast.error("Error sharing post");
+      console.error("Error sharing post:", error.response?.data || error.message);
     }
   };
 
@@ -154,10 +171,7 @@ const CompanyPost = () => {
               {/* Top Section */}
               <div className="flex items-center justify-between mb-3">
                 <div className="flex gap-4 items-center">
-                  <Link
-                    to="/dashboard/smallBusiness/otherCompany"
-                    className="flex gap-4 items-center"
-                  >
+                  <Link className="flex gap-4 items-center">
                     <figure className="w-12 h-12 rounded-full overflow-hidden border-2">
                       <img
                         src={item.user?.avatar?.trim() || profileImg}
@@ -171,14 +185,20 @@ const CompanyPost = () => {
                   </Link>
                   {currentUserId && (
                     <button
-                      onClick={() => toggleFollow(item.id)}
-                      className="text-blue-500 text-sm"
+                      onClick={() => handleToggleFollow(item.user_id)}
+                      className={`text-sm ${
+                        followedUsers[item.user_id]?.following
+                          ? "following"
+                          : "follow"
+                      }`}
                     >
-                      {followStates[item.id] ? "Following" : "+ Follow"}
+                      {followedUsers[item.user_id]?.following
+                        ? "Following"
+                        : "+ Follow"}
                     </button>
                   )}
                 </div>
-                <p className="text-gray-500">{item.posted_time}</p>
+                <p className="text-gray-500">{item.time_ago}</p>
               </div>
 
               {/* Description */}
@@ -223,9 +243,7 @@ const CompanyPost = () => {
 
                 <button
                   onClick={() =>
-                    setShowComment((prev) =>
-                      prev === item.id ? null : item.id
-                    )
+                    setShowComment((prev) => (prev === item.id ? null : item.id))
                   }
                   className="flex items-center gap-1"
                 >
@@ -243,7 +261,7 @@ const CompanyPost = () => {
                   className="flex items-center gap-1"
                 >
                   <img src={share} alt="share" className="w-4 h-4" />
-                  <p>{item.share_count || 0} shares</p>
+                  <p>{item?.share_ideas_count || 0} shares</p>
                 </button>
               </div>
             </div>
@@ -281,13 +299,13 @@ const CompanyPost = () => {
                       <div className="flex gap-3 items-center mb-2">
                         <figure className="w-9 h-9 rounded-full overflow-hidden">
                           <img
-                            src={c.user?.avatar || commentImg}
+                            src={c?.user_avatar || commentImg}
                             alt="user"
                             className="w-full h-full object-cover"
                           />
                         </figure>
                         <h4 className="text-base font-semibold">
-                          {c.user?.name || "User"}
+                          {c.user_name}
                         </h4>
                       </div>
                       <p className="text-gray-700">{c.comment}</p>
