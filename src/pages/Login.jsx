@@ -98,7 +98,6 @@ const Login = () => {
               <input
                 type="text"
                 className="shadow-sm bg-gray-50 border border-gray-300 text-Gray text-sm rounded-md block w-full p-2.5"
-                placeholder="mdhafizul123"
                 {...register("email", { required: "User mail is required" })}
               />
               {errors.username && (
@@ -118,7 +117,6 @@ const Login = () => {
                 <input
                   id="password"
                   className="bg-gray-50 border border-gray-300 text-Gray pr-12  text-sm rounded-md  block w-full p-2.5 "
-                  placeholder="•••••••••"
                   type={isPasswordVisible ? "text" : "password"}
                   {...register("password", {
                     required: "Password is required",
@@ -185,7 +183,7 @@ const Login = () => {
               <p className="text-[14px] sm:text-lg text-gray-600 font-bold mt-4">
                 Don’t have an account?{" "}
                 <Link to="/auth/registration" className="text-Blue ">
-                  Sign Up
+                  Sign up
                 </Link>
               </p>
             </div>

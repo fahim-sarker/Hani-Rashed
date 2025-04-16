@@ -58,7 +58,7 @@ const Registration = () => {
       <div className="lg:w-[50%] min-h-screen">
         <div className="py-6 px-4 mx-auto max-w-screen-md">
           <h2 className="mb-2 lg:mb-4 font-roboto text-3xl sm:text-[40px] tracking-tight font-extrabold text-center text-DarkGray">
-            Sign Up
+            Sign up
           </h2>
           <p className="mb-8 lg:mb-12 font-roboto text-center text-Gray sm:text-lg">
             Lets have these fields.
@@ -175,7 +175,6 @@ const Registration = () => {
                 <input
                   type={isPasswordVisible ? "text" : "password"}
                   className="bg-gray-50 border border-gray-300 text-Gray pr-12 text-sm rounded-lg block w-full p-2.5"
-                  placeholder="•••••••••"
                   {...register("password", {
                     required: "Password is required",
                     pattern: {
@@ -213,7 +212,6 @@ const Registration = () => {
                 <input
                   type={isConfirmPasswordVisible ? "text" : "password"}
                   className="bg-gray-50 border border-gray-300 text-Gray pr-12 text-sm rounded-lg block w-full p-2.5"
-                  placeholder="•••••••••"
                   {...register("password_confirmation", {
                     required: "Confirm Password is required",
                     validate: (value) =>
@@ -290,7 +288,7 @@ const Registration = () => {
             Signing up...
           </>
         ) : (
-          "Sign Up"
+          "Sign up"
         )}
       </Button>
       <p className="text-[14px] lg:text-lg text-Gray font-bold mt-4">

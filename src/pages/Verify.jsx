@@ -89,7 +89,7 @@ const Verify = () => {
           </h2>
           <p className="xlg:w-[500px] text-DarkGray text-sm sm:text-base text-center font-roboto">
             Enter the OTP code we sent to your email{" "}
-            <span className="font-semibold">m******y@gmail.com</span>. Be
+            <span className="font-semibold">{email}</span>. Be
             careful not to share the code with anyone.
           </p>
 
@@ -118,7 +118,7 @@ const Verify = () => {
           </div>
 
           <p className="mb-12 xlg:w-[510px] text-sm sm:text-base text-center font-roboto">
-            We&apos;ve sent a 6-digit verification code to your email. Check
+            We&apos;ve sent a 4-digit verification code to your email. Check
             your spam folder in case you didn&apos;t receive the code.
           </p>
           <div className="text-center">

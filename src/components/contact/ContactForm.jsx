@@ -1,13 +1,16 @@
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import useAxios from "../Hooks/Api/UseAxios";
 import toast from "react-hot-toast";
 import { ImSpinner3 } from "react-icons/im";
+import CountrySelect from "../CountrySelect";
+
 
 const ContactForm = () => {
   const Axiosinatance = useAxios();
   const {
     register,
     handleSubmit,
+    control,
     reset,
     formState: { errors, isSubmitting },
   } = useForm();
@@ -17,7 +20,7 @@ const ContactForm = () => {
     try {
       const response = await Axiosinatance.post("/contact-mail", data, {
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       });
       console.log(response.data);
@@ -27,7 +30,7 @@ const ContactForm = () => {
       toast.error(error.message);
     }
   };
-  
+
   return (
     <section className="container max-w-5xl my-20">
       <div className="mb-5 text-center">
@@ -67,6 +70,8 @@ const ContactForm = () => {
               </p>
             )}
           </div>
+
+        
           <div className="col-span-2 sm:col-span-1">
             <label
               htmlFor="country"
@@ -74,28 +79,21 @@ const ContactForm = () => {
             >
               Country
             </label>
-            <select
-              defaultValue="Select Country"
-              className="w-full px-4 py-3 outline-none rounded-lg border"
-              required
-              {...register("country", {
-                required: "country Name is required",
-              })}
-            >
-              <option defaultValue="Select Country" disabled>
-                Select Country
-              </option>
-              <option value="uk">UK</option>
-              <option value="pakisthan">Pakisthan</option>
-              <option value="nepal">Nepal</option>
-              <option value="usa">USA</option>
-            </select>
-            {errors.country && (
-              <p className="mt-1 text-sm text-red-600">
-                {errors.country.message}
-              </p>
-            )}
+            <Controller
+              name="country"
+              control={control}
+              rules={{ required: "Country is required" }}
+              render={({ field }) => (
+                <CountrySelect
+                  value={field.value}
+                  onChange={field.onChange}
+                  name={field.name}
+                  error={errors.country}
+                />
+              )}
+            />
           </div>
+
           <div className="col-span-2 sm:col-span-1">
             <label
               htmlFor="phone_number"
@@ -110,7 +108,7 @@ const ContactForm = () => {
               className="w-full px-4 py-3 outline-none rounded-lg border"
               required
               {...register("phone", {
-                required: "phone number is required",
+                required: "Phone number is required",
               })}
             />
             {errors.phone && (
@@ -119,6 +117,7 @@ const ContactForm = () => {
               </p>
             )}
           </div>
+
           <div className="col-span-2 sm:col-span-1">
             <label
               htmlFor="subject"
@@ -133,7 +132,7 @@ const ContactForm = () => {
               className="w-full px-4 py-3 outline-none rounded-lg border"
               required
               {...register("subject", {
-                required: "subject is required",
+                required: "Subject is required",
               })}
             />
             {errors.subject && (
@@ -142,6 +141,7 @@ const ContactForm = () => {
               </p>
             )}
           </div>
+
           <div className="col-span-2">
             <label
               htmlFor="message"
@@ -156,7 +156,7 @@ const ContactForm = () => {
               id="message"
               required
               {...register("message", {
-                required: "message is required",
+                required: "Message is required",
               })}
             ></textarea>
             {errors.message && (
@@ -165,13 +165,18 @@ const ContactForm = () => {
               </p>
             )}
           </div>
+
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`col-span-2 flex items-center justify-center gap-2 border-2 border-primaryGreen bg-primaryGreen   w-full 
+            className={`col-span-2 flex items-center justify-center gap-2 border-2 border-primaryGreen bg-primaryGreen text-white 
             font-medium py-3 rounded duration-300`}
           >
-            {isSubmitting ? <ImSpinner3  className="animate-spin text-xl fill-white" /> : "Send Message"}
+            {isSubmitting ? (
+              <ImSpinner3 className="animate-spin text-xl" />
+            ) : (
+              "Send Message"
+            )}
           </button>
         </div>
       </form>

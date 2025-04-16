@@ -44,10 +44,10 @@ const Navbar = () => {
           ) : (
             <Link
               to="/auth/registration"
-              className="px-2 md:px-5 text-xs md:text-base py-[6px] sm:py-2 rounded font-medium flex items-center gap-2 text-gray-100 bg-primaryGreen"
+              className="px-2  md:px-5 text-xs md:text-base py-[6px] sm:py-2 rounded font-medium flex items-center gap-2 text-gray-100 bg-primaryGreen"
             >
               <FaRegUserCircle className="text-sm md:text-lg" />
-              <span>Sign In</span>
+              <span>Sign up</span>
             </Link>
           )}
 

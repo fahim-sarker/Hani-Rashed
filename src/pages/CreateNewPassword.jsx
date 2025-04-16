@@ -17,23 +17,16 @@ const CreateNewPassword = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] = useState(false);
   const {register,handleSubmit, watch,formState: { errors, isSubmitting }} = useForm();
-
-
-
-
   const togglePasswordVisibility = () => {
     setIsPasswordVisible((prevState) => !prevState);
   };
-
   const toggleConfirmPasswordVisibility = () => {
     setIsConfirmPasswordVisible((prevState) => !prevState);
   };
 
   const password = watch("password");
-
   const onSubmit = async (data) => {
     console.log(data);
-    
     try {
       let response = await Axiosinstance.post("reset-password", {
         email: email,
