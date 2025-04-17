@@ -1,6 +1,5 @@
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
 import companyBg from "../../../assets/companyBg.png";
-import profileImg from "../../../assets/profile.png";
 
 
 const CompanyName = () => {
@@ -21,9 +20,8 @@ const CompanyName = () => {
       <div className="w-36 h-36 mx-auto -mt-14 z-10 rounded-full border-2 border-black relative">
         <img
           src={
-            data?.data?.avatar?.trim()
-              ? data?.data?.avatar 
-              : profileImg
+            data?.data?.avatar
+             
           }
           alt="company_logo"
           className="w-full h-full rounded-full object-cover"

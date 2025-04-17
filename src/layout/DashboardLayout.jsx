@@ -73,7 +73,7 @@ const DashboardLayout = () => {
       {/* Sidebar */}
       <div className="hidden xl:block min-h-full max-h-full overflow-y-auto w-[280px] xl:w-[300px] py-8 2xl:py-10 shadow bg-[#0B2948] text-white">
         {/* Logo */}
-        <Link to="/">
+        <Link to={ role === "smallbusiness" ? "/dashboard/smallBusiness/timeline" : "/dashboard/consultancyFirms/timeline" }>
           <img src={logo} alt="logo" className="w-48 mx-auto" />
         </Link>
         {/* Profile card */}
@@ -274,14 +274,14 @@ const DashboardLayout = () => {
               <figure className="w-10 h-10 outline outline-2 outline-primaryGreen outline-offset-2 rounded-full">
                 <Link to='/dashboard/smallBusiness/editProfile'>
                 <img
-                  src={data?.data?.avatar || profileImg}
+                  src={data?.data?.avatar}
                   alt="profile"
                   className="w-full h-full rounded-full object-cover"
                 />
                 </Link>
               </figure>
               <p className="font-roboto font-medium text-[#334155]">
-                {data?.data?.email || "youSENTit"}
+                {data?.data?.email}
               </p>
             </div>
 

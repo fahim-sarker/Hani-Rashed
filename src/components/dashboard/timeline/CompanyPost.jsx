@@ -7,7 +7,6 @@ import commentImg from "../../../assets/icons/comment.png";
 import { Link } from "react-router-dom";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
 import useAxios from "@/components/Hooks/Api/UseAxios";
-import profileImg from "../../../assets/profile.png";
 import toast from "react-hot-toast";
 
 const CompanyPost = () => {
@@ -174,7 +173,7 @@ const CompanyPost = () => {
                   <Link className="flex gap-4 items-center">
                     <figure className="w-12 h-12 rounded-full overflow-hidden border-2">
                       <img
-                        src={item.user?.avatar?.trim() || profileImg}
+                        src={item.user?.avatar}
                         alt="avatar"
                         className="w-full h-full object-cover"
                       />

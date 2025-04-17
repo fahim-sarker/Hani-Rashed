@@ -63,7 +63,7 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
         }`}
       >
         {/* Logo */}
-        <Link onClick={() => setIsActive(false)} to="/">
+        <Link onClick={() => setIsActive(false)} to="/dashboard/smallBusiness/timeline">
           <img src={logo} alt="logo" className="w-48 mx-auto" />
         </Link>
         {/* Nav links */}

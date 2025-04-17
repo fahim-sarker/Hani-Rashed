@@ -1,7 +1,4 @@
 import WhoToFollow from "@/components/dashboard/profile/WhoToFollow";
-import cover from "../../../assets/companyCover.png"
-import profile from "../../../assets/profile.png"
-import update from "../../../assets/icons/update.png"
 import { useEffect, useState } from "react";
 import role from "../../../assets/role.png"
 import g1 from "../../../assets/g1.png"
@@ -34,33 +31,32 @@ const ConsultancyProfile = () => {
           });
       }, []);
 
-
       
     return (
         <div className="grid lg:grid-cols-12 gap-5">
             <div className="lg:col-span-8 2xl:col-span-9">
                 {/* Cover image */}
                 <figure className="w-full relative h-[180px] sm:h-[213px] sm:rounded" style={{
-                    backgroundImage: `linear-gradient(90deg, rgba(10, 55, 96, 0.70) 0.01%, rgba(21, 113, 198, 0.01) 99.99%) , url(${cover})`,
+                    backgroundImage: `linear-gradient(90deg, rgba(10, 55, 96, 0.70) 0.01%, rgba(21, 113, 198, 0.01) 99.99%) , url(${profiledata?.image})`,
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                     backgroundSize: 'cover',
                 }}>
                     <label htmlFor="fileUpload">
-                        <div className="absolute top-2 right-2 border rounded-full cursor-pointer">
+                        {/* <div className="absolute top-2 right-2 border rounded-full cursor-pointer">
                             <img src={update} alt="update" />
-                        </div>
+                        </div> */}
                     </label>
                     <input id="fileUpload" type="file" className="hidden" onChange={(e) => setUploadedFile(e.target.files[0])} />
                 </figure>
                 <div className="flex z-50 gap-3 sm:gap-7">
                     {/* Profile image */}
                     <figure className="w-32 h-32 sm:w-40 sm:h-40 relative z-50 rounded-full -mt-16 sm:-mt-20 ml-10 border-[3px]">
-                        <img src={profiledata?.avatar || profile} alt="profile" className="w-full h-full object-cover rounded-full" />
+                        <img src={profiledata?.avatar} alt="profile" className="w-full h-full object-cover rounded-full" />
                         <label htmlFor="fileUpload">
-                            <div className="absolute top-2/3 right-0 border rounded-full cursor-pointer">
+                            {/* <div className="absolute top-2/3 right-0 border rounded-full cursor-pointer">
                                 <img src={update} alt="update" />
-                            </div>
+                            </div> */}
                         </label>
                         <input id="fileUpload" type="file" className="hidden" onChange={(e) => setUploadedFile(e.target.files[0])} />
                     </figure>

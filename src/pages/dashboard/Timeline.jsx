@@ -1,5 +1,5 @@
-import CompanyName from "../../components/dashboard/timeline/CompanyName";
-import world from "../../assets/world.png";
+// import CompanyName from "../../components/dashboard/timeline/CompanyName";
+// import world from "../../assets/world.png";
 import CompanyPost from "../../components/dashboard/timeline/CompanyPost";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
 
@@ -12,10 +12,10 @@ const Timeline = () => {
       {/* left */}
       <div className="lg:col-span-4 2xl:col-span-3">
         {/* Company Profile */}
-        <CompanyName />
+        {/* <CompanyName /> */}
 
         {/* Recent View */}
-        <div className="hidden lg:block bg-white p-6 mt-6 rounded-lg border">
+        {/* <div className="hidden lg:block bg-white p-6 mt-6 rounded-lg border">
           <h3 className="text-2xl font-medium mt-2 mb-5">Recent View</h3>
           <div className="space-y-5">
             <p className="flex gap-3 items-center">
@@ -59,17 +59,17 @@ const Timeline = () => {
               <span>Business Grow</span>
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
       {/* Right */}
       <div className="lg:col-span-8 2xl:col-span-9">
         {/* Create post */}
         <div className="bg-white gap-3 md:gap-5 rounded-lg border border-gray-100 mb-5 flex justify-between items-center p-4">
-          <figure className="!w-12 hidden sm:block flex-shrink-0 !h-12 rounded-full">
+          <figure className="!w-12 hidden sm:block flex-shrink-0 !h-12 rounded-full border-2 ">
             <img
-              src={data?.data?.avatar?.trim() || world}
-              alt=""
-              className="w-full h-full rounded-full object-cover"
+              src={data?.data?.avatar}
+              alt="avatar"
+              className="w-full h-full rounded-full object-cover "
             />
           </figure>
           <input

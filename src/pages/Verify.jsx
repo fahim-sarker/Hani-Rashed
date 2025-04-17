@@ -7,6 +7,7 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import useAxios from "@/components/Hooks/Api/UseAxios";
 import { FaSpinner } from "react-icons/fa";
+import { useRole } from "./Context/RoleContext"; 
 
 const Verify = () => {
   const [otp, setOtp] = useState("");
@@ -16,14 +17,15 @@ const Verify = () => {
   const Axiosinstance = useAxios();
   const location = useLocation();
   const email = location?.state?.email;
+  const { setRole } = useRole();
 
   const handleSubmit = async () => {
     if (!otp) {
       setError("OTP is required.");
     } else if (otp.length < 4) {
-      setError("OTP must be 6 digits.");
+      setError("OTP must be 4 digits.");
     } else {
-      setIsLoading(true); 
+      setIsLoading(true);
       try {
         const response = await Axiosinstance.post(
           "/verify-email",
@@ -37,19 +39,34 @@ const Verify = () => {
             },
           }
         );
-        if (response.status === 200) {
+
+        if (response.status === 200 && response.data?.token) {
           toast.success("OTP verified successfully");
+
+          const { token, roles } = response.data;
+          localStorage.setItem("authToken", JSON.stringify(token));
+          localStorage.setItem("role", JSON.stringify(roles));
+          setRole(roles); 
           setOtp("");
           setTimeout(() => {
-            navigate("/auth/login");
-          }, 2000);
+            if (roles === "smallbusiness") {
+              navigate("/dashboard/smallBusiness/timeline");
+            } else if (roles === "consultant") {
+              navigate("/dashboard/consultancyFirms/timeline");
+            } else {
+              toast.error("Unknown role, cannot redirect.");
+              console.error("Unknown role:", roles);
+            }
+          }, 1500);
+        } else {
+          toast.error("Invalid response. Please try again.");
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
         toast.error("Invalid OTP. Please try again.");
         setError("Invalid OTP. Please try again.");
       }
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
@@ -89,8 +106,8 @@ const Verify = () => {
           </h2>
           <p className="xlg:w-[500px] text-DarkGray text-sm sm:text-base text-center font-roboto">
             Enter the OTP code we sent to your email{" "}
-            <span className="font-semibold">{email}</span>. Be
-            careful not to share the code with anyone.
+            <span className="font-semibold">{email}</span>. Be careful not to
+            share the code with anyone.
           </p>
 
           <div className="flex flex-col justify-center my-6">
@@ -141,11 +158,7 @@ const Verify = () => {
 
             <p className="text-sm sm:text-base text-Gray font-roboto mt-4">
               Didn’t receive the email?{" "}
-              <button
-                onClick={handleResendOtp}
-                className="text-Blue"
-        
-              >
+              <button onClick={handleResendOtp} className="text-Blue">
                 Resend Code
               </button>
             </p>

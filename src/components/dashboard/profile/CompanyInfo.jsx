@@ -1,6 +1,3 @@
-import cover from "../../../assets/companyCover.png";
-import profile from "../../../assets/profile.png";
-import update from "../../../assets/icons/update.png";
 import { FaRegEdit } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { PasswordChangePopup } from "./PasswordChangePopup";
@@ -20,6 +17,7 @@ const CompanyInfo = () => {
   const onSubmit = (data) => console.log(data);
 
   const { data } = useFetchData("/me", token);
+    const coverImage = data?.data?.image;
 
   return (
     <div>
@@ -27,16 +25,16 @@ const CompanyInfo = () => {
       <figure
         className="w-full relative h-[180px] sm:h-[213px] rounded"
         style={{
-          backgroundImage: `linear-gradient(90deg, rgba(10, 55, 96, 0.70) 0.01%, rgba(21, 113, 198, 0.01) 99.99%) , url(${cover})`,
+          backgroundImage: `linear-gradient(90deg, rgba(10, 55, 96, 0.70) 0.01%, rgba(21, 113, 198, 0.01) 99.99%) , url(${coverImage})`,
           backgroundRepeat: "no-repeat",
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}
       >
         <label htmlFor="fileUpload">
-          <div className="absolute top-2 right-2 border rounded-full cursor-pointer">
+          {/* <div className="absolute top-2 right-2 border rounded-full cursor-pointer">
             <img src={update} alt="update" />
-          </div>
+          </div> */}
         </label>
         <input
           id="fileUpload"
@@ -52,15 +50,15 @@ const CompanyInfo = () => {
             src={
               uploadedFile
                 ? URL.createObjectURL(uploadedFile)
-                : data?.data?.avatar || profile
+                : data?.data?.avatar
             }
             alt="profile"
             className="w-full h-full object-cover rounded-full"
           />
           <label htmlFor="fileUpload">
-            <div className="absolute top-2/3 right-0 border rounded-full cursor-pointer">
+            {/* <div className="absolute top-2/3 right-0 border rounded-full cursor-pointer">
               <img src={update} alt="update" />
-            </div>
+            </div> */}
           </label>
           <input
             id="fileUpload"
@@ -70,15 +68,15 @@ const CompanyInfo = () => {
           />
         </figure>
 
-        {/* Company Name */}
-        <h3 className="text-[#141414] mt-3 font-medium text-[22px] sm:text-2xl">
+      
+         <h3 className="text-[#141414] mt-3 font-medium text-[22px] sm:text-2xl">
           {data?.data?.name}
         </h3>
       </div>
       {/* Company Bio */}
       <div className="flex px-3 sm:px-0 justify-between mt-7 sm:mt-2 mb-4 sm:mb-7 items-center">
         <h3 className="text-[#141414] hidden sm:block mt-3 font-semibold text-xl">
-          Company Bio
+          {/* Company Bio */}
         </h3>
         <div className="flex items-center gap-3">
           <PasswordChangePopup />
@@ -90,7 +88,7 @@ const CompanyInfo = () => {
           </Link>
         </div>
       </div>
-      <h3 className="text-[#141414] sm:hidden px-3 mb-3 mt-3 font-semibold text-xl">
+      {/* <h3 className="text-[#141414] sm:hidden px-3 mb-3 mt-3 font-semibold text-xl">
         Company Bio
       </h3>
       <div className="text-[#141414] px-3 sm:px-0 mb-5 sm:mb-10">
@@ -120,7 +118,7 @@ const CompanyInfo = () => {
           Vision: To be a trusted partner and industry leader in delivering
           impactful, scalable business solutions worldwide.
         </p>
-      </div>
+      </div> */}
       {/* Company Information */}
       <div className="mb-10 px-3 sm:px-0">
         <h3 className="text-[#141414] mb-5 font-semibold text-xl">
@@ -205,7 +203,7 @@ const CompanyInfo = () => {
               readOnly
               id="website"
               className="block w-full text-gray-400 px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
-              defaultValue={data?.data?.company_type || "www.xyz.com"}
+              defaultValue={data?.data?.website_url}
               {...register("website", { required: true })}
             />
             {errors.website && <span>This field is required</span>}

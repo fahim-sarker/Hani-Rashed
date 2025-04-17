@@ -9,6 +9,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import useAxios from "@/components/Hooks/Api/UseAxios";
 import { FaChevronDown, FaSpinner } from "react-icons/fa";
+import PasswordStrengthBar from "react-password-strength-bar";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const Registration = () => {
 
   const onSubmit = async (data) => {
     console.log(data);
-    
+
     try {
       let response = await Axiosinstance.post("/register", data, {
         headers: {
@@ -42,7 +43,6 @@ const Registration = () => {
         },
       });
       console.log(response);
-
       toast.success("Registration successful!");
       reset();
       navigate("/auth/verify", { state: { email: data.email } });
@@ -83,16 +83,15 @@ const Registration = () => {
                   })}
                   className="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg block w-full p-2.5"
                 >
-                  <option value="">Select your Profile Type</option>
-                  <option value="smallbusiness">smallbusiness</option>
-                  <option value="consultant">consultant</option>
+                  <option value=""></option>
+                  <option value="smallbusiness">Small Business</option>
+                  <option value="consultant">Consultant</option>
                 </select>
                 {errors.role && (
                   <p className=" text-sm text-red-600">{errors.role.message}</p>
                 )}
                 <FaChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600" />
               </div>
-              
             </div>
 
             <div>
@@ -109,7 +108,7 @@ const Registration = () => {
                   })}
                   className="bg-gray-50 border border-gray-300 text-gray-600 text-sm rounded-lg block w-full p-2.5 pr-10"
                 >
-                  <option value="">Select your Company Type</option>
+                  <option value=""></option>
                   <option value="small">small</option>
                   <option value="medium">medium</option>
                   <option value="big">big</option>
@@ -127,7 +126,6 @@ const Registration = () => {
               <input
                 type="text"
                 className="shadow-sm bg-gray-50 border border-gray-300 text-Gray text-sm rounded-lg block w-full p-2.5"
-                placeholder="Your Company Name"
                 {...register("name", {
                   required: "Cpmpany Name is required",
                 })}
@@ -148,7 +146,6 @@ const Registration = () => {
               </label>
               <input
                 className="shadow-sm bg-gray-50 border border-gray-300 text-Gray text-sm rounded-lg block w-full p-2.5"
-                placeholder="Enter your email address"
                 {...register("email", {
                   required: "Email is required",
                   pattern: {
@@ -164,7 +161,7 @@ const Registration = () => {
               )}
             </div>
 
-            <div className="lg:flex justify-between gap-6 w-full">
+            {/* <div className="lg:flex justify-between gap-6 w-full">
               <div className="w-full relative">
                 <label
                   htmlFor="password"
@@ -237,7 +234,7 @@ const Registration = () => {
               </div>
             </div>
 
-            {/* Display password error message if password is invalid */}
+           
 
             <p className="text-Gray text-[14px] lg:text-base">
               Your password must be 8 characters, contain upper and lowercase
@@ -246,7 +243,99 @@ const Registration = () => {
             <p className="text-Gray text-[14px] lg:text-base">
               Contain a number and a special character{" "}
               <span className="text-red-500">*</span>
-            </p>
+            </p> */}
+
+            <div className="w-full relative">
+              <label
+                htmlFor="password"
+                className="block mb-2 text-sm font-medium text-DarkGray"
+              >
+                Password
+              </label>
+              <input
+                type={isPasswordVisible ? "text" : "password"}
+                className="bg-gray-50 border border-gray-300 text-Gray pr-12 text-sm rounded-lg block w-full p-2.5"
+                {...register("password", {
+                  required: "Password is required",
+                  pattern: {
+                    value: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,15}/,
+                    message:
+                      "Password must be 6-15 characters long, include at least one uppercase letter, one lowercase letter, and one number.",
+                  },
+                })}
+              />
+              {errors.password && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.password.message}
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={togglePasswordVisibility}
+                className="absolute top-9 right-4"
+              >
+                {isPasswordVisible ? (
+                  <FiEye className="text-2xl" />
+                ) : (
+                  <FiEyeOff className="text-2xl" />
+                )}
+              </button>
+            </div>
+
+            {/* Confirm Password */}
+            <div className="w-full relative">
+              <label
+                htmlFor="confirm_password"
+                className="block mb-2 text-sm font-medium text-DarkGray"
+              >
+                Confirm Password
+              </label>
+              <input
+                type={isConfirmPasswordVisible ? "text" : "password"}
+                className="bg-gray-50 border border-gray-300 text-Gray pr-12 text-sm rounded-lg block w-full p-2.5"
+                {...register("password_confirmation", {
+                  required: "Confirm Password is required",
+                  validate: (value) =>
+                    value === password || "Passwords do not match",
+                })}
+              />
+              {errors.confirmPassword && (
+                <p className="mt-1 text-sm text-red-600">
+                  {errors.confirmPassword.message}
+                </p>
+              )}
+              <button
+                type="button"
+                onClick={toggleConfirmPasswordVisibility}
+                className="absolute top-9 right-4"
+              >
+                {isConfirmPasswordVisible ? (
+                  <FiEye className="text-2xl" />
+                ) : (
+                  <FiEyeOff className="text-2xl" />
+                )}
+              </button>
+            </div>
+
+            {/* Password Strength Bar */}
+            <div className="w-full mt-2">
+              <PasswordStrengthBar
+                className="strengthBar"
+                password={password}
+              />
+            </div>
+
+            {/* Password Requirements */}
+            <div>
+              <p className="text-Gray text-[14px] lg:text-base font-roboto">
+                Your password must be at least 8 characters, including uppercase
+                and lowercase <span className="text-red-500">*</span>
+              </p>
+              <p className="text-Gray text-[14px] lg:text-base font-roboto">
+                It should contain a number and a special character{" "}
+                <span className="text-red-500">*</span>
+              </p>
+            </div>
 
             <div className="flex items-start">
               <div className="flex items-center h-5">
@@ -276,28 +365,31 @@ const Registration = () => {
             </div>
 
             <div className="text-center">
-      <Button
-        type="submit"
-        className="bg-primaryGreen lg:text-lg text-white sm:px-24 sm:py-6"
-        variant="outline"
-        disabled={isSubmitting || errors?.isAccept?.message}
-      >
-        {isSubmitting ? (
-          <>
-            <FaSpinner className="animate-spin mr-2" />
-            Signing up...
-          </>
-        ) : (
-          "Sign up"
-        )}
-      </Button>
-      <p className="text-[14px] lg:text-lg text-Gray font-bold mt-4">
-        Already have an account?{" "}
-        <Link to="/auth/login" className="text-Blue">
-          Log In
-        </Link>
-      </p>
-    </div>
+              <Button
+                type="submit"
+                className="bg-primaryGreen lg:text-lg text-white sm:px-24 sm:py-6"
+                variant="outline"
+                disabled={isSubmitting || errors?.isAccept?.message}
+              >
+                {isSubmitting ? (
+                  <>
+                    <FaSpinner className="animate-spin mr-2" />
+                    Signing up...
+                  </>
+                ) : (
+                  "Sign up"
+                )}
+              </Button>
+              <p className="text-[14px] lg:text-lg text-Gray font-bold mt-4">
+                Already have an account?{" "}
+                <Link
+                  to="/dashboard/smallBusiness/timeline"
+                  className="text-Blue"
+                >
+                  Log In
+                </Link>
+              </p>
+            </div>
           </form>
         </div>
       </div>

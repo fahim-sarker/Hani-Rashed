@@ -1,4 +1,3 @@
-
 import Select from "react-select";
 import countries from "world-countries";
 
@@ -9,7 +8,10 @@ const formattedCountries = countries.map((country) => ({
 }));
 
 const CountrySelect = ({ value, onChange, name, error }) => {
-  const selected = formattedCountries.find((c) => c.value === value);
+  const selected =
+    typeof value === "string"
+      ? formattedCountries.find((c) => c.value === value)
+      : value;
 
   return (
     <div>
@@ -17,7 +19,7 @@ const CountrySelect = ({ value, onChange, name, error }) => {
         name={name}
         value={selected}
         options={formattedCountries}
-        onChange={(option) => onChange(option.value)}
+        onChange={onChange}
         placeholder="Select a country"
         isSearchable
         formatOptionLabel={(option) => (

@@ -42,9 +42,9 @@ const Login = () => {
         localStorage.setItem("role", JSON.stringify(role));
         setRole(role);
         if (role === "smallbusiness") {
-          navigate("/dashboard/smallBusiness/profile");
+          navigate("/dashboard/smallBusiness/timeline");
         } else if (role === "consultant") {
-          navigate("/dashboard/consultancyFirms/profile");
+          navigate("/dashboard/consultancyFirms/timeline");
         } else {
           toast.error("Unknown role, cannot redirect.");
           console.error("Unknown role:", role);
