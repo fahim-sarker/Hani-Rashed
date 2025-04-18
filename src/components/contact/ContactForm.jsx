@@ -57,7 +57,6 @@ const ContactForm = () => {
             <input
               id="company_name"
               type="text"
-              placeholder="Enter Company Name"
               className="w-full px-4 py-3 outline-none rounded-lg border"
               required
               {...register("company_name", {
@@ -104,7 +103,6 @@ const ContactForm = () => {
             <input
               id="phone_number"
               type="number"
-              placeholder="Enter Phone Number"
               className="w-full px-4 py-3 outline-none rounded-lg border"
               required
               {...register("phone", {
@@ -128,7 +126,6 @@ const ContactForm = () => {
             <input
               id="subject"
               type="text"
-              placeholder="How can we help?"
               className="w-full px-4 py-3 outline-none rounded-lg border"
               required
               {...register("subject", {
@@ -151,7 +148,6 @@ const ContactForm = () => {
             </label>
             <textarea
               className="w-full border px-4 py-3 outline-none rounded-lg"
-              placeholder="Enter your message here...."
               rows={5}
               id="message"
               required

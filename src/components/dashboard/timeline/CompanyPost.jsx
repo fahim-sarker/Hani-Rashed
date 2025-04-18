@@ -162,7 +162,7 @@ const CompanyPost = () => {
     <>
       {timelinedata?.data?.map((item) => {
         const isExpanded = expandedItem === item.id;
-        const shouldTruncate = item.description.length > 150;
+        const shouldTruncate = item.description.length > 350;
 
         return (
           <div key={item.id} className="mb-6">
@@ -204,7 +204,7 @@ const CompanyPost = () => {
               <p className="text-gray-700 mb-5">
                 {isExpanded
                   ? item.description
-                  : `${item.description.slice(0, 150)} `}
+                  : `${item.description.slice(0, 350)} `}
                 {shouldTruncate && (
                   <button
                     onClick={() => setExpandedItem(isExpanded ? null : item.id)}

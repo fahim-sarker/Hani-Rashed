@@ -1,5 +1,6 @@
 // import CompanyName from "../../components/dashboard/timeline/CompanyName";
 // import world from "../../assets/world.png";
+import WhoToFollow from "@/components/dashboard/profile/WhoToFollow";
 import CompanyPost from "../../components/dashboard/timeline/CompanyPost";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
 
@@ -9,58 +10,6 @@ const Timeline = () => {
 
   return (
     <div className="grid lg:grid-cols-12 gap-5">
-      {/* left */}
-      <div className="lg:col-span-4 2xl:col-span-3">
-        {/* Company Profile */}
-        {/* <CompanyName /> */}
-
-        {/* Recent View */}
-        {/* <div className="hidden lg:block bg-white p-6 mt-6 rounded-lg border">
-          <h3 className="text-2xl font-medium mt-2 mb-5">Recent View</h3>
-          <div className="space-y-5">
-            <p className="flex gap-3 items-center">
-              <figure className="w-5 h-5">
-                <img
-                  src={world}
-                  alt="world"
-                  className="w-full h-full object-cover"
-                />
-              </figure>
-              <span>Small Business</span>
-            </p>
-            <p className="flex gap-3 items-center">
-              <figure className="w-5 h-5">
-                <img
-                  src={world}
-                  alt="world"
-                  className="w-full h-full object-cover"
-                />
-              </figure>
-              <span>Business Strategy</span>
-            </p>
-            <p className="flex gap-3 items-center">
-              <figure className="w-5 h-5">
-                <img
-                  src={world}
-                  alt="world"
-                  className="w-full h-full object-cover"
-                />
-              </figure>
-              <span>Leadership</span>
-            </p>
-            <p className="flex gap-3 items-center">
-              <figure className="w-5 h-5">
-                <img
-                  src={world}
-                  alt="world"
-                  className="w-full h-full object-cover"
-                />
-              </figure>
-              <span>Business Grow</span>
-            </p>
-          </div>
-        </div> */}
-      </div>
       {/* Right */}
       <div className="lg:col-span-8 2xl:col-span-9">
         {/* Create post */}
@@ -86,6 +35,9 @@ const Timeline = () => {
         <div className="bg-white shadow-lg rounded-lg p-4 sm:p-7 space-y-6 sm:space-y-10">
           <CompanyPost />
         </div>
+      </div>
+      <div className="lg:col-span-4 2xl:col-span-3">
+        <WhoToFollow />
       </div>
     </div>
   );

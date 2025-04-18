@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import toast from "react-hot-toast";
 import { useState, useEffect } from "react";
 import useAxios from "@/components/Hooks/Api/UseAxios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
 import CountrySelect from "@/components/CountrySelect";
 import countries from "world-countries";
@@ -301,13 +301,15 @@ const EditProfile = () => {
 
           {/* Buttons */}
           <div className="flex gap-3 items-center justify-end mt-10 pe-20">
+            <Link to="/dashboard/consultancyFirms/profile">
             <button
               type="button"
               className="bg-[#0B2948] text-white px-7 py-2 font-medium rounded-[6px]"
-              onClick={(e) => e.preventDefault()}
+             
             >
               Cancel
             </button>
+            </Link>
             <button
               type="submit"
               className="bg-primaryGreen text-white px-8 py-2 font-medium rounded-[6px]"

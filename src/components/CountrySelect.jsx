@@ -20,7 +20,6 @@ const CountrySelect = ({ value, onChange, name, error }) => {
         value={selected}
         options={formattedCountries}
         onChange={onChange}
-        placeholder="Select a country"
         isSearchable
         formatOptionLabel={(option) => (
           <div className="flex items-center gap-2">
