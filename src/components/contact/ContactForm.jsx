@@ -3,17 +3,46 @@ import useAxios from "../Hooks/Api/UseAxios";
 import toast from "react-hot-toast";
 import { ImSpinner3 } from "react-icons/im";
 import CountrySelect from "../CountrySelect";
+import useFetchData from "../Hooks/Api/UseFetchData";
+import { useEffect } from "react";
+import countries from "world-countries";
+
+
+const getCountryOption = (countryName) => {
+  const match = countries.find((c) => c.name.common === countryName);
+  return match
+    ? {
+        label: match.name.common,
+        value: match.name.common,
+        flag: `https://flagcdn.com/w40/${match.cca2.toLowerCase()}.png`,
+      }
+    : null;
+};
 
 
 const ContactForm = () => {
+  
+  const token = JSON.parse(localStorage.getItem("authToken"));
+  
+  const { data } = useFetchData("/me", token);
   const Axiosinatance = useAxios();
   const {
     register,
     handleSubmit,
     control,
+    setValue,
     reset,
     formState: { errors, isSubmitting },
   } = useForm();
+
+    useEffect(() => {
+      if (data?.data) {
+        const d = data.data;
+        setValue("phone", d.phone || "");
+        setValue("country", d.country ? getCountryOption(d.country) : null);
+
+      }
+    }, [data, setValue]);
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -58,6 +87,7 @@ const ContactForm = () => {
               id="company_name"
               type="text"
               className="w-full px-4 py-3 outline-none rounded-lg border"
+              defaultValue={data?.data?.name}
               required
               {...register("company_name", {
                 required: "Company Name is required",

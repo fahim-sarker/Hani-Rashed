@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import useAxios from "@/components/Hooks/Api/UseAxios";
 import { FaChevronDown, FaSpinner } from "react-icons/fa";
 import PasswordStrengthBar from "react-password-strength-bar";
+import { motion, AnimatePresence } from "framer-motion";
+import { RxCross2 } from "react-icons/rx";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -49,6 +51,13 @@ const Registration = () => {
     } catch (error) {
       toast.error(error.response?.data?.message || "Something went wrong");
     }
+  };
+  const [showTerms, setShowTerms] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+
+  const handleClose = () => {
+    setShowTerms(false);
+    setShowPrivacy(false);
   };
 
   const password = watch("password");
@@ -348,20 +357,91 @@ const Registration = () => {
                   className="w-4 h-4 border border-gray-300 bg-gray-50"
                 />
               </div>
-              <label
-                htmlFor="terms"
-                className="ms-2 text-[14px] lg:text-base font-medium text-Gray font-poppins"
-              >
-                I hereby confirm and accept the{" "}
-                <Link to="#" className="text-Blue hover:underline">
-                  terms and conditions
-                </Link>{" "}
-                and{" "}
-                <a href="#" className="text-Blue hover:underline">
-                  Privacy Policy.
-                </a>{" "}
-                I confirm that I am over 18 years of age.
-              </label>
+              <div>
+                <label
+                  htmlFor="terms"
+                  className="ms-2 text-[14px] lg:text-base font-medium text-Gray font-poppins"
+                >
+                  I hereby confirm and accept the{" "}
+                  <button
+                    type="button"
+                    className="text-Blue hover:underline"
+                    onClick={() => setShowTerms(true)}
+                  >
+                    terms and conditions
+                  </button>{" "}
+                  and{" "}
+                  <button
+                    type="button"
+                    className="text-Blue hover:underline"
+                    onClick={() => setShowPrivacy(true)}
+                  >
+                    Privacy Policy.
+                  </button>{" "}
+                  I confirm that I am over 18 years of age.
+                </label>
+
+                {/* Modal Component */}
+                <AnimatePresence>
+                  {(showTerms || showPrivacy) && (
+                    <motion.div
+                      className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <motion.div
+                        className="bg-white rounded-2xl shadow-xl max-w-lg w-full p-6 relative"
+                        initial={{ scale: 0.9 }}
+                        animate={{ scale: 1 }}
+                        exit={{ scale: 0.9 }}
+                      >
+                        <h2 className="text-xl font-semibold pb-5 border-b-2 border-black">
+                          {showTerms
+                            ? "Terms and Conditions"
+                            : "Privacy Policy"}
+                        </h2>
+                        <div className="text-sm font-roboto text-gray-600 py-3">
+                          {/* Replace with actual terms/privacy text */}
+                          <p>
+                            Terms and conditions are a legally binding agreement
+                            that outlines the rules and guidelines for using a
+                            service, product, or website.They are also known as
+                            Terms of Service, Terms of Use, or End User License
+                            Agreement (EULA).These agreements define the
+                            relationship between a business and its users,
+                            including what users can and cannot do, and what the
+                            business promises to provide.Terms and conditions
+                            are a legally binding agreement that outlines the
+                            rules and guidelines for using a service, product,
+                            or website.They are also known as Terms of Service,
+                            Terms of Use, or End User License Agreement
+                            (EULA).These agreements define the relationship
+                            between a business and its users, including what
+                            users can and cannot do, and what the business
+                            promises to provide Terms and conditions are a
+                            legally binding agreement that outlines the rules
+                            and guidelines for using a service, product, or
+                            website.They are also known as Terms of Service,
+                            Terms of Use, or End User License Agreement
+                            (EULA).These agreements define the relationship
+                            between a business and its users, including what
+                            users can and cannot do, and what the business
+                            promises to provide.
+                          </p>
+                        </div>
+                        <button
+                          onClick={handleClose}
+                          className="absolute top-5 right-5 text-gray-500 hover:text-red-500 text-lg"
+                        >
+                          <RxCross2 className="size-[20px] font-bold"/>
+
+                        </button>
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
             <div className="text-center">
