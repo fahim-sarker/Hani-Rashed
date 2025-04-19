@@ -12,6 +12,7 @@ import { FaChevronDown, FaSpinner } from "react-icons/fa";
 import PasswordStrengthBar from "react-password-strength-bar";
 import { motion, AnimatePresence } from "framer-motion";
 import { RxCross2 } from "react-icons/rx";
+import useFetchData from "@/components/Hooks/Api/UseFetchData";
 
 const Registration = () => {
   const navigate = useNavigate();
@@ -19,6 +20,9 @@ const Registration = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
     useState(false);
+  const { data: termsandconditions } = useFetchData("/termsand-conditions");
+  const { data: privacypolicy } = useFetchData("/privacy-policy");
+
   const {
     register,
     handleSubmit,
@@ -337,13 +341,13 @@ const Registration = () => {
             {/* Password Requirements */}
             <div>
               <p className="text-Gray text-[14px] lg:text-base font-roboto">
-                Your password must be at least 8 characters, including uppercase
-                and lowercase <span className="text-red-500">*</span>
+                Your password must be at least 8 characters, contain uppercase
+                and lowercase letters, number and special character.
               </p>
-              <p className="text-Gray text-[14px] lg:text-base font-roboto">
+              {/* <p className="text-Gray text-[14px] lg:text-base font-roboto">
                 It should contain a number and a special character{" "}
                 <span className="text-red-500">*</span>
-              </p>
+              </p> */}
             </div>
 
             <div className="flex items-start">
@@ -401,41 +405,22 @@ const Registration = () => {
                             ? "Terms and Conditions"
                             : "Privacy Policy"}
                         </h2>
+
                         <div className="text-sm font-roboto text-gray-600 py-3">
-                          {/* Replace with actual terms/privacy text */}
                           <p>
-                            Terms and conditions are a legally binding agreement
-                            that outlines the rules and guidelines for using a
-                            service, product, or website.They are also known as
-                            Terms of Service, Terms of Use, or End User License
-                            Agreement (EULA).These agreements define the
-                            relationship between a business and its users,
-                            including what users can and cannot do, and what the
-                            business promises to provide.Terms and conditions
-                            are a legally binding agreement that outlines the
-                            rules and guidelines for using a service, product,
-                            or website.They are also known as Terms of Service,
-                            Terms of Use, or End User License Agreement
-                            (EULA).These agreements define the relationship
-                            between a business and its users, including what
-                            users can and cannot do, and what the business
-                            promises to provide Terms and conditions are a
-                            legally binding agreement that outlines the rules
-                            and guidelines for using a service, product, or
-                            website.They are also known as Terms of Service,
-                            Terms of Use, or End User License Agreement
-                            (EULA).These agreements define the relationship
-                            between a business and its users, including what
-                            users can and cannot do, and what the business
-                            promises to provide.
+                            {showTerms
+                              ? termsandconditions?.data?.description ||
+                                "No terms available."
+                              : privacypolicy?.data?.description ||
+                                "No privacy policy available."}
                           </p>
                         </div>
+
                         <button
                           onClick={handleClose}
                           className="absolute top-5 right-5 text-gray-500 hover:text-red-500 text-lg"
                         >
-                          <RxCross2 className="size-[20px] font-bold"/>
-
+                          <RxCross2 className="size-[20px] font-bold" />
                         </button>
                       </motion.div>
                     </motion.div>
