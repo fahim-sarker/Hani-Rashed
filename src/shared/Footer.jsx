@@ -6,7 +6,10 @@ import { MdOutlineMail } from "react-icons/md";
 import { BsFillSendFill } from "react-icons/bs";
 import logo from "../assets/logoBottom.png";
 import { Link } from "react-router-dom";
+import useFetchData from "@/components/Hooks/Api/UseFetchData";
 const Footer = () => {
+  const token = JSON.parse(localStorage.getItem("authToken"));
+  const { data } = useFetchData("/me", token);
   return (
     <footer className="">
       <div className="bg-[#0b2948] text-white py-14 lg:py-20">
@@ -106,7 +109,7 @@ const Footer = () => {
             <div className="relative lg:w-56 xl:w-72">
               <input
                 type="email"
-                placeholder="Email Address"
+                placeholder={data?.data?.email}
                 className="text-black outline-none w-full ps-5 py-3 rounded"
               />
               <a
@@ -118,7 +121,7 @@ const Footer = () => {
             </div>
             <p className="flex gap-2 items-center mt-3">
               <MdOutlineMail className="text-lg text-primaryGreen" />
-              hello@example.com
+             {data?.data?.email}
             </p>
           </div>
         </div>

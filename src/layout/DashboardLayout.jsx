@@ -7,7 +7,6 @@ import {
   useLocation,
   useNavigate,
 } from "react-router-dom";
-import profileImg from "../assets/profile.png";
 import logo from "../assets/logoBottom.png";
 import d1 from "../assets/icons/d1.png";
 import d2 from "../assets/icons/d2.png";
@@ -28,6 +27,7 @@ import SideDashboard from "@/shared/SideDashboard";
 import toast from "react-hot-toast";
 import useAxios from "@/components/Hooks/Api/UseAxios";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
+import Defaultprofile from "../assets/icons/defaultprofile.jpg"
 
 const DashboardLayout = () => {
   const location = useLocation();
@@ -79,10 +79,10 @@ const DashboardLayout = () => {
         {/* Profile card */}
         {location.pathname === "/dashboard/smallBusiness/timeline" && (
           <div className="flex mt-8 px-3 py-1 max-w-[210px] ms-auto gap-3 bg-white rounded-tl rounded-bl shadow items-center">
-            <figure className="w-10 h-10 rounded-full">
+            <figure className="w-10 h-10 rounded-full border-2">
               <img
-                src={data?.data?.avatar?.trim() || profileImg }
-                alt="profile"
+                src={data?.data?.avatar ? data?.data?.avatar : Defaultprofile}
+                alt=""
                 className="w-full h-full object-cover rounded-full"
               />
             </figure>
@@ -274,8 +274,8 @@ const DashboardLayout = () => {
               <figure className="w-10 h-10 outline outline-2 outline-primaryGreen outline-offset-2 rounded-full">
                 <Link to='/dashboard/smallBusiness/editProfile'>
                 <img
-                  src={data?.data?.avatar}
-                  alt="profile"
+                  src={data?.data?.avatar ? data?.data?.avatar : Defaultprofile }
+                  alt=""
                   className="w-full h-full rounded-full object-cover"
                 />
                 </Link>

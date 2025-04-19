@@ -76,7 +76,7 @@ const CompanyInfo = () => {
       {/* Company Bio */}
       <div className="flex px-3 sm:px-0 justify-between mt-7 sm:mt-2 mb-4 sm:mb-7 items-center">
         <h3 className="text-[#141414] hidden sm:block mt-3 font-semibold text-xl">
-          {/* Company Bio */}
+          Company Bio
         </h3>
         <div className="flex items-center gap-3">
           <PasswordChangePopup />
@@ -88,19 +88,13 @@ const CompanyInfo = () => {
           </Link>
         </div>
       </div>
-      {/* <h3 className="text-[#141414] sm:hidden px-3 mb-3 mt-3 font-semibold text-xl">
-        Company Bio
-      </h3>
+  
       <div className="text-[#141414] px-3 sm:px-0 mb-5 sm:mb-10">
         <p className="text-sm sm:text-base">
-          [Your Consultarrncy Name] is a forward-thinking consultancy firm
-          dedicated to empowering businesses of all sizes to achieve their
-          goals. Established with a vision to drive innovation and foster
-          growth, we specialize in delivering tailored solutions across
-          strategy, marketing, operations, and financial planning.
+          {data?.data?.description}
         </p>
         <br />
-        <p className="text-sm sm:text-base">
+        {/* <p className="text-sm sm:text-base">
           Our team of seasoned experts combines industry insights with
           cutting-edge methodologies to help our clients overcome challenges,
           seize opportunities, and thrive in a competitive landscape. With a
@@ -117,8 +111,8 @@ const CompanyInfo = () => {
           {" "}
           Vision: To be a trusted partner and industry leader in delivering
           impactful, scalable business solutions worldwide.
-        </p>
-      </div> */}
+        </p> */}
+      </div> 
       {/* Company Information */}
       <div className="mb-10 px-3 sm:px-0">
         <h3 className="text-[#141414] mb-5 font-semibold text-xl">

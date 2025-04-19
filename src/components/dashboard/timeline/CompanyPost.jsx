@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
 import useAxios from "@/components/Hooks/Api/UseAxios";
 import toast from "react-hot-toast";
+import Defaultprofile from "../../../assets/icons/defaultprofile.jpg"
 
 const CompanyPost = () => {
   const token = JSON.parse(localStorage.getItem("authToken"));
@@ -173,8 +174,8 @@ const CompanyPost = () => {
                   <Link className="flex gap-4 items-center">
                     <figure className="w-12 h-12 rounded-full overflow-hidden border-2">
                       <img
-                        src={item.user?.avatar}
-                        alt="avatar"
+                        src={item.user?.avatar ? item.user?.avatar : Defaultprofile}
+                        alt=""
                         className="w-full h-full object-cover"
                       />
                     </figure>

@@ -13,9 +13,9 @@ import toast from "react-hot-toast";
 import { ImSpinner3 } from "react-icons/im";
 import { IoEyeOffOutline, IoEyeOutline } from "react-icons/io5";
 import PasswordStrengthBar from "react-password-strength-bar";
-import { useNavigate } from "react-router-dom";
 
 export function PasswordChangePopup() {
+  const [open, setOpen] = useState(false);
   const Axiosinstance = useAxios();
   const [showPassword, setShowPassword] = useState(false);
   const [showOldPassword, setShowOldPassword] = useState(false);
@@ -24,12 +24,12 @@ export function PasswordChangePopup() {
     register,
     handleSubmit,
     watch,
-    formState: { errors,isSubmitted },
+    formState: { errors, isSubmitted },
     getValues,
   } = useForm();
   const password = watch("password");
   const token = JSON.parse(localStorage.getItem("authToken"));
-  const navigate = useNavigate();
+
   console.log(token);
 
   const onSubmit = async (data) => {
@@ -44,9 +44,7 @@ export function PasswordChangePopup() {
       });
       console.log(response);
       toast.success("Password changed successfully");
-      setTimeout(() => {
-        navigate("/auth/login");
-      }, 2000);
+      setOpen(false);
     } catch (error) {
       console.log(error);
       toast.error("Failed to change password");
@@ -54,7 +52,7 @@ export function PasswordChangePopup() {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <button className="bg-[#0B2948] flex gap-2 items-center text-white px-3 sm:px-4 py-2 sm:py-3 rounded sm:rounded-lg">
           Change Password
@@ -195,8 +193,11 @@ export function PasswordChangePopup() {
             type="submit"
             className="px-5 w-full block mt-5 mx-auto py-3 text-center rounded shadow bg-primaryGreen text-white"
           >
-            {isSubmitted ? <ImSpinner3  className="animate-spin text-xl fill-white" /> : "Change Password" }
-           
+            {isSubmitted ? (
+              <ImSpinner3 className="animate-spin text-xl fill-white" />
+            ) : (
+              "Change Password"
+            )}
           </button>
         </form>
       </DialogContent>

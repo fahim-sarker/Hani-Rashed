@@ -8,8 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
 import CountrySelect from "@/components/CountrySelect";
 import countries from "world-countries";
-
-
+import Defaultprofile from "../../../assets/icons/defaultprofile.jpg";
 
 const getCountryOption = (countryName) => {
   const match = countries.find((c) => c.name.common === countryName);
@@ -58,7 +57,7 @@ const EditProfile = () => {
       setValue("description", d.description || "");
       setValue("website_url", d.website_url || "");
       setValue("primary_contact_name", d.primary_contact_name || "");
-      setValue("primary_email", d.primary_email || "");
+      setValue("primary_email", d.email || "");
       setValue("phone", d.phone || "");
       setValue("country", d.country ? getCountryOption(d.country) : null);
       setValue("company_type", d.company_type?.toLowerCase() || "");
@@ -188,9 +187,13 @@ const EditProfile = () => {
         <figure className="sm:w-40 sm:h-40 w-32 h-32 relative z-50 rounded-full -mt-20 ml-7 sm:ml-10 border-[3px]">
           <img
             src={
-              avatarFile ? URL.createObjectURL(avatarFile) : data?.data?.avatar
+              avatarFile
+                ? URL.createObjectURL(avatarFile)
+                : data?.data?.avatar
+                ? data?.data?.avatar
+                : Defaultprofile
             }
-            alt="profile"
+            alt=""
             className="w-full h-full object-cover rounded-full"
           />
           <label
@@ -291,7 +294,7 @@ const EditProfile = () => {
                     <option key={option} value={option}>
                       {option
                         ? option.charAt(0).toUpperCase() + option.slice(1)
-                        : "Select"}
+                        : ""}
                     </option>
                   ))}
                 </select>
@@ -302,12 +305,12 @@ const EditProfile = () => {
           {/* Buttons */}
           <div className="flex gap-3 items-center justify-end mt-10 pe-20">
             <Link to="/dashboard/smallBusiness/profile">
-            <button
-              type="button"
-              className="bg-[#0B2948] text-white px-7 py-2 font-medium rounded-[6px]"
-            >
-              Cancel
-            </button>
+              <button
+                type="button"
+                className="bg-[#0B2948] text-white px-7 py-2 font-medium rounded-[6px]"
+              >
+                Cancel
+              </button>
             </Link>
             <button
               type="submit"

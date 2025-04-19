@@ -3,6 +3,7 @@
 import WhoToFollow from "@/components/dashboard/profile/WhoToFollow";
 import CompanyPost from "../../components/dashboard/timeline/CompanyPost";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
+import Defaultprofile from "../../assets/icons/defaultprofile.jpg";
 
 const Timeline = () => {
   const token = JSON.parse(localStorage.getItem("authToken"));
@@ -16,8 +17,8 @@ const Timeline = () => {
         <div className="bg-white gap-3 md:gap-5 rounded-lg border border-gray-100 mb-5 flex justify-between items-center p-4">
           <figure className="!w-12 hidden sm:block flex-shrink-0 !h-12 rounded-full border-2 ">
             <img
-              src={data?.data?.avatar}
-              alt="avatar"
+              src={data?.data?.avatar ? data?.data?.avatar : Defaultprofile}
+              alt=""
               className="w-full h-full rounded-full object-cover "
             />
           </figure>

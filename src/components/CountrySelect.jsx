@@ -7,11 +7,15 @@ const formattedCountries = countries.map((country) => ({
   flag: `https://flagcdn.com/w40/${country.cca2.toLowerCase()}.png`,
 }));
 
-const CountrySelect = ({ value, onChange, name, error }) => {
+const CountrySelect = ({ value, onChange, name, error, isReadOnly }) => {
   const selected =
     typeof value === "string"
       ? formattedCountries.find((c) => c.value === value)
       : value;
+
+  const handleChange = (selectedOption) => {
+    onChange(selectedOption ? selectedOption.value : "");
+  };
 
   return (
     <div>
@@ -19,8 +23,9 @@ const CountrySelect = ({ value, onChange, name, error }) => {
         name={name}
         value={selected}
         options={formattedCountries}
-        onChange={onChange}
+        onChange={handleChange}
         isSearchable
+        isDisabled={isReadOnly} // Disable if read-only
         formatOptionLabel={(option) => (
           <div className="flex items-center gap-2">
             <img

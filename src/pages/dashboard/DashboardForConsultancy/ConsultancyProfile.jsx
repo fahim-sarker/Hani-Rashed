@@ -5,6 +5,7 @@ import g1 from "../../../assets/g1.png"
 import { Link } from "react-router-dom";
 import { FaRegEdit } from "react-icons/fa";
 import useAxios from "@/components/Hooks/Api/UseAxios";
+import Defaultprofile from "../../../assets/icons/defaultprofile.jpg"
 
 const ConsultancyProfile = () => {
     const [uploadedFile, setUploadedFile] = useState(null);
@@ -52,7 +53,7 @@ const ConsultancyProfile = () => {
                 <div className="flex z-50 gap-3 sm:gap-7">
                     {/* Profile image */}
                     <figure className="w-32 h-32 sm:w-40 sm:h-40 relative z-50 rounded-full -mt-16 sm:-mt-20 ml-10 border-[3px]">
-                        <img src={profiledata?.avatar} alt="profile" className="w-full h-full object-cover rounded-full" />
+                        <img src={profiledata?.avatar ? profiledata?.avatar : Defaultprofile } alt="profile" className="w-full h-full object-cover rounded-full" />
                         <label htmlFor="fileUpload">
                             {/* <div className="absolute top-2/3 right-0 border rounded-full cursor-pointer">
                                 <img src={update} alt="update" />
@@ -90,12 +91,12 @@ const ConsultancyProfile = () => {
                 {/* Company Bio */}
                 <h3 className="text-[#141414] px-3 sm:px-0 mt-5 mb-3 font-semibold text-xl">Company Bio</h3>
                 <div className="text-[#141414] px-3 text-sm sm:text-base sm:px-0 mb-10">
-                    <p>[Your Consultarrncy Name] is a forward-thinking consultancy firm dedicated to empowering businesses of all sizes to achieve their goals. Established with a vision to drive innovation and foster growth, we specialize in delivering tailored solutions across strategy, marketing, operations, and financial planning.</p>
-                    <br />
+                    <p>{profiledata?.description}</p>
+                    {/* <br />
                     <p>Our team of seasoned experts combines industry insights with cutting-edge methodologies to help our clients overcome challenges, seize opportunities, and thrive in a competitive landscape. With a client-first approach and a proven track record of success, we are committed to transforming visions into reality and building lasting partnerships that fuel sustainable success.</p>
                     <br />
                     <p>Mission: To provide innovative, results-driven solutions that inspire growth and empower businesses to reach their full potential.</p>
-                    <p> Vision: To be a trusted partner and industry leader in delivering impactful, scalable business solutions worldwide.</p>
+                    <p> Vision: To be a trusted partner and industry leader in delivering impactful, scalable business solutions worldwide.</p> */}
                 </div>
 
                 {/* Others */}

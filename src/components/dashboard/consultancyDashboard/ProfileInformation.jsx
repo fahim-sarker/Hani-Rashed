@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
 import { PasswordChangePopup } from "../profile/PasswordChangePopup";
+import Defaultprofile from "../../../assets/icons/defaultprofile.jpg"
 
 const ProfileInformation = () => {
   const token = JSON.parse(localStorage.getItem("authToken"));
@@ -51,7 +52,7 @@ const ProfileInformation = () => {
             src={
               uploadedFile
                 ? URL.createObjectURL(uploadedFile)
-                : data?.data?.avatar
+                : data?.data?.avatar ? data?.data?.avatar  :Defaultprofile
             }
             alt="profile"
             className="w-full h-full object-cover rounded-full"
@@ -221,7 +222,7 @@ const ProfileInformation = () => {
               id="stage"
               className="block w-full text-gray-400 px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
               defaultValue={data?.data?.company_stage}
-              {...register("stage", { required: true })}
+              {...register("stage", )}
             />
             {errors.stage && <span>This field is required</span>}
           </div>
@@ -249,7 +250,7 @@ const ProfileInformation = () => {
               id="contactName"
               className="block w-full text-gray-400 px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
               defaultValue={data?.data?.primary_contact_name}
-              {...register("contactName", { required: true })}
+              {...register("contactName", )}
             />
             {errors.contactName && <span>This field is required</span>}
           </div>
@@ -264,8 +265,8 @@ const ProfileInformation = () => {
               readOnly
               id="email"
               className="block w-full px-3 sm:px-5 sm:py-3 py-2  text-gray-400 border outline-none rounded"
-              defaultValue={data?.data?.primary_email}
-              {...register("email", { required: true })}
+              defaultValue={data?.data?.email}
+              {...register("email", )}
             />
             {errors.email && <span>This field is required</span>}
           </div>
@@ -281,7 +282,7 @@ const ProfileInformation = () => {
               id="phoneNumber"
               className="block text-gray-400 w-full px-3 sm:px-5 sm:py-3 py-2 border outline-none rounded"
               defaultValue={data?.data?.phone}
-              {...register("phoneNumber", { required: true })}
+              {...register("phoneNumber", )}
             />
             {errors.phoneNumber && <span>This field is required</span>}
           </div>
