@@ -99,13 +99,20 @@ const IdeaPost = () => {
               )}
             </p>
 
-            <figure className="h-[220px] sm:h-[350px] rounded mb-5 sm:mb-7">
-              <img
-                src={item.image}
-                alt="thumbnail"
-                className="w-full h-full object-cover rounded"
-              />
-            </figure>
+            <div className="flex gap-4">
+              {item.ideaimage.map((img, idx) => (
+                <figure
+                  className="w-full rounded mb-5 sm:mb-7"
+                  key={idx}
+                >
+                  <img
+                    src={img.image}
+                    alt="thumbnail"
+                    className="w-full h-full object-cover rounded"
+                  />
+                </figure>
+              ))}
+            </div>
 
             <div className="inline-flex px-2 py-2 sm:px-3 sm:py-[6px] border-gray-200 gap-4 sm:gap-6 items-center border rounded-full">
               <button
@@ -163,9 +170,7 @@ const IdeaPost = () => {
                           className="w-full h-full object-cover"
                         />
                       </figure>
-                      <h4 className="text-base font-semibold">
-                        {c.user_name}
-                      </h4>
+                      <h4 className="text-base font-semibold">{c.user_name}</h4>
                     </div>
                     <p className="text-gray-700">{c.comment}</p>
                   </div>
