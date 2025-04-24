@@ -83,8 +83,9 @@ export function IdeaPopup({ refetchIdeas }) {
     formData.append("idea_stage", data.ideaStage);
     formData.append("insert_video", data.insertVideo);
     if (uploadedVideo) formData.append("video", uploadedVideo);
-    uploadedPictures.forEach((file) => formData.append("images", file));
+    uploadedPictures.forEach((file) => formData.append("image[]", file));
     if (uploadedDocs) formData.append("document", uploadedDocs);
+    console.log([...formData.entries()]);
     mutate(formData);
   };
 
