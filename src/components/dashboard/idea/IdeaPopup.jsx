@@ -23,7 +23,6 @@ export function IdeaPopup({ refetchIdeas }) {
 
   const Axios = useAxios();
   const token = JSON.parse(localStorage.getItem("authToken"));
-  console.log(token);
 
   const {
     register,
@@ -43,48 +42,42 @@ export function IdeaPopup({ refetchIdeas }) {
     },
     onSuccess: (data) => {
       setIsOpen(false);
-      console.log("Success:", data);
       toast.success("Idea created successfully");
       reset();
+      setUploadedVideo(null);
+      setUploadedPicture(null);
+      setUploadedDocs(null);
       refetchIdeas();
     },
     onError: (error) => {
-      console.log("Error:", error);
-      toast.error("Upload failed:", error.message);
+      toast.error("Upload failed: " + error.message);
     },
   });
+
   const onSubmit = (data) => {
-    if (!uploadedVideo) {
-      alert("Please upload a video.");
-      return;
-    }
-    if (!uploadedPicture) {
-      alert("Please upload an image.");
-      return;
-    }
-    if (!uploadedDocs) {
-      alert("Please upload a document.");
-      return;
-    }
     const formData = new FormData();
     formData.append("port_type", data.portType);
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("industry", data.industry);
     formData.append("idea_stage", data.ideaStage);
-    formData.append("insert_video", data.insertVideo);
-    formData.append("video", uploadedVideo);
-    formData.append("image", uploadedPicture);
-    formData.append("document", uploadedDocs);
+    formData.append("insert_video", data.insertVideo || "");
+
+    if (uploadedVideo) {
+      formData.append("video", uploadedVideo);
+    }
+    if (uploadedPicture) {
+      formData.append("image", uploadedPicture);
+    }
+    if (uploadedDocs) {
+      formData.append("document", uploadedDocs);
+    }
+
     mutate(formData);
   };
 
   return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={setIsOpen}
-      onDismiss={() => setIsOpen(true)}
-    >
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <button className="flex gap-2 items-center px-2 sm:px-3 py-1 text-sm sm:text-base sm:py-2 rounded text-white bg-primaryGreen">
           <span>Add new Idea</span>
@@ -207,28 +200,21 @@ export function IdeaPopup({ refetchIdeas }) {
 
           <div>
             <label htmlFor="insertVideo" className="block font-medium mb-2">
-              Insert Video
+              Insert Video (Optional)
             </label>
             <div className="relative">
               <input
                 id="insertVideo"
                 type="text"
-                {...register("insertVideo", {
-                  required: "Insert video link is required",
-                })}
+                {...register("insertVideo")}
                 placeholder="Insert a video"
                 className="block w-full px-2 py-2 border outline-none rounded"
               />
               <FiLink className="text-lg absolute right-3 top-3" />
             </div>
-            {errors.insertVideo && (
-              <span className="text-red-500 text-sm block pt-1">
-                {errors.insertVideo.message}
-              </span>
-            )}
           </div>
 
-          <p className="block font-medium mb-2">Attach a Video</p>
+          <p className="block font-medium mb-2">Attach a Video (Optional)</p>
           <label htmlFor="videoUpload" className="block cursor-pointer w-full">
             <div className="text-center border bg-[#def9f1] py-2 rounded">
               <img src={uploadLogo} alt="logo" className="mx-auto w-7 h-7" />
@@ -248,7 +234,7 @@ export function IdeaPopup({ refetchIdeas }) {
             <p className="text-sm mt-1 text-gray-600">{uploadedVideo.name}</p>
           )}
 
-          <p className="block font-medium mb-2">Attach a Picture</p>
+          <p className="block font-medium mb-2">Attach a Picture (Optional)</p>
           <label
             htmlFor="pictureUpload"
             className="block cursor-pointer w-full"
@@ -278,7 +264,7 @@ export function IdeaPopup({ refetchIdeas }) {
             </div>
           )}
 
-          <p className="block font-medium mb-2">Attach a Docs</p>
+          <p className="block font-medium mb-2">Attach a Document (Optional)</p>
           <label htmlFor="docsUpload" className="block cursor-pointer w-full">
             <div className="text-center border bg-[#def9f1] py-2 rounded">
               <img src={uploadLogo} alt="logo" className="mx-auto w-7 h-7" />

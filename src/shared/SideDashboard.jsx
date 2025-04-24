@@ -20,6 +20,7 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
   const handleLogout = async () => {
     try {
       const token = localStorage.getItem("authToken");
+      const role = JSON.parse(localStorage.getItem("role"));
 
       if (!token) {
         toast.error("No token found, redirecting to login.");
@@ -38,6 +39,7 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
       );
 
       localStorage.removeItem("authToken");
+      localStorage.removeItem("role",role);
       toast.success("Logged out successfully!");
       navigate("/login");
     } catch (error) {
@@ -63,7 +65,10 @@ const SideDashboard = ({ isActive, setIsActive, role }) => {
         }`}
       >
         {/* Logo */}
-        <Link onClick={() => setIsActive(false)} to="/dashboard/smallBusiness/timeline">
+        <Link
+          onClick={() => setIsActive(false)}
+          to="/dashboard/smallBusiness/timeline"
+        >
           <img src={logo} alt="logo" className="w-48 mx-auto" />
         </Link>
         {/* Nav links */}
