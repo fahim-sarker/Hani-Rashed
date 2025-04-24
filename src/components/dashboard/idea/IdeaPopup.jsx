@@ -17,7 +17,24 @@ import { useMutation } from "@tanstack/react-query";
 
 export function IdeaPopup({ refetchIdeas }) {
   const [uploadedVideo, setUploadedVideo] = useState(null);
-  const [uploadedPicture, setUploadedPicture] = useState(null);
+  const [uploadedPictures, setUploadedPictures] = useState([]);
+
+  const handleFileChange = (e) => {
+    const newFiles = Array.from(e.target.files);
+
+    setUploadedPictures((prev) => {
+      const existingFiles = new Set(prev.map((file) => file.name + file.size));
+      const uniqueFiles = newFiles.filter(
+        (file) => !existingFiles.has(file.name + file.size)
+      );
+      return [...prev, ...uniqueFiles];
+    });
+  };
+
+  const removeImage = (index) => {
+    setUploadedPictures((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const [uploadedDocs, setUploadedDocs] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -42,13 +59,13 @@ export function IdeaPopup({ refetchIdeas }) {
     },
     onSuccess: (data) => {
       console.log(data);
-      
+
       setIsOpen(false);
       toast.success("Idea created successfully");
       reset();
       refetchIdeas();
       setUploadedVideo(null);
-      setUploadedPicture(null);
+      setUploadedPictures([]);
       setUploadedDocs(null);
     },
     onError: (error) => {
@@ -66,7 +83,7 @@ export function IdeaPopup({ refetchIdeas }) {
     formData.append("idea_stage", data.ideaStage);
     formData.append("insert_video", data.insertVideo);
     if (uploadedVideo) formData.append("video", uploadedVideo);
-    if (uploadedPicture) formData.append("image", uploadedPicture);
+    uploadedPictures.forEach((file) => formData.append("images", file));
     if (uploadedDocs) formData.append("document", uploadedDocs);
     mutate(formData);
   };
@@ -93,18 +110,24 @@ export function IdeaPopup({ refetchIdeas }) {
               className="block w-full px-2 py-2 border outline-none rounded"
               {...register("portType", { required: "Port type is required" })}
             >
-              <option value="" disabled>Select Port Type</option>
+              <option value="" disabled>
+                Select Port Type
+              </option>
               <option value="Type 1">Type 1</option>
               <option value="Type 2">Type 2</option>
               <option value="Type 3">Type 3</option>
             </select>
             {errors.portType && (
-              <span className="text-red-500 text-sm">{errors.portType.message}</span>
+              <span className="text-red-500 text-sm">
+                {errors.portType.message}
+              </span>
             )}
           </div>
 
           <div>
-            <label htmlFor="name" className="block font-medium mb-2">Name</label>
+            <label htmlFor="name" className="block font-medium mb-2">
+              Name
+            </label>
             <input
               id="name"
               type="text"
@@ -113,21 +136,29 @@ export function IdeaPopup({ refetchIdeas }) {
               className="block w-full px-2 py-2 border outline-none rounded"
             />
             {errors.name && (
-              <span className="text-red-500 text-sm">{errors.name.message}</span>
+              <span className="text-red-500 text-sm">
+                {errors.name.message}
+              </span>
             )}
           </div>
 
           <div>
-            <label htmlFor="description" className="block font-medium mb-2">Idea Description</label>
+            <label htmlFor="description" className="block font-medium mb-2">
+              Idea Description
+            </label>
             <textarea
               rows={5}
               className="block text-sm w-full px-2 py-2 border outline-none rounded"
               placeholder="We offer after school clubs and enrichment activities..."
               id="description"
-              {...register("description", { required: "Description is required" })}
+              {...register("description", {
+                required: "Description is required",
+              })}
             />
             {errors.description && (
-              <span className="text-red-500 text-sm">{errors.description.message}</span>
+              <span className="text-red-500 text-sm">
+                {errors.description.message}
+              </span>
             )}
           </div>
 
@@ -138,13 +169,17 @@ export function IdeaPopup({ refetchIdeas }) {
               className="block w-full px-2 py-2 border outline-none rounded"
               {...register("industry", { required: "Industry is required" })}
             >
-              <option value="" disabled>Select Industry</option>
+              <option value="" disabled>
+                Select Industry
+              </option>
               <option value="Industry 1">Industry 1</option>
               <option value="Industry 2">Industry 2</option>
               <option value="Industry 3">Industry 3</option>
             </select>
             {errors.industry && (
-              <span className="text-red-500 text-sm">{errors.industry.message}</span>
+              <span className="text-red-500 text-sm">
+                {errors.industry.message}
+              </span>
             )}
           </div>
 
@@ -155,18 +190,24 @@ export function IdeaPopup({ refetchIdeas }) {
               className="block w-full px-2 py-2 border outline-none rounded"
               {...register("ideaStage", { required: "Idea stage is required" })}
             >
-              <option value="" disabled>Select Idea Stage</option>
+              <option value="" disabled>
+                Select Idea Stage
+              </option>
               <option value="Stage 1">Stage 1</option>
               <option value="Stage 2">Stage 2</option>
               <option value="Stage 3">Stage 3</option>
             </select>
             {errors.ideaStage && (
-              <span className="text-red-500 text-sm">{errors.ideaStage.message}</span>
+              <span className="text-red-500 text-sm">
+                {errors.ideaStage.message}
+              </span>
             )}
           </div>
 
           <div>
-            <label htmlFor="insertVideo" className="block font-medium mb-2">Insert Video</label>
+            <label htmlFor="insertVideo" className="block font-medium mb-2">
+              Insert Video
+            </label>
             <div className="relative">
               <input
                 id="insertVideo"
@@ -182,9 +223,16 @@ export function IdeaPopup({ refetchIdeas }) {
           {/* Video Upload */}
           <div>
             <p className="block font-medium mb-2">Attach a Video (Optional)</p>
-            <label htmlFor="videoUpload" className="block cursor-pointer w-full">
+            <label
+              htmlFor="videoUpload"
+              className="block cursor-pointer w-full"
+            >
               <div className="text-center border bg-[#def9f1] py-2 rounded">
-                <img src={uploadLogo} alt="Upload" className="mx-auto w-7 h-7" />
+                <img
+                  src={uploadLogo}
+                  alt="Upload"
+                  className="mx-auto w-7 h-7"
+                />
                 <p className="text-xs text-gray-500 mt-1">Click to upload</p>
               </div>
             </label>
@@ -197,7 +245,9 @@ export function IdeaPopup({ refetchIdeas }) {
             />
             {uploadedVideo && (
               <div className="flex items-center justify-between mt-1 p-2 bg-gray-100 rounded">
-                <p className="text-sm text-gray-600 truncate">{uploadedVideo.name}</p>
+                <p className="text-sm text-gray-600 truncate">
+                  {uploadedVideo.name}
+                </p>
                 <button
                   onClick={() => setUploadedVideo(null)}
                   type="button"
@@ -211,10 +261,19 @@ export function IdeaPopup({ refetchIdeas }) {
 
           {/* Picture Upload */}
           <div>
-            <p className="block font-medium mb-2">Attach a Picture (Optional)</p>
-            <label htmlFor="pictureUpload" className="block cursor-pointer w-full">
+            <p className="block font-medium mb-2">
+              Attach a Picture (Optional)
+            </p>
+            <label
+              htmlFor="pictureUpload"
+              className="block cursor-pointer w-full"
+            >
               <div className="text-center border bg-[#def9f1] py-2 rounded">
-                <img src={uploadLogo} alt="Upload" className="mx-auto w-7 h-7" />
+                <img
+                  src={uploadLogo}
+                  alt="Upload"
+                  className="mx-auto w-7 h-7"
+                />
                 <p className="text-xs text-gray-500 mt-1">Click to upload</p>
               </div>
             </label>
@@ -222,34 +281,48 @@ export function IdeaPopup({ refetchIdeas }) {
               id="pictureUpload"
               type="file"
               accept="image/*"
+              multiple
               className="hidden"
-              onChange={(e) => setUploadedPicture(e.target.files[0])}
+              onChange={handleFileChange}
             />
-            {uploadedPicture && (
-              <div className="mt-1 relative">
-                <img
-                  src={URL.createObjectURL(uploadedPicture)}
-                  alt="Preview"
-                  className="max-h-[120px] rounded"
-                />
-                <button
-                  onClick={() => setUploadedPicture(null)}
-                  type="button"
-                  className="absolute top-1 right-1 bg-white rounded-full p-1 text-red-500 hover:text-red-700 shadow"
-                >
-                  <FiX />
-                </button>
-                <p className="text-sm text-gray-600 mt-1">{uploadedPicture.name}</p>
+
+            {uploadedPictures.length > 0 && (
+              <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-4">
+                {uploadedPictures.map((file, index) => (
+                  <div key={index} className="relative">
+                    <img
+                      src={URL.createObjectURL(file)}
+                      alt={`Preview ${index}`}
+                      className="max-h-[120px] rounded"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => removeImage(index)}
+                      className="absolute top-1 right-1 bg-white rounded-full p-1 text-red-500 hover:text-red-700 shadow"
+                    >
+                      <FiX />
+                    </button>
+                    <p className="text-xs text-gray-600 mt-1 break-words">
+                      {file.name}
+                    </p>
+                  </div>
+                ))}
               </div>
             )}
           </div>
 
           {/* Document Upload */}
           <div>
-            <p className="block font-medium mb-2">Attach a Document (Optional)</p>
+            <p className="block font-medium mb-2">
+              Attach a Document (Optional)
+            </p>
             <label htmlFor="docsUpload" className="block cursor-pointer w-full">
               <div className="text-center border bg-[#def9f1] py-2 rounded">
-                <img src={uploadLogo} alt="Upload" className="mx-auto w-7 h-7" />
+                <img
+                  src={uploadLogo}
+                  alt="Upload"
+                  className="mx-auto w-7 h-7"
+                />
                 <p className="text-xs text-gray-500 mt-1">Click to upload</p>
               </div>
             </label>
@@ -262,7 +335,9 @@ export function IdeaPopup({ refetchIdeas }) {
             />
             {uploadedDocs && (
               <div className="flex items-center justify-between mt-1 p-2 bg-gray-100 rounded">
-                <p className="text-sm text-gray-600 truncate">{uploadedDocs.name}</p>
+                <p className="text-sm text-gray-600 truncate">
+                  {uploadedDocs.name}
+                </p>
                 <button
                   onClick={() => setUploadedDocs(null)}
                   type="button"
