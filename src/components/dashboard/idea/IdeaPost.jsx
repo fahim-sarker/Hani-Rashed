@@ -8,7 +8,12 @@ import useFetchData from "@/components/Hooks/Api/UseFetchData";
 import useAxios from "@/components/Hooks/Api/UseAxios";
 import profileImg from "../../../assets/profile.png";
 
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
+
 const IdeaPost = () => {
+  const [advancedExampleOpen, setAdvancedExampleOpen] = useState(false);
+  const [show, setShow] = useState(null);
   const [expandedItem, setExpandedItem] = useState(null);
   const [showComments, setShowComments] = useState({});
   const [like, setLike] = useState(false);
@@ -35,6 +40,13 @@ const IdeaPost = () => {
       console.error("Error liking post:", error);
     }
   };
+
+  // useEffect(() => {
+  //   const images = ideas.ideaimage.map(img => ({
+  //     src: img.image
+  //   }));
+  //   setShow(images)
+  // },[ideas]);
 
   const toggleCommentsVisibility = (id) => {
     setShowComments((prevState) => ({
@@ -99,12 +111,9 @@ const IdeaPost = () => {
               )}
             </p>
 
-            <div className="flex gap-4">
+            {/* <div className="flex gap-4">
               {item.ideaimage.map((img, idx) => (
-                <figure
-                  className="w-full rounded mb-5 sm:mb-7"
-                  key={idx}
-                >
+                <figure className="w-full rounded mb-5 sm:mb-7" key={idx}>
                   <img
                     src={img.image}
                     alt="thumbnail"
@@ -112,6 +121,77 @@ const IdeaPost = () => {
                   />
                 </figure>
               ))}
+            </div> */}
+            <div className=" mb-5 sm:mb-7">
+              {item.ideaimage.length == 1 ? (
+                <figure className="rounded overflow-hidden h-[380px] w-fit">
+                  <img
+                    src={item.ideaimage[0]?.image}
+                    alt=""
+                    className="w-full h-full object-cover object-center"
+                  />
+                </figure>
+              ) : item.ideaimage.length == 2 ? (
+                <div className="flex flex-wrap gap-5">
+                  <figure className="rounded overflow-hidden w-fit shrink-0 h-[380px]">
+                    <img
+                      src={item.ideaimage[0]?.image}
+                      alt=""
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </figure>
+                  <figure className="rounded overflow-hidden w-fit shrink-0 h-[380px]">
+                    <img
+                      src={item.ideaimage[1]?.image}
+                      alt=""
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </figure>
+                </div>
+              ) : (
+                item.ideaimage.length > 2 && (
+                  <div className="grid grid-cols-2 gap-5 h-[550px]">
+                    <figure className="rounded overflow-hidden ">
+                      <img
+                        src={item.ideaimage[0]?.image}
+                        alt=""
+                        className="w-full h-full object-cover object-center"
+                      />
+                    </figure>
+                    <div className="flex flex-col gap-5 h-[550px]">
+                      <figure className="rounded overflow-hidden flex-1">
+                        <img
+                          src={item.ideaimage[1]?.image}
+                          alt=""
+                          className="w-full h-full object-cover object-center"
+                        />
+                      </figure>
+                      <figure className="rounded overflow-hidden flex-1 relative">
+                        <img
+                          src={item.ideaimage[2]?.image}
+                          alt=""
+                          className="w-full h-full object-cover object-center"
+                        />
+                        {item.ideaimage.length > 3 && (
+                          <div
+                            className="overlay absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center text-white text-2xl md:text-3xl lg:text-5xl font-bold cursor-pointer"
+                            onClick={() => {
+                              setShow(
+                                item.ideaimage.map((img) => ({
+                                  src: img.image,
+                                }))
+                              );
+                              setAdvancedExampleOpen(true);
+                            }}
+                          >
+                            {item.ideaimage.length - 3}+
+                          </div>
+                        )}
+                      </figure>
+                    </div>
+                  </div>
+                )
+              )}
             </div>
 
             <div className="inline-flex px-2 py-2 sm:px-3 sm:py-[6px] border-gray-200 gap-4 sm:gap-6 items-center border rounded-full">
@@ -180,6 +260,11 @@ const IdeaPost = () => {
           </div>
         );
       })}
+      <Lightbox
+        open={advancedExampleOpen}
+        close={() => setAdvancedExampleOpen(false)}
+        slides={show}
+      />
     </>
   );
 };
