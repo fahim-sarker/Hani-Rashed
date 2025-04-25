@@ -63,7 +63,7 @@ export function IdeaPopup({ refetchIdeas }) {
       setIsOpen(false);
       toast.success("Idea created successfully");
       reset();
-      refetchIdeas();
+      refetchIdeas && refetchIdeas();
       setUploadedVideo(null);
       setUploadedPictures([]);
       setUploadedDocs(null);

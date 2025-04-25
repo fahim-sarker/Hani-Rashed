@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import share from "../../../assets/icons/share.png";
 import eye from "../../../assets/icons/eye.png";
 import likeImg from "../../../assets/icons/like.png";
