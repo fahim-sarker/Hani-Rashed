@@ -16,7 +16,7 @@ import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 
 export function IdeaPopup({ refetchIdeas }) {
-  const [uploadedVideo, setUploadedVideo] = useState(null);
+  const [uploadedVideo, setUploadedVideo] = useState([]);
   const [uploadedPictures, setUploadedPictures] = useState([]);
 
   const handleFileChange = (e) => {
@@ -33,6 +33,24 @@ export function IdeaPopup({ refetchIdeas }) {
 
   const removeImage = (index) => {
     setUploadedPictures((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Handle multiple video uploads
+  const handleVideoChange = (e) => {
+    const newVideos = Array.from(e.target.files);
+
+    setUploadedVideo((prev) => {
+      const existingFiles = new Set(prev.map((file) => file.name + file.size));
+      const uniqueVideos = newVideos.filter(
+        (file) => !existingFiles.has(file.name + file.size)
+      );
+      return [...prev, ...uniqueVideos];
+    });
+  };
+
+  // Remove a specific video
+  const removeVideo = (index) => {
+    setUploadedVideo((prev) => prev.filter((_, i) => i !== index));
   };
 
   const [uploadedDocs, setUploadedDocs] = useState(null);
@@ -82,9 +100,9 @@ export function IdeaPopup({ refetchIdeas }) {
     formData.append("industry", data.industry);
     formData.append("idea_stage", data.ideaStage);
     formData.append("insert_video", data.insertVideo);
-    if (uploadedVideo) formData.append("video", uploadedVideo);
+    uploadedVideo.forEach((file) => formData.append("video[]", file));
     uploadedPictures.forEach((file) => formData.append("image[]", file));
-    if (uploadedDocs) formData.append("document", uploadedDocs);
+    if (uploadedDocs) formData.append("pdf", uploadedDocs);
     console.log([...formData.entries()]);
     mutate(formData);
   };
@@ -223,7 +241,7 @@ export function IdeaPopup({ refetchIdeas }) {
 
           {/* Video Upload */}
           <div>
-            <p className="block font-medium mb-2">Attach a Video (Optional)</p>
+            <p className="block font-medium mb-2">Attach Videos (Optional)</p>
             <label
               htmlFor="videoUpload"
               className="block cursor-pointer w-full"
@@ -241,21 +259,26 @@ export function IdeaPopup({ refetchIdeas }) {
               id="videoUpload"
               type="file"
               accept="video/*"
+              multiple
               className="hidden"
-              onChange={(e) => setUploadedVideo(e.target.files[0])}
+              onChange={handleVideoChange}
             />
-            {uploadedVideo && (
-              <div className="flex items-center justify-between mt-1 p-2 bg-gray-100 rounded">
-                <p className="text-sm text-gray-600 truncate">
-                  {uploadedVideo.name}
-                </p>
-                <button
-                  onClick={() => setUploadedVideo(null)}
-                  type="button"
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <FiX />
-                </button>
+            {uploadedVideo.length > 0 && (
+              <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {uploadedVideo.map((file, index) => (
+                  <div key={index} className="relative">
+                    <p className="text-sm text-gray-600 truncate">
+                      {file.name}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => removeVideo(index)}
+                      className="absolute top-1 right-1 bg-white rounded-full p-1 text-red-500 hover:text-red-700 shadow"
+                    >
+                      <FiX />
+                    </button>
+                  </div>
+                ))}
               </div>
             )}
           </div>

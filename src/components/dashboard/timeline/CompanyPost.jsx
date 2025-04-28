@@ -43,7 +43,9 @@ const CompanyPost = () => {
   // Sync localStorage when current user changes
   useEffect(() => {
     if (currentUserId) {
-      const storedFollows = localStorage.getItem(`followStates-${currentUserId}`);
+      const storedFollows = localStorage.getItem(
+        `followStates-${currentUserId}`
+      );
       const storedLikes = localStorage.getItem(`likedPosts-${currentUserId}`);
       setFollowedUsers(storedFollows ? JSON.parse(storedFollows) : {});
       setLikedPosts(storedLikes ? JSON.parse(storedLikes) : {});
@@ -63,7 +65,7 @@ const CompanyPost = () => {
     };
   }, []);
 
-    // Handle follow/unfollow
+  // Handle follow/unfollow
   const handleToggleFollow = async (userId) => {
     const isFollowing = followedUsers[userId]?.following;
     try {
@@ -75,12 +77,16 @@ const CompanyPost = () => {
           },
         });
       } else {
-        await axios.post(`/follow/${userId}`, {}, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        });
+        await axios.post(
+          `/follow/${userId}`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/json",
+            },
+          }
+        );
       }
       const updated = {
         ...followedUsers,
@@ -98,12 +104,16 @@ const CompanyPost = () => {
     const currentType = likedPosts[postId]?.type;
     const newType = currentType === "like" ? "dislike" : "like";
     try {
-      const res = await axios.post(`/like-idea/${postId}`, { type: newType }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      });
+      const res = await axios.post(
+        `/like-idea/${postId}`,
+        { type: newType },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
       const { type } = res.data.data;
       const updated = { ...likedPosts, [postId]: { type } };
       setLikedPosts(updated);
@@ -117,12 +127,16 @@ const CompanyPost = () => {
   const handleComment = async (postId, comment) => {
     if (!comment?.trim()) return;
     try {
-      const res = await axios.post(`/comment/${postId}`, { comment }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      });
+      const res = await axios.post(
+        `/comment/${postId}`,
+        { comment },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
       const newComment = res.data.data;
       setComments((prev) => ({
         ...prev,
@@ -138,17 +152,24 @@ const CompanyPost = () => {
   // Handle share
   const handleshare = async (postId) => {
     try {
-      const res = await axios.post(`/share-idea/${postId}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: "application/json",
-        },
-      });
+      const res = await axios.post(
+        `/share-idea/${postId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        }
+      );
       toast.success("You shared this post");
       console.log("Post shared:", res.data.message || res.data);
     } catch (error) {
       toast.error("Error sharing post");
-      console.error("Error sharing post:", error.response?.data || error.message);
+      console.error(
+        "Error sharing post:",
+        error.response?.data || error.message
+      );
     }
   };
 
@@ -159,7 +180,10 @@ const CompanyPost = () => {
         const shouldTruncate = item.description.length > 350;
 
         return (
-          <div key={item.id} className="mb-6 px-2 sm:px-4 max-w-[600px] mx-auto">
+          <div
+            key={item.id}
+            className="mb-6 px-2 sm:px-4 max-w-[600px] mx-auto"
+          >
             <div className="border-b pb-5">
               {/* Top Section */}
               <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
@@ -179,17 +203,27 @@ const CompanyPost = () => {
                   {currentUserId && (
                     <button
                       onClick={() => handleToggleFollow(item.user_id)}
-                      className={`text-sm ${followedUsers[item.user_id]?.following ? "following" : "follow"}`}
+                      className={`text-sm ${
+                        followedUsers[item.user_id]?.following
+                          ? "following"
+                          : "follow"
+                      }`}
                     >
-                      {followedUsers[item.user_id]?.following ? "Following" : "+ Follow"}
+                      {followedUsers[item.user_id]?.following
+                        ? "Following"
+                        : "+ Follow"}
                     </button>
                   )}
                 </div>
 
                 <div className="relative flex items-center gap-2">
-                  <p className="text-gray-500 text-xs sm:text-sm">{item.time_ago}</p>
+                  <p className="text-gray-500 text-xs sm:text-sm">
+                    {item.time_ago}
+                  </p>
                   <button
-                    onClick={() => setMenuOpenId(menuOpenId === item.id ? null : item.id)}
+                    onClick={() =>
+                      setMenuOpenId(menuOpenId === item.id ? null : item.id)
+                    }
                   >
                     <BsThreeDotsVertical className="text-lg sm:text-xl" />
                   </button>
@@ -212,7 +246,9 @@ const CompanyPost = () => {
 
               {/* Description */}
               <p className="text-sm sm:text-base text-gray-700 mb-5">
-                {isExpanded ? item.description : `${item.description.slice(0, 350)} `}
+                {isExpanded
+                  ? item.description
+                  : `${item.description.slice(0, 350)} `}
                 {shouldTruncate && (
                   <button
                     onClick={() => setExpandedItem(isExpanded ? null : item.id)}
@@ -229,7 +265,10 @@ const CompanyPost = () => {
                   {[...(item.images || []), ...(item.videos || [])]
                     .slice(0, 3)
                     .map((media, index, array) => (
-                      <div key={index} className="relative h-40 overflow-hidden rounded">
+                      <div
+                        key={index}
+                        className="relative h-40 overflow-hidden rounded"
+                      >
                         {media.type === "image" ? (
                           <img
                             src={media.url}
@@ -243,10 +282,14 @@ const CompanyPost = () => {
                             className="w-full h-full object-cover"
                           />
                         )}
-                        {index === 2 && array.length <
-                          [...(item.images || []), ...(item.videos || [])].length && (
+                        {index === 2 &&
+                          array.length <
+                            [...(item.images || []), ...(item.videos || [])]
+                              .length && (
                             <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center text-white text-lg font-semibold">
-                              +{[...(item.images || []), ...(item.videos || [])].length - 3}
+                              +
+                              {[...(item.images || []), ...(item.videos || [])]
+                                .length - 3}
                             </div>
                           )}
                       </div>
@@ -256,7 +299,10 @@ const CompanyPost = () => {
 
               {/* Interaction Buttons */}
               <div className="flex flex-wrap gap-4">
-                <button onClick={() => handleLike(item.id)} className="flex items-center gap-1">
+                <button
+                  onClick={() => handleLike(item.id)}
+                  className="flex items-center gap-1"
+                >
                   {likedPosts[item.id]?.type === "like" ? (
                     <AiFillHeart className="text-red-500 text-lg sm:text-xl" />
                   ) : (
@@ -266,11 +312,17 @@ const CompanyPost = () => {
                 </button>
 
                 <button
-                  onClick={() => setShowComment((prev) => (prev === item.id ? null : item.id))}
+                  onClick={() =>
+                    setShowComment((prev) =>
+                      prev === item.id ? null : item.id
+                    )
+                  }
                   className="flex items-center gap-1"
                 >
                   <img src={commentImg} alt="comment" className="w-5 h-5" />
-                  <p className="text-xs sm:text-sm">{item.comments?.length || 0} comments</p>
+                  <p className="text-xs sm:text-sm">
+                    {item.comments?.length || 0} comments
+                  </p>
                 </button>
 
                 <div className="flex items-center gap-1">
@@ -278,21 +330,25 @@ const CompanyPost = () => {
                   <p className="text-xs sm:text-sm">22 views</p>
                 </div>
 
-                <button onClick={() => handleshare(item.id)} className="flex items-center gap-1">
+                <button
+                  onClick={() => handleshare(item.id)}
+                  className="flex items-center gap-1"
+                >
                   <img src={share} alt="share" className="w-4 h-4" />
-                  <p className="text-xs sm:text-sm">{item.share_ideas_count || 0} shares</p>
+                  <p className="text-xs sm:text-sm">
+                    {item.share_ideas_count || 0} shares
+                  </p>
                 </button>
 
                 {item.pdf && (
                   <div className="ml-auto">
                     <a
-                      href={item.pdf.url}
+                      href={item.pdf}
+                      target="_blank"
                       download
-                      className="cursor-pointer inline-block bg-[#e0fff6] border border-green-400 text-[#212B36] py-1 px-3 rounded-3xl hover:bg-[#e0fff6] hover:text-[#013289] transition duration-300 text-sm"
+                      className="cursor-pointer bg-[#e0fff6] border border-green-400 text-[#212B36] py-1 rounded-3xl hover:bg-[#e0fff6] hover:text-[#013289] transition duration-300 text-sm px-5 h-full flex items-center gap-1"
                     >
-                      <div className="flex items-center gap-1">
-                        <GrDocumentPdf className="text-[#013289]" /> Pdf
-                      </div>
+                      <GrDocumentPdf className="text-[#013289]" /> Pdf
                     </a>
                   </div>
                 )}
@@ -325,7 +381,10 @@ const CompanyPost = () => {
 
                 <div className="mt-2 sm:mt-4">
                   {(comments[item.id] || item.comments)?.map((c, idx) => (
-                    <div key={idx} className="bg-white p-3 border rounded-lg mb-2">
+                    <div
+                      key={idx}
+                      className="bg-white p-3 border rounded-lg mb-2"
+                    >
                       <div className="flex gap-2 sm:gap-3 items-center mb-2">
                         <figure className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden">
                           <img
@@ -336,7 +395,9 @@ const CompanyPost = () => {
                         </figure>
                         <h4 className="text-sm font-semibold">{c.user_name}</h4>
                       </div>
-                      <p className="text-xs sm:text-sm text-gray-700">{c.comment}</p>
+                      <p className="text-xs sm:text-sm text-gray-700">
+                        {c.comment}
+                      </p>
                     </div>
                   ))}
                 </div>
