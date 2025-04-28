@@ -60,8 +60,8 @@ const Navbar = () => {
             <Link
               to={
                 role === "smallbusiness"
-                  ? "/dashboard/smallBusiness/profile"
-                  : "/dashboard/consultancyFirms/profile"
+                  ? "/dashboard/smallBusiness/timeLine"
+                  : "/dashboard/consultancyFirms/timeline"
               }
             >
               <button className="px-4 py-2 rounded font-medium flex items-center gap-2 text-gray-100 bg-primaryGreen">

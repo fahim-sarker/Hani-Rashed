@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { IoIosSend } from "react-icons/io";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import share from "../../../assets/icons/share.png";
@@ -8,7 +8,9 @@ import { Link } from "react-router-dom";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
 import useAxios from "@/components/Hooks/Api/UseAxios";
 import toast from "react-hot-toast";
-import Defaultprofile from "../../../assets/icons/defaultprofile.jpg"
+import Defaultprofile from "../../../assets/icons/defaultprofile.jpg";
+import { GrDocumentPdf } from "react-icons/gr";
+import { BsThreeDotsVertical } from "react-icons/bs";
 
 const CompanyPost = () => {
   const token = JSON.parse(localStorage.getItem("authToken"));
@@ -25,6 +27,8 @@ const CompanyPost = () => {
   const [commentText, setCommentText] = useState({});
   const [showComment, setShowComment] = useState(null);
   const [expandedItem, setExpandedItem] = useState(null);
+  const [menuOpenId, setMenuOpenId] = useState(null);
+  const menuRef = useRef(null);
 
   const [followedUsers, setFollowedUsers] = useState(() => {
     const stored = localStorage.getItem(followKey);
@@ -41,16 +45,27 @@ const CompanyPost = () => {
     if (currentUserId) {
       const storedFollows = localStorage.getItem(`followStates-${currentUserId}`);
       const storedLikes = localStorage.getItem(`likedPosts-${currentUserId}`);
-
       setFollowedUsers(storedFollows ? JSON.parse(storedFollows) : {});
       setLikedPosts(storedLikes ? JSON.parse(storedLikes) : {});
     }
   }, [currentUserId]);
 
-  // Handle follow/unfollow
+  // Handle Edit and Delete
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setMenuOpenId(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+    // Handle follow/unfollow
   const handleToggleFollow = async (userId) => {
     const isFollowing = followedUsers[userId]?.following;
-
     try {
       if (isFollowing) {
         await axios.delete(`/unfollow/${userId}`, {
@@ -60,23 +75,17 @@ const CompanyPost = () => {
           },
         });
       } else {
-        await axios.post(
-          `/follow/${userId}`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              Accept: "application/json",
-            },
-          }
-        );
+        await axios.post(`/follow/${userId}`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/json",
+          },
+        });
       }
-
       const updated = {
         ...followedUsers,
         [userId]: { following: !isFollowing },
       };
-
       setFollowedUsers(updated);
       localStorage.setItem(followKey, JSON.stringify(updated));
     } catch (err) {
@@ -84,22 +93,17 @@ const CompanyPost = () => {
     }
   };
 
-  // Handle Like
+  // Handle like/dislike
   const handleLike = async (postId) => {
     const currentType = likedPosts[postId]?.type;
     const newType = currentType === "like" ? "dislike" : "like";
-
     try {
-      const res = await axios.post(
-        `/like-idea/${postId}`,
-        { type: newType },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        }
-      );
+      const res = await axios.post(`/like-idea/${postId}`, { type: newType }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
       const { type } = res.data.data;
       const updated = { ...likedPosts, [postId]: { type } };
       setLikedPosts(updated);
@@ -109,28 +113,21 @@ const CompanyPost = () => {
     }
   };
 
-  // Handle Comment
+  // Handle comment
   const handleComment = async (postId, comment) => {
     if (!comment?.trim()) return;
-
     try {
-      const res = await axios.post(
-        `/comment/${postId}`,
-        { comment },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        }
-      );
+      const res = await axios.post(`/comment/${postId}`, { comment }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
       const newComment = res.data.data;
-
       setComments((prev) => ({
         ...prev,
         [postId]: [...(prev[postId] || []), newComment],
       }));
-
       setCommentText((prev) => ({ ...prev, [postId]: "" }));
       setShowComment(null);
     } catch (err) {
@@ -138,19 +135,15 @@ const CompanyPost = () => {
     }
   };
 
-  // Handle Share
+  // Handle share
   const handleshare = async (postId) => {
     try {
-      const res = await axios.post(
-        `/share-idea/${postId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            Accept: "application/json",
-          },
-        }
-      );
+      const res = await axios.post(`/share-idea/${postId}`, {}, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+        },
+      });
       toast.success("You shared this post");
       console.log("Post shared:", res.data.message || res.data);
     } catch (error) {
@@ -166,46 +159,60 @@ const CompanyPost = () => {
         const shouldTruncate = item.description.length > 350;
 
         return (
-          <div key={item.id} className="mb-6">
+          <div key={item.id} className="mb-6 px-2 sm:px-4 max-w-[600px] mx-auto">
             <div className="border-b pb-5">
               {/* Top Section */}
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex gap-4 items-center">
-                  <Link className="flex gap-4 items-center">
-                    <figure className="w-12 h-12 rounded-full overflow-hidden border-2">
+              <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+                <div className="flex gap-3 sm:gap-4 items-center">
+                  <Link className="flex gap-3 sm:gap-4 items-center">
+                    <figure className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2">
                       <img
-                        src={item.user?.avatar ? item.user?.avatar : Defaultprofile}
+                        src={item.user?.avatar || Defaultprofile}
                         alt=""
                         className="w-full h-full object-cover"
                       />
                     </figure>
-                    <h3 className="text-xl hover:underline font-medium text-[#212B36]">
+                    <h3 className="text-base sm:text-xl hover:underline font-medium text-[#212B36]">
                       {item.user?.name}
                     </h3>
                   </Link>
                   {currentUserId && (
                     <button
                       onClick={() => handleToggleFollow(item.user_id)}
-                      className={`text-sm ${
-                        followedUsers[item.user_id]?.following
-                          ? "following"
-                          : "follow"
-                      }`}
+                      className={`text-sm ${followedUsers[item.user_id]?.following ? "following" : "follow"}`}
                     >
-                      {followedUsers[item.user_id]?.following
-                        ? "Following"
-                        : "+ Follow"}
+                      {followedUsers[item.user_id]?.following ? "Following" : "+ Follow"}
                     </button>
                   )}
                 </div>
-                <p className="text-gray-500">{item.time_ago}</p>
+
+                <div className="relative flex items-center gap-2">
+                  <p className="text-gray-500 text-xs sm:text-sm">{item.time_ago}</p>
+                  <button
+                    onClick={() => setMenuOpenId(menuOpenId === item.id ? null : item.id)}
+                  >
+                    <BsThreeDotsVertical className="text-lg sm:text-xl" />
+                  </button>
+
+                  {menuOpenId === item.id && (
+                    <div
+                      ref={menuRef}
+                      className="absolute right-0 mt-2 w-28 sm:w-32 bg-white border rounded-lg shadow-lg z-10"
+                    >
+                      <button className="block w-full text-left px-4 py-2 hover:bg-gray-100">
+                        Edit
+                      </button>
+                      <button className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100">
+                        Delete
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Description */}
-              <p className="text-gray-700 mb-5">
-                {isExpanded
-                  ? item.description
-                  : `${item.description.slice(0, 350)} `}
+              <p className="text-sm sm:text-base text-gray-700 mb-5">
+                {isExpanded ? item.description : `${item.description.slice(0, 350)} `}
                 {shouldTruncate && (
                   <button
                     onClick={() => setExpandedItem(isExpanded ? null : item.id)}
@@ -216,63 +223,89 @@ const CompanyPost = () => {
                 )}
               </p>
 
-              {/* Image */}
-              {item.image && (
-                <figure className="h-64 rounded mb-5">
-                  <img
-                    src={item.image}
-                    alt="post"
-                    className="w-full h-full object-cover rounded"
-                  />
-                </figure>
+              {/* Media */}
+              {(item.images?.length > 0 || item.videos?.length > 0) && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-5">
+                  {[...(item.images || []), ...(item.videos || [])]
+                    .slice(0, 3)
+                    .map((media, index, array) => (
+                      <div key={index} className="relative h-40 overflow-hidden rounded">
+                        {media.type === "image" ? (
+                          <img
+                            src={media.url}
+                            alt={`uploaded-${index}`}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <video
+                            src={media.url}
+                            controls
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                        {index === 2 && array.length <
+                          [...(item.images || []), ...(item.videos || [])].length && (
+                            <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center text-white text-lg font-semibold">
+                              +{[...(item.images || []), ...(item.videos || [])].length - 3}
+                            </div>
+                          )}
+                      </div>
+                    ))}
+                </div>
               )}
 
-              {/* Interaction buttons */}
-              <div className="flex gap-4 items-center">
-                <button
-                  onClick={() => handleLike(item.id)}
-                  className="flex items-center gap-1"
-                >
+              {/* Interaction Buttons */}
+              <div className="flex flex-wrap gap-4">
+                <button onClick={() => handleLike(item.id)} className="flex items-center gap-1">
                   {likedPosts[item.id]?.type === "like" ? (
-                    <AiFillHeart className="text-red-500 text-xl" />
+                    <AiFillHeart className="text-red-500 text-lg sm:text-xl" />
                   ) : (
-                    <AiOutlineHeart className="text-gray-500 text-xl" />
+                    <AiOutlineHeart className="text-gray-500 text-lg sm:text-xl" />
                   )}
-                  <p>{item.likes_count} likes</p>
+                  <p className="text-xs sm:text-sm">{item.likes_count} likes</p>
                 </button>
 
                 <button
-                  onClick={() =>
-                    setShowComment((prev) => (prev === item.id ? null : item.id))
-                  }
+                  onClick={() => setShowComment((prev) => (prev === item.id ? null : item.id))}
                   className="flex items-center gap-1"
                 >
                   <img src={commentImg} alt="comment" className="w-5 h-5" />
-                  <p>{item.comments?.length || 0} comments</p>
+                  <p className="text-xs sm:text-sm">{item.comments?.length || 0} comments</p>
                 </button>
 
                 <div className="flex items-center gap-1">
                   <img src={eye} alt="views" className="w-4 h-4" />
-                  <p>22 views</p>
+                  <p className="text-xs sm:text-sm">22 views</p>
                 </div>
 
-                <button
-                  onClick={() => handleshare(item.id)}
-                  className="flex items-center gap-1"
-                >
+                <button onClick={() => handleshare(item.id)} className="flex items-center gap-1">
                   <img src={share} alt="share" className="w-4 h-4" />
-                  <p>{item?.share_ideas_count || 0} shares</p>
+                  <p className="text-xs sm:text-sm">{item.share_ideas_count || 0} shares</p>
                 </button>
+
+                {item.pdf && (
+                  <div className="ml-auto">
+                    <a
+                      href={item.pdf.url}
+                      download
+                      className="cursor-pointer inline-block bg-[#e0fff6] border border-green-400 text-[#212B36] py-1 px-3 rounded-3xl hover:bg-[#e0fff6] hover:text-[#013289] transition duration-300 text-sm"
+                    >
+                      <div className="flex items-center gap-1">
+                        <GrDocumentPdf className="text-[#013289]" /> Pdf
+                      </div>
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
 
-            {/* Comment input and list */}
+            {/* Comments */}
             {showComment === item.id && (
               <>
                 <div className="relative my-4">
                   <textarea
-                    rows={1}
-                    className="w-full border p-2 rounded pr-16 h-[100px]"
+                    rows={2}
+                    className="w-full border p-2 rounded pr-16 h-[80px] sm:h-[100px]"
                     placeholder="Comment here..."
                     value={commentText[item.id] || ""}
                     onChange={(e) =>
@@ -284,31 +317,26 @@ const CompanyPost = () => {
                   />
                   <button
                     onClick={() => handleComment(item.id, commentText[item.id])}
-                    className="absolute right-2 bottom-10 bg-primaryGreen text-white w-10 h-10 rounded-full grid place-items-center"
+                    className="absolute right-2 bottom-2 sm:bottom-10 bg-primaryGreen text-white w-10 h-10 rounded-full grid place-items-center"
                   >
                     <IoIosSend className="text-xl" />
                   </button>
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-2 sm:mt-4">
                   {(comments[item.id] || item.comments)?.map((c, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-white p-4 border rounded-lg mb-2"
-                    >
-                      <div className="flex gap-3 items-center mb-2">
-                        <figure className="w-9 h-9 rounded-full overflow-hidden">
+                    <div key={idx} className="bg-white p-3 border rounded-lg mb-2">
+                      <div className="flex gap-2 sm:gap-3 items-center mb-2">
+                        <figure className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden">
                           <img
                             src={c?.user_avatar || commentImg}
                             alt="user"
                             className="w-full h-full object-cover"
                           />
                         </figure>
-                        <h4 className="text-base font-semibold">
-                          {c.user_name}
-                        </h4>
+                        <h4 className="text-sm font-semibold">{c.user_name}</h4>
                       </div>
-                      <p className="text-gray-700">{c.comment}</p>
+                      <p className="text-xs sm:text-sm text-gray-700">{c.comment}</p>
                     </div>
                   ))}
                 </div>
