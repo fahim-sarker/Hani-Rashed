@@ -14,6 +14,7 @@ import "yet-another-react-lightbox/styles.css";
 
 import { GrDocumentPdf } from "react-icons/gr";
 import DropdownMenuComponent from "@/components/shared/DropdownMenuComponent";
+import { IdeaUpdatePopup } from "./IdeaUpdatePopup";
 
 const IdeaPost = () => {
   const [advancedExampleOpen, setAdvancedExampleOpen] = useState(false);
@@ -25,6 +26,7 @@ const IdeaPost = () => {
   const { data: fetchedIdeas } = useFetchData("/show-idea", token);
   const [ideas, setIdeas] = useState([]);
   const [isOpenPopup, setIsOpenPopup] = useState(false);
+  const [ideaData, setIdeaData] = useState(null);
 
   // console.log("fetchedIdeas", fetchedIdeas);
   // console.log("fetchedIdeas ideas", ideas);
@@ -109,8 +111,9 @@ const IdeaPost = () => {
                 <DropdownMenuComponent
                   id={item.id}
                   onDelete={handleDeleteFromUI}
-                  isOpenPopup={isOpenPopup}
                   setIsOpenPopup={setIsOpenPopup}
+                  setIdeaData={setIdeaData}
+                  item={item}
                 />
               </div>
             </div>
@@ -387,6 +390,11 @@ const IdeaPost = () => {
           controls: true,
           autoPlay: false,
         }}
+      />
+      <IdeaUpdatePopup
+        isOpenPopup={isOpenPopup}
+        setIsOpenPopup={setIsOpenPopup}
+        ideaData={ideaData}
       />
     </>
   );

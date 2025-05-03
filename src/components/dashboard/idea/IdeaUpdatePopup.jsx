@@ -13,7 +13,7 @@ import useAxios from "@/components/Hooks/Api/UseAxios";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 
-export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
+export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id, ideaData }) {
   const [uploadedVideo, setUploadedVideo] = useState([]);
   const [uploadedPictures, setUploadedPictures] = useState([]);
 
@@ -28,6 +28,8 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
       return [...prev, ...uniqueFiles];
     });
   };
+
+  console.log(ideaData);
 
   const removeImage = (index) => {
     setUploadedPictures((prev) => prev.filter((_, i) => i !== index));
@@ -61,7 +63,12 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      name: "John Doe",
+      email: "john@example.com",
+    },
+  });
 
   const { mutate } = useMutation({
     mutationFn: async (formData) => {
@@ -75,7 +82,7 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
     onSuccess: (data) => {
       console.log(data);
 
-      setIsOpen(false);
+      setIsOpenPopup(false);
       toast.success("Idea created successfully");
       reset();
       setUploadedVideo(null);

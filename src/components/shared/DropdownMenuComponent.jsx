@@ -15,8 +15,9 @@ import { IdeaUpdatePopup } from "../dashboard/idea/IdeaUpdatePopup";
 export default function DropdownMenuComponent({
   id,
   onDelete,
-  isOpenPopup,
   setIsOpenPopup,
+  setIdeaData,
+  item,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const token = JSON.parse(localStorage.getItem("authToken"));
@@ -39,6 +40,7 @@ export default function DropdownMenuComponent({
   };
 
   const handleEditClick = () => {
+    setIdeaData(item);
     setDropdownOpen(false);
     setIsOpenPopup(true);
   };
@@ -66,10 +68,6 @@ export default function DropdownMenuComponent({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <IdeaUpdatePopup
-        isOpenPopup={isOpenPopup}
-        setIsOpenPopup={setIsOpenPopup}
-      />
     </>
   );
 }
