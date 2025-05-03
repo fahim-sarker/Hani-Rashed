@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import plusIcon from "../../../assets/icons/plusIcon.png";
 import { FiLink, FiX } from "react-icons/fi";
 import uploadLogo from "../../../assets/icons/uploadLogo.png";
 import { useState } from "react";
@@ -9,13 +8,12 @@ import {
   DialogHeader,
   DialogTitle,
   DialogClose,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import useAxios from "@/components/Hooks/Api/UseAxios";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 
-export function IdeaPopup({ refetchIdeas }) {
+export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
   const [uploadedVideo, setUploadedVideo] = useState([]);
   const [uploadedPictures, setUploadedPictures] = useState([]);
 
@@ -54,7 +52,6 @@ export function IdeaPopup({ refetchIdeas }) {
   };
 
   const [uploadedDocs, setUploadedDocs] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   const Axios = useAxios();
   const token = JSON.parse(localStorage.getItem("authToken"));
@@ -81,7 +78,6 @@ export function IdeaPopup({ refetchIdeas }) {
       setIsOpen(false);
       toast.success("Idea created successfully");
       reset();
-      refetchIdeas && refetchIdeas();
       setUploadedVideo(null);
       setUploadedPictures([]);
       setUploadedDocs(null);
@@ -108,17 +104,11 @@ export function IdeaPopup({ refetchIdeas }) {
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>
-        <button className="flex gap-2 items-center px-2 sm:px-3 py-1 text-sm sm:text-base sm:py-2 rounded text-white bg-primaryGreen">
-          <span>Add new Idea</span>
-          <img src={plusIcon} alt="plusIcon" />
-        </button>
-      </DialogTrigger>
+    <Dialog open={isOpenPopup} onOpenChange={setIsOpenPopup}>
       <DialogContent className="sm:max-w-[797px] max-h-[calc(100vh-50px)] sm:max-h-[calc(100vh-25px)] overflow-y-scroll">
         <DialogHeader>
           <DialogTitle className="text-[22px] text-[#252C32] text-center block">
-            Create Idea
+            Update Idea
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
@@ -127,7 +117,7 @@ export function IdeaPopup({ refetchIdeas }) {
             <select
               defaultValue=""
               className="block w-full px-2 py-2 border outline-none rounded"
-              {...register("portType", { required: "Port type is required" })}
+              // {...register("portType", { required: "Port type is required" })}
             >
               <option value="" disabled>
                 Select Port Type
@@ -150,7 +140,7 @@ export function IdeaPopup({ refetchIdeas }) {
             <input
               id="name"
               type="text"
-              {...register("name", { required: "Name is required" })}
+              // {...register("name", { required: "Name is required" })}
               placeholder="After school enrichment activities"
               className="block w-full px-2 py-2 border outline-none rounded"
             />
@@ -170,9 +160,9 @@ export function IdeaPopup({ refetchIdeas }) {
               className="block text-sm w-full px-2 py-2 border outline-none rounded"
               placeholder="We offer after school clubs and enrichment activities..."
               id="description"
-              {...register("description", {
-                required: "Description is required",
-              })}
+              // {...register("description", {
+              //   required: "Description is required",
+              // })}
             />
             {errors.description && (
               <span className="text-red-500 text-sm">
@@ -186,7 +176,7 @@ export function IdeaPopup({ refetchIdeas }) {
             <select
               defaultValue=""
               className="block w-full px-2 py-2 border outline-none rounded"
-              {...register("industry", { required: "Industry is required" })}
+              // {...register("industry", { required: "Industry is required" })}
             >
               <option value="" disabled>
                 Select Industry
@@ -207,7 +197,7 @@ export function IdeaPopup({ refetchIdeas }) {
             <select
               defaultValue=""
               className="block w-full px-2 py-2 border outline-none rounded"
-              {...register("ideaStage", { required: "Idea stage is required" })}
+              // {...register("ideaStage", { required: "Idea stage is required" })}
             >
               <option value="" disabled>
                 Select Idea Stage

@@ -27,30 +27,6 @@ const Idea = () => {
 
 export default Idea;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // import { useState } from "react";
 // import share from "../../../assets/icons/share.png";
 // import eye from "../../../assets/icons/eye.png";
@@ -88,7 +64,6 @@ export default Idea;
 //         }));
 //       });
 //     }
-
 
 //   const handleLike = async (id) => {
 //     const prevLiked = likeStates[id] || false;

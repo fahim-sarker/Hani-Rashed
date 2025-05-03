@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import share from "../../../assets/icons/share.png";
 import eye from "../../../assets/icons/eye.png";
 import likeImg from "../../../assets/icons/like.png";
@@ -13,6 +13,7 @@ import Video from "yet-another-react-lightbox/plugins/video";
 import "yet-another-react-lightbox/styles.css";
 
 import { GrDocumentPdf } from "react-icons/gr";
+import DropdownMenuComponent from "@/components/shared/DropdownMenuComponent";
 
 const IdeaPost = () => {
   const [advancedExampleOpen, setAdvancedExampleOpen] = useState(false);
@@ -21,7 +22,18 @@ const IdeaPost = () => {
   const [showComments, setShowComments] = useState({});
   const [like, setLike] = useState(false);
   const token = JSON.parse(localStorage.getItem("authToken"));
-  const { data: ideas } = useFetchData("/show-idea", token);
+  const { data: fetchedIdeas } = useFetchData("/show-idea", token);
+  const [ideas, setIdeas] = useState([]);
+  const [isOpenPopup, setIsOpenPopup] = useState(false);
+
+  // console.log("fetchedIdeas", fetchedIdeas);
+  // console.log("fetchedIdeas ideas", ideas);
+
+  useEffect(() => {
+    if (fetchedIdeas?.data) {
+      setIdeas(fetchedIdeas.data);
+    }
+  }, [fetchedIdeas]);
   const { data } = useFetchData("/me", token);
   const Axios = useAxios();
 
@@ -44,6 +56,9 @@ const IdeaPost = () => {
     }
   };
 
+  const handleDeleteFromUI = (id) => {
+    setIdeas((prev) => prev.filter((idea) => idea.id !== id));
+  };
   // useEffect(() => {
   //   const images = ideas.ideaimage.map(img => ({
   //     src: img.image
@@ -60,9 +75,9 @@ const IdeaPost = () => {
 
   return (
     <>
-      {ideas?.data?.map((item) => {
+      {ideas?.map((item) => {
         const isExpanded = expandedItem === item.id;
-        const shouldTruncate = item.description.length > 350;
+        const shouldTruncate = item?.description?.length > 350;
 
         const avatar =
           item?.type === "shared"
@@ -77,7 +92,7 @@ const IdeaPost = () => {
         return (
           <div key={item.id}>
             <div className="flex items-center justify-between mb-5">
-              <div className="flex gap-3 sm:gap-5">
+              <div className="flex items-center gap-3 sm:gap-5">
                 <figure className="sm:w-14 sm:h-14 w-12 h-12 rounded-full">
                   <img
                     src={avatar}
@@ -89,13 +104,21 @@ const IdeaPost = () => {
                   {name}
                 </h3>
               </div>
-              <p className="text-gray-500 text-sm">{item?.created_at_diff}</p>
+              <div className="flex items-center gap-2">
+                <p className="text-gray-500 text-sm">{item?.created_at_diff}</p>
+                <DropdownMenuComponent
+                  id={item.id}
+                  onDelete={handleDeleteFromUI}
+                  isOpenPopup={isOpenPopup}
+                  setIsOpenPopup={setIsOpenPopup}
+                />
+              </div>
             </div>
 
             <p className="xl:text-lg 2xl:w-3/4 text-[#525252] mb-5">
               {isExpanded
                 ? item.description
-                : `${item.description.slice(0, 350)} `}
+                : `${item.description.slice(0, 350)}`}
               {!isExpanded && shouldTruncate && (
                 <button
                   onClick={() => setExpandedItem(item.id)}
@@ -127,7 +150,7 @@ const IdeaPost = () => {
             </div> */}
 
             <div className="mb-5 sm:mb-7">
-              {item.ideaimage.length + item.idea_video.length === 1 ? (
+              {item?.ideaimage?.length + item?.idea_video?.length === 1 ? (
                 <figure className="rounded overflow-hidden h-[380px] w-fit">
                   {item.ideaimage[0] ? (
                     <img
@@ -148,7 +171,7 @@ const IdeaPost = () => {
                     </video>
                   )}
                 </figure>
-              ) : item.ideaimage.length + item.idea_video.length === 2 ? (
+              ) : item?.ideaimage?.length + item?.idea_video?.length === 2 ? (
                 <div className="flex flex-wrap gap-5">
                   {[...item.ideaimage, ...item.idea_video]
                     .slice(0, 2)
@@ -179,7 +202,7 @@ const IdeaPost = () => {
                     ))}
                 </div>
               ) : (
-                item.ideaimage.length + item.idea_video.length >= 3 && (
+                item?.ideaimage?.length + item?.idea_video?.length >= 3 && (
                   <div className="grid grid-cols-2 gap-5 h-[550px]">
                     <figure className="rounded overflow-hidden">
                       {item.ideaimage[0] ? (
@@ -205,7 +228,8 @@ const IdeaPost = () => {
                       {(item.ideaimage[0]
                         ? [...item.idea_video, ...item.ideaimage]
                         : [...item.ideaimage, ...item.idea_video]
-                      ).slice(1, 3)
+                      )
+                        .slice(1, 3)
                         .map((media, index) => (
                           <figure
                             key={index}
@@ -230,7 +254,8 @@ const IdeaPost = () => {
                               </video>
                             )}
                             {index === 1 &&
-                              item.ideaimage.length + item.idea_video.length >
+                              item?.ideaimage?.length +
+                                item?.idea_video?.length >
                                 3 && (
                                 <div
                                   className="overlay absolute top-0 left-0 w-full h-full bg-black/70 flex items-center justify-center text-white text-2xl md:text-3xl lg:text-5xl font-bold cursor-pointer"
@@ -259,8 +284,8 @@ const IdeaPost = () => {
                                     setAdvancedExampleOpen(true);
                                   }}
                                 >
-                                  {item.ideaimage.length +
-                                    item.idea_video.length -
+                                  {item?.ideaimage?.length +
+                                    item?.idea_video?.length -
                                     3}
                                   +
                                 </div>
