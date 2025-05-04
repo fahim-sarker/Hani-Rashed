@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
-import { X, Upload, ImageIcon } from "lucide-react";
+import { X, ImageIcon } from "lucide-react";
 import dummyThumbnail from "@/assets/dummy-thumbnail.jpg";
+import uploadLogo from "@/assets/icons/uploadLogo.png";
 
 export default function VideoUploader({
   uploadedVideo,
@@ -97,9 +98,9 @@ export default function VideoUploader({
       <div>
         <p className="block font-medium mb-2">Attach Videos (Optional)</p>
         <label htmlFor="videoUpload" className="block cursor-pointer w-full">
-          <div className="text-center border bg-[#def9f1] py-4 rounded hover:bg-[#cff0e6] transition-colors">
-            <Upload className="mx-auto w-7 h-7 text-gray-600" />
-            <p className="text-sm text-gray-600 mt-1">Click to upload videos</p>
+          <div className="text-center border bg-[#def9f1] py-2 rounded">
+            <img src={uploadLogo} alt="Upload" className="mx-auto w-7 h-7" />
+            <p className="text-xs text-gray-500 mt-1">Click to upload</p>
           </div>
         </label>
         <input
