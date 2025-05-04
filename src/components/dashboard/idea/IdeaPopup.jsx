@@ -237,55 +237,13 @@ export function IdeaPopup({ refetchIdeas }) {
                 type="text"
                 {...register("insertVideo")}
                 placeholder="Insert a video link"
-                className="block w-full px-2 py-2 border outline-none rounded"
+                className="block w-full px-2 py-2 pr-12 border outline-none rounded"
               />
               <FiLink className="absolute right-3 top-3 text-lg" />
             </div>
           </div>
 
           {/* Video Upload */}
-          {/* <div>
-            <p className="block font-medium mb-2">Attach Videos (Optional)</p>
-            <label
-              htmlFor="videoUpload"
-              className="block cursor-pointer w-full"
-            >
-              <div className="text-center border bg-[#def9f1] py-2 rounded">
-                <img
-                  src={uploadLogo}
-                  alt="Upload"
-                  className="mx-auto w-7 h-7"
-                />
-                <p className="text-xs text-gray-500 mt-1">Click to upload</p>
-              </div>
-            </label>
-            <input
-              id="videoUpload"
-              type="file"
-              accept="video/*"
-              multiple
-              className="hidden"
-              onChange={handleVideoChange}
-            />
-            {uploadedVideo?.length > 0 && (
-              <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {uploadedVideo.map((file, index) => (
-                  <div key={index} className="relative">
-                    <p className="text-sm text-gray-600 truncate">
-                      {file.name}
-                    </p>
-                    <button
-                      type="button"
-                      onClick={() => removeVideo(index)}
-                      className="absolute top-1 right-1 bg-white rounded-full p-1 text-red-500 hover:text-red-700 shadow"
-                    >
-                      <FiX />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div> */}
           <VideoUploader
             uploadedVideo={uploadedVideo}
             setUploadedVideo={setUploadedVideo}

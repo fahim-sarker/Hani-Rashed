@@ -4,9 +4,7 @@ import dummyThumbnail from "@/assets/dummy-thumbnail.jpg";
 import uploadLogo from "@/assets/icons/uploadLogo.png";
 
 export default function VideoUploader({
-  uploadedVideo,
   setUploadedVideo,
-  uploadedThumbnails,
   setUploadedThumbnails,
 }) {
   const [uploadedVideos, setUploadedVideos] = useState([]);
@@ -14,8 +12,8 @@ export default function VideoUploader({
   const thumbnailInputRef = useRef(null);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(null);
 
-  console.log("uploadedVideo", uploadedVideo);
-  console.log("uploadedThumbnails", uploadedThumbnails);
+  // console.log("uploadedVideo", uploadedVideo);
+  // console.log("uploadedThumbnails", uploadedThumbnails);
 
   useEffect(() => {
     setUploadedVideo(uploadedVideos.map((video) => video.file));

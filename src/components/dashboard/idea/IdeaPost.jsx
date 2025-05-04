@@ -28,6 +28,7 @@ const IdeaPost = () => {
   const [ideas, setIdeas] = useState([]);
   const [isOpenPopup, setIsOpenPopup] = useState(false);
   const [ideaData, setIdeaData] = useState(null);
+  const [ideaId, setIdeaId] = useState(null);
 
   // console.log("fetchedIdeas", fetchedIdeas);
   // console.log("fetchedIdeas ideas", ideas);
@@ -109,12 +110,14 @@ const IdeaPost = () => {
               </div>
               <div className="flex items-center gap-2">
                 <p className="text-gray-500 text-sm">{item?.created_at_diff}</p>
+                
                 <DropdownMenuComponent
                   id={item.id}
                   onDelete={handleDeleteFromUI}
                   setIsOpenPopup={setIsOpenPopup}
                   setIdeaData={setIdeaData}
                   item={item}
+                  setIdeaId={setIdeaId}
                 />
               </div>
             </div>
@@ -362,11 +365,14 @@ const IdeaPost = () => {
           autoPlay: false,
         }}
       />
-      <IdeaUpdatePopup
-        isOpenPopup={isOpenPopup}
-        setIsOpenPopup={setIsOpenPopup}
-        ideaData={ideaData}
-      />
+      {ideaId && (
+        <IdeaUpdatePopup
+          isOpenPopup={isOpenPopup}
+          setIsOpenPopup={setIsOpenPopup}
+          ideaData={ideaData}
+          id={ideaId}
+        />
+      )}
     </>
   );
 };

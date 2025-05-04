@@ -17,6 +17,7 @@ export default function DropdownMenuComponent({
   onDelete,
   setIsOpenPopup,
   setIdeaData,
+  setIdeaId,
   item,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -41,6 +42,7 @@ export default function DropdownMenuComponent({
 
   const handleEditClick = () => {
     setIdeaData(item);
+    setIdeaId(id);
     setDropdownOpen(false);
     setIsOpenPopup(true);
   };
