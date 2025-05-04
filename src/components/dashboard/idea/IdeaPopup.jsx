@@ -14,10 +14,12 @@ import {
 import useAxios from "@/components/Hooks/Api/UseAxios";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
+import VideoUploader from "@/components/shared/VideoUploader";
 
 export function IdeaPopup({ refetchIdeas }) {
   const [uploadedVideo, setUploadedVideo] = useState([]);
   const [uploadedPictures, setUploadedPictures] = useState([]);
+  const [uploadedThumbnails, setUploadedThumbnails] = useState([]);
 
   const handleFileChange = (e) => {
     const newFiles = Array.from(e.target.files);
@@ -36,22 +38,22 @@ export function IdeaPopup({ refetchIdeas }) {
   };
 
   // Handle multiple video uploads
-  const handleVideoChange = (e) => {
-    const newVideos = Array.from(e.target.files);
+  // const handleVideoChange = (e) => {
+  //   const newVideos = Array.from(e.target.files);
 
-    setUploadedVideo((prev) => {
-      const existingFiles = new Set(prev.map((file) => file.name + file.size));
-      const uniqueVideos = newVideos.filter(
-        (file) => !existingFiles.has(file.name + file.size)
-      );
-      return [...prev, ...uniqueVideos];
-    });
-  };
+  //   setUploadedVideo((prev) => {
+  //     const existingFiles = new Set(prev.map((file) => file.name + file.size));
+  //     const uniqueVideos = newVideos.filter(
+  //       (file) => !existingFiles.has(file.name + file.size)
+  //     );
+  //     return [...prev, ...uniqueVideos];
+  //   });
+  // };
 
   // Remove a specific video
-  const removeVideo = (index) => {
-    setUploadedVideo((prev) => prev.filter((_, i) => i !== index));
-  };
+  // const removeVideo = (index) => {
+  //   setUploadedVideo((prev) => prev.filter((_, i) => i !== index));
+  // };
 
   const [uploadedDocs, setUploadedDocs] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
@@ -85,6 +87,7 @@ export function IdeaPopup({ refetchIdeas }) {
       setUploadedVideo(null);
       setUploadedPictures([]);
       setUploadedDocs(null);
+      setUploadedThumbnails([]);
     },
     onError: (error) => {
       console.log("Error:", error);
@@ -102,6 +105,7 @@ export function IdeaPopup({ refetchIdeas }) {
     formData.append("insert_video", data.insertVideo);
     uploadedVideo.forEach((file) => formData.append("video[]", file));
     uploadedPictures.forEach((file) => formData.append("image[]", file));
+    uploadedThumbnails.forEach((file) => formData.append("thumbnail[]", file));
     if (uploadedDocs) formData.append("pdf", uploadedDocs);
     console.log([...formData.entries()]);
     mutate(formData);
@@ -240,7 +244,7 @@ export function IdeaPopup({ refetchIdeas }) {
           </div>
 
           {/* Video Upload */}
-          <div>
+          {/* <div>
             <p className="block font-medium mb-2">Attach Videos (Optional)</p>
             <label
               htmlFor="videoUpload"
@@ -281,7 +285,13 @@ export function IdeaPopup({ refetchIdeas }) {
                 ))}
               </div>
             )}
-          </div>
+          </div> */}
+          <VideoUploader
+            uploadedVideo={uploadedVideo}
+            setUploadedVideo={setUploadedVideo}
+            uploadedThumbnails={uploadedThumbnails}
+            setUploadedThumbnails={setUploadedThumbnails}
+          />
 
           {/* Picture Upload */}
           <div>

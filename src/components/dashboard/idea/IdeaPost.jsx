@@ -15,6 +15,7 @@ import "yet-another-react-lightbox/styles.css";
 import { GrDocumentPdf } from "react-icons/gr";
 import DropdownMenuComponent from "@/components/shared/DropdownMenuComponent";
 import { IdeaUpdatePopup } from "./IdeaUpdatePopup";
+import VideoWithThumbnail from "@/components/shared/VideoWithThumbnail";
 
 const IdeaPost = () => {
   const [advancedExampleOpen, setAdvancedExampleOpen] = useState(false);
@@ -162,23 +163,13 @@ const IdeaPost = () => {
                       className="w-full h-full object-cover object-center"
                     />
                   ) : (
-                    <video
-                      src={item.idea_video[0].video}
-                      controls
-                      playsInline
-                      muted
-                      className="w-full h-full object-cover object-center"
-                      preload="metadata"
-                    >
-                      Your browser does not support the video tag.
-                    </video>
+                    <VideoWithThumbnail item={item.idea_video[0]} />
                   )}
                 </figure>
               ) : item?.ideaimage?.length + item?.idea_video?.length === 2 ? (
                 <div className="flex flex-wrap gap-5">
-                  {[...item.ideaimage, ...item.idea_video]
-                    .slice(0, 2)
-                    .map((media, index) => (
+                  {[...item.ideaimage, ...item.idea_video].map(
+                    (media, index) => (
                       <figure
                         key={index}
                         className="rounded overflow-hidden w-fit shrink-0 h-[380px]"
@@ -190,23 +181,15 @@ const IdeaPost = () => {
                             className="w-full h-full object-cover object-center"
                           />
                         ) : (
-                          <video
-                            src={media.video}
-                            controls
-                            playsInline
-                            muted
-                            className="w-full h-full object-cover object-center"
-                            preload="metadata"
-                          >
-                            Your browser does not support the video tag.
-                          </video>
+                          <VideoWithThumbnail item={media} />
                         )}
                       </figure>
-                    ))}
+                    )
+                  )}
                 </div>
               ) : (
                 item?.ideaimage?.length + item?.idea_video?.length >= 3 && (
-                  <div className="grid grid-cols-2 gap-5 h-[550px]">
+                  <div className="grid grid-cols-2 gap-5 h-[750px]">
                     <figure className="rounded overflow-hidden">
                       {item.ideaimage[0] ? (
                         <img
@@ -215,24 +198,18 @@ const IdeaPost = () => {
                           className="w-full h-full object-cover object-center"
                         />
                       ) : (
-                        <video
-                          src={item.idea_video[0].video}
-                          controls
-                          playsInline
-                          muted
-                          className="w-full h-full object-cover object-center"
-                          preload="metadata"
-                        >
-                          Your browser does not support the video tag.
-                        </video>
+                        <VideoWithThumbnail
+                          item={item.idea_video[0]}
+                          adjustable={true}
+                        />
                       )}
                     </figure>
-                    <div className="flex flex-col gap-5 h-[550px]">
+                    <div className="flex flex-col gap-5 h-[750px]">
                       {(item.ideaimage[0]
-                        ? [...item.idea_video, ...item.ideaimage]
-                        : [...item.ideaimage, ...item.idea_video]
+                        ? [...item.idea_video, ...item.ideaimage.slice(1)]
+                        : [...item.ideaimage, ...item.idea_video.slice(1)]
                       )
-                        .slice(1, 3)
+                        .slice(0, 2)
                         .map((media, index) => (
                           <figure
                             key={index}
@@ -245,16 +222,10 @@ const IdeaPost = () => {
                                 className="w-full h-full object-cover object-center"
                               />
                             ) : (
-                              <video
-                                src={media.video}
-                                controls
-                                playsInline
-                                muted
-                                className="w-full h-full object-cover object-center"
-                                preload="metadata"
-                              >
-                                Your browser does not support the video tag.
-                              </video>
+                              <VideoWithThumbnail
+                                item={media}
+                                adjustable={true}
+                              />
                             )}
                             {index === 1 &&
                               item?.ideaimage?.length +
