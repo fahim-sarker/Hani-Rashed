@@ -102,7 +102,7 @@ export function IdeaPopup({ refetchIdeas }) {
     formData.append("description", data.description);
     formData.append("industry", data.industry);
     formData.append("idea_stage", data.ideaStage);
-    formData.append("insert_video", data.insertVideo);
+    formData.append("insted_video", data.insertVideo);
     uploadedVideo.forEach((file) => formData.append("video[]", file));
     uploadedPictures.forEach((file) => formData.append("image[]", file));
     uploadedThumbnails.forEach((file) => formData.append("thumbnail[]", file));
@@ -321,7 +321,7 @@ export function IdeaPopup({ refetchIdeas }) {
             <input
               id="docsUpload"
               type="file"
-              accept=".pdf,.doc,.docx,.ppt,.pptx"
+              accept=".pdf"
               className="hidden"
               onChange={(e) => setUploadedDocs(e.target.files[0])}
             />

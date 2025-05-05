@@ -110,7 +110,7 @@ const IdeaPost = () => {
               </div>
               <div className="flex items-center gap-2">
                 <p className="text-gray-500 text-sm">{item?.created_at_diff}</p>
-                
+
                 <DropdownMenuComponent
                   id={item.id}
                   onDelete={handleDeleteFromUI}
@@ -365,14 +365,15 @@ const IdeaPost = () => {
           autoPlay: false,
         }}
       />
-      {ideaId && (
+      {
         <IdeaUpdatePopup
+          key={ideaId}
           isOpenPopup={isOpenPopup}
           setIsOpenPopup={setIsOpenPopup}
           ideaData={ideaData}
           id={ideaId}
         />
-      )}
+      }
     </>
   );
 };

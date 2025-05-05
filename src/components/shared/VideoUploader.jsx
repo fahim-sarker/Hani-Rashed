@@ -6,11 +6,14 @@ import uploadLogo from "@/assets/icons/uploadLogo.png";
 export default function VideoUploader({
   setUploadedVideo,
   setUploadedThumbnails,
+  videodataUrl,
 }) {
   const [uploadedVideos, setUploadedVideos] = useState([]);
   const videoInputRef = useRef(null);
   const thumbnailInputRef = useRef(null);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(null);
+
+  console.log("videodataUrl", videodataUrl);
 
   // console.log("uploadedVideo", uploadedVideo);
   // console.log("uploadedThumbnails", uploadedThumbnails);
@@ -119,55 +122,60 @@ export default function VideoUploader({
           onChange={handleThumbnailChange}
         />
       </div>
+      <div
+        className={`${
+          uploadedVideos.length > 0 && "mt-4"
+        } grid grid-cols-1 md:grid-cols-2 gap-4`}
+      >
+        {uploadedVideos.length > 0 && (
+          <>
+            {uploadedVideos.map((video, index) => (
+              <div
+                key={index}
+                className="relative border rounded-md p-3 bg-white shadow-sm"
+              >
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 h-20 aspect-video bg-gray-100 rounded overflow-hidden">
+                    <img
+                      src={video.thumbnailUrl}
+                      alt={`Thumbnail for ${video.file.name}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
 
-      {uploadedVideos.length > 0 && (
-        <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          {uploadedVideos.map((video, index) => (
-            <div
-              key={index}
-              className="relative border rounded-md p-3 bg-white shadow-sm"
-            >
-              <div className="flex items-start space-x-3">
-                <div className="flex-shrink-0 h-20 aspect-video bg-gray-100 rounded overflow-hidden">
-                  <img
-                    src={video.thumbnailUrl}
-                    alt={`Thumbnail for ${video.file.name}`}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      {video.file.name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {(video.file.size / (1024 * 1024)).toFixed(2)} MB
+                    </p>
 
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 truncate">
-                    {video.file.name}
-                  </p>
-                  <p className="text-xs text-gray-500">
-                    {(video.file.size / (1024 * 1024)).toFixed(2)} MB
-                  </p>
-
-                  <div className="mt-2 flex space-x-2">
-                    <button
-                      type="button"
-                      onClick={() => addThumbnail(index)}
-                      className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 rounded flex items-center"
-                    >
-                      <ImageIcon className="w-3 h-3 mr-1" />
-                      {video.thumbnail ? "Change" : "Upload"}
-                    </button>
+                    <div className="mt-2 flex space-x-2">
+                      <button
+                        type="button"
+                        onClick={() => addThumbnail(index)}
+                        className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 rounded flex items-center"
+                      >
+                        <ImageIcon className="w-3 h-3 mr-1" />
+                        {video.thumbnail ? "Change" : "Upload"}
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <button
-                type="button"
-                onClick={() => removeVideo(index)}
-                className="absolute top-2 right-2 bg-white rounded-full p-1 text-red-500 hover:text-red-700 shadow"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
+                <button
+                  type="button"
+                  onClick={() => removeVideo(index)}
+                  className="absolute top-2 right-2 bg-white rounded-full p-1 text-red-500 hover:text-red-700 shadow"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
     </div>
   );
 }

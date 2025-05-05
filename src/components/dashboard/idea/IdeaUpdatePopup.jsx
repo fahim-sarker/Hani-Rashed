@@ -47,6 +47,15 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
   };
 
   const [uploadedDocs, setUploadedDocs] = useState(null);
+  const [uploadedUrlDocs, setUploadedUrlDocs] = useState(null);
+
+  useEffect(() => {
+    console.log("Uploaded document:", uploadedDocs);
+    if (uploadedDocs) {
+      setUploadedUrlDocs(null);
+      console.log("Uploaded document:", uploadedUrlDocs);
+    }
+  }, [uploadedDocs]);
 
   const Axios = useAxios();
 
@@ -69,16 +78,16 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
   useEffect(() => {
     if (ideaDetails) {
       // console.log(ideaDetails);
-      setTimeout(() => {
-        reset({
-          portType: ideaDetails.data.port_type,
-          name: ideaDetails.data.name,
-          description: ideaDetails.data.description,
-          industry: ideaDetails.data.industry,
-          ideaStage: ideaDetails.data.idea_stage,
-          insertVideo: ideaDetails.data.insted_video,
-        });
-      }, 5);
+      reset({
+        portType: ideaDetails.data.port_type,
+        name: ideaDetails.data.name,
+        description: ideaDetails.data.description,
+        industry: ideaDetails.data.industry,
+        ideaStage: ideaDetails.data.idea_stage,
+        insertVideo: ideaDetails.data.insted_video,
+      });
+      setUploadedUrlDocs(ideaDetails.data.pdf);
+      console.log("fckjghlkj");
     }
   }, [ideaDetails, reset]);
 
@@ -303,6 +312,7 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
               setUploadedVideo={setUploadedVideo}
               uploadedThumbnails={uploadedThumbnails}
               setUploadedThumbnails={setUploadedThumbnails}
+              videodataUrl={ideaDetails.data.idea_video}
             />
 
             {/* Picture Upload */}
@@ -389,6 +399,21 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
                   </p>
                   <button
                     onClick={() => setUploadedDocs(null)}
+                    type="button"
+                    className="text-red-500 hover:text-red-700"
+                  >
+                    <FiX />
+                  </button>
+                </div>
+              )}
+
+              {uploadedUrlDocs && (
+                <div className="flex items-center justify-between mt-1 p-2 bg-gray-100 rounded">
+                  <p className="text-sm text-gray-600 truncate">
+                    {uploadedUrlDocs.split("/").pop()}
+                  </p>
+                  <button
+                    onClick={() => setUploadedUrlDocs(null)}
                     type="button"
                     className="text-red-500 hover:text-red-700"
                   >
