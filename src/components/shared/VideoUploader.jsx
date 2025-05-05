@@ -2,21 +2,25 @@ import { useState, useRef, useEffect } from "react";
 import { X, ImageIcon } from "lucide-react";
 import dummyThumbnail from "@/assets/dummy-thumbnail.jpg";
 import uploadLogo from "@/assets/icons/uploadLogo.png";
+import useAxios from "../Hooks/Api/UseAxios";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function VideoUploader({
   setUploadedVideo,
   setUploadedThumbnails,
-  videodataUrl,
+  videodataUrl = null,
 }) {
   const [uploadedVideos, setUploadedVideos] = useState([]);
   const videoInputRef = useRef(null);
   const thumbnailInputRef = useRef(null);
   const [selectedVideoIndex, setSelectedVideoIndex] = useState(null);
-
-  console.log("videodataUrl", videodataUrl);
+  const [previousVideo, setPreviousVideo] = useState(videodataUrl);
 
   // console.log("uploadedVideo", uploadedVideo);
   // console.log("uploadedThumbnails", uploadedThumbnails);
+  // console.log(previousVideo, "previousVideo");
+  const Axios = useAxios();
+  const token = JSON.parse(localStorage.getItem("authToken"));
 
   useEffect(() => {
     setUploadedVideo(uploadedVideos.map((video) => video.file));
@@ -89,6 +93,27 @@ export default function VideoUploader({
     setUploadedVideos(updatedVideos);
   };
 
+  const queryClient = useQueryClient();
+
+  const handleRemoveVideoUrl = async (id) => {
+    setPreviousVideo((prev) => prev.filter((video) => video.id !== id));
+    try {
+      const response = await Axios.delete(
+        `delete-idea-image/${id}?type=video`,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      queryClient.invalidateQueries([`/idea-details/${id}`]);
+      // console.log("Video deleted successfully:", response.data);
+    } catch (error) {
+      console.error("Error deleting video:", error);
+    }
+  };
+
   const addThumbnail = (index) => {
     setSelectedVideoIndex(index);
     thumbnailInputRef.current?.click();
@@ -124,9 +149,43 @@ export default function VideoUploader({
       </div>
       <div
         className={`${
-          uploadedVideos.length > 0 && "mt-4"
+          (uploadedVideos.length > 0 || previousVideo?.length > 0) && "mt-4"
         } grid grid-cols-1 md:grid-cols-2 gap-4`}
       >
+        {previousVideo?.length > 0 && (
+          <>
+            {previousVideo.map((video, index) => (
+              <div
+                key={index}
+                className="relative border rounded-md p-3 bg-white shadow-sm"
+              >
+                <div className="flex items-start space-x-3">
+                  <div className="flex-shrink-0 h-20 aspect-video bg-gray-100 rounded overflow-hidden">
+                    <img
+                      src={video.thumbnail}
+                      alt={`Thumbnail for ${video.thumbnail}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 truncate">
+                      video {index + 1}
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleRemoveVideoUrl(video.id)}
+                  className="absolute top-2 right-2 bg-white rounded-full p-1 text-red-500 hover:text-red-700 shadow"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </>
+        )}
         {uploadedVideos.length > 0 && (
           <>
             {uploadedVideos.map((video, index) => (

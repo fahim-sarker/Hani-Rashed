@@ -366,7 +366,7 @@ const IdeaPost = () => {
         }}
       />
       {
-        <IdeaUpdatePopup
+        ideaId && <IdeaUpdatePopup
           key={ideaId}
           isOpenPopup={isOpenPopup}
           setIsOpenPopup={setIsOpenPopup}

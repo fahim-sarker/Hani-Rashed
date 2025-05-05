@@ -279,7 +279,7 @@ export function IdeaPopup({ refetchIdeas }) {
             />
 
             {uploadedPictures.length > 0 && (
-              <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
                 {uploadedPictures.map((file, index) => (
                   <div key={index} className="relative">
                     <img

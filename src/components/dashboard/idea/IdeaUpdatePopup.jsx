@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import useAxios from "@/components/Hooks/Api/UseAxios";
 import toast from "react-hot-toast";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import VideoUploader from "@/components/shared/VideoUploader";
 import useFetchData from "@/components/Hooks/Api/UseFetchData";
 
@@ -27,6 +27,7 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
   const [uploadedVideo, setUploadedVideo] = useState([]);
   const [uploadedPictures, setUploadedPictures] = useState([]);
   const [uploadedThumbnails, setUploadedThumbnails] = useState([]);
+  const [previousImg, setPreviousImg] = useState([]);
 
   const handleFileChange = (e) => {
     const newFiles = Array.from(e.target.files);
@@ -40,6 +41,27 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
     });
   };
 
+  const queryClient = useQueryClient();
+
+  const handleRemoveImgUrl = async (id) => {
+    setPreviousImg((prev) => prev.filter((image) => image.id !== id));
+    try {
+      const response = await Axios.delete(
+        `delete-idea-image/${id}?type=image`,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      queryClient.invalidateQueries([`/idea-details/${id}`]);
+      console.log("image deleted successfully:", response.data);
+    } catch (error) {
+      console.error("Error deleting image:", error);
+    }
+  };
+
   // console.log(ideaData);
 
   const removeImage = (index) => {
@@ -50,10 +72,10 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
   const [uploadedUrlDocs, setUploadedUrlDocs] = useState(null);
 
   useEffect(() => {
-    console.log("Uploaded document:", uploadedDocs);
+    // console.log("Uploaded document:", uploadedDocs);
     if (uploadedDocs) {
       setUploadedUrlDocs(null);
-      console.log("Uploaded document:", uploadedUrlDocs);
+      // console.log("Uploaded document:", uploadedUrlDocs);
     }
   }, [uploadedDocs]);
 
@@ -87,13 +109,15 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
         insertVideo: ideaDetails.data.insted_video,
       });
       setUploadedUrlDocs(ideaDetails.data.pdf);
-      console.log("fckjghlkj");
+      setPreviousImg(ideaDetails.data.ideaimage);
     }
   }, [ideaDetails, reset]);
 
+  // console.log("Previous image:", previousImg);
+
   const { mutate } = useMutation({
     mutationFn: async (formData) => {
-      return Axios.post("/idea-create", formData, {
+      return Axios.post(`update-idea/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -104,11 +128,13 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
       // console.log(data);
 
       setIsOpenPopup(false);
-      toast.success("Idea created successfully");
+      toast.success("Idea Updated successfully");
       reset();
       setUploadedVideo(null);
+      setUploadedThumbnails([]);
       setUploadedPictures([]);
       setUploadedDocs(null);
+      queryClient.invalidateQueries([`/idea-details/${id}`]);
     },
     onError: (error) => {
       // console.log("Error:", error);
@@ -117,17 +143,23 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
   });
 
   const onSubmit = (data) => {
+    console.log("Form data:", data);
+    console.log("Uploaded video:", uploadedVideo);
+    console.log("Uploaded pictures:", uploadedPictures);
+    console.log("Uploaded document:", uploadedDocs);
+
     const formData = new FormData();
     formData.append("port_type", data.portType);
     formData.append("name", data.name);
     formData.append("description", data.description);
     formData.append("industry", data.industry);
     formData.append("idea_stage", data.ideaStage);
-    formData.append("insert_video", data.insertVideo);
+    formData.append("insted_video", data.insertVideo);
     uploadedVideo.forEach((file) => formData.append("video[]", file));
+    uploadedThumbnails.forEach((file) => formData.append("thumbnail[]", file));
     uploadedPictures.forEach((file) => formData.append("image[]", file));
     if (uploadedDocs) formData.append("pdf", uploadedDocs);
-    console.log([...formData.entries()]);
+    // console.log([...formData.entries()]);
     mutate(formData);
   };
 
@@ -342,29 +374,59 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
                 onChange={handleFileChange}
               />
 
-              {uploadedPictures.length > 0 && (
-                <div className="mt-2 grid grid-cols-2 sm:grid-cols-3 gap-4">
-                  {uploadedPictures.map((file, index) => (
-                    <div key={index} className="relative">
-                      <img
-                        src={URL.createObjectURL(file)}
-                        alt={`Preview ${index}`}
-                        className="max-h-[120px] rounded"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => removeImage(index)}
-                        className="absolute top-1 right-1 bg-white rounded-full p-1 text-red-500 hover:text-red-700 shadow"
-                      >
-                        <FiX />
-                      </button>
-                      <p className="text-xs text-gray-600 mt-1 break-words">
-                        {file.name}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              )}
+              <div
+                className={`${
+                  (uploadedPictures.length > 0 || previousImg?.length > 0) &&
+                  "mt-4"
+                } grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4`}
+              >
+                {previousImg.length > 0 && (
+                  <>
+                    {previousImg.map((item, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={item.image}
+                          alt={`Preview ${index}`}
+                          className="max-h-[120px] rounded"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveImgUrl(item.id)}
+                          className="absolute top-1 right-1 bg-white rounded-full p-1 text-red-500 hover:text-red-700 shadow"
+                        >
+                          <FiX />
+                        </button>
+                        <p className="text-xs text-gray-600 mt-1 break-words">
+                          image {index + 1}
+                        </p>
+                      </div>
+                    ))}
+                  </>
+                )}
+                {uploadedPictures.length > 0 && (
+                  <>
+                    {uploadedPictures.map((file, index) => (
+                      <div key={index} className="relative">
+                        <img
+                          src={URL.createObjectURL(file)}
+                          alt={`Preview ${index}`}
+                          className="max-h-[120px] rounded"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => removeImage(index)}
+                          className="absolute top-1 right-1 bg-white rounded-full p-1 text-red-500 hover:text-red-700 shadow"
+                        >
+                          <FiX />
+                        </button>
+                        <p className="text-xs text-gray-600 mt-1 break-words">
+                          {file.name}
+                        </p>
+                      </div>
+                    ))}
+                  </>
+                )}
+              </div>
             </div>
 
             {/* Document Upload */}
@@ -412,13 +474,6 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
                   <p className="text-sm text-gray-600 truncate">
                     {uploadedUrlDocs.split("/").pop()}
                   </p>
-                  <button
-                    onClick={() => setUploadedUrlDocs(null)}
-                    type="button"
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <FiX />
-                  </button>
                 </div>
               )}
             </div>
@@ -433,7 +488,7 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
                 type="submit"
                 className="bg-primaryGreen text-white px-8 py-2 font-medium rounded-[6px]"
               >
-                Post
+                Update
               </button>
             </div>
           </form>
