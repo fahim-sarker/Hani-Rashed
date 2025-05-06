@@ -1,7 +1,8 @@
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { FiLink, FiX } from "react-icons/fi";
 import uploadLogo from "../../../assets/icons/uploadLogo.png";
 import { useEffect, useState } from "react";
+import { ClipLoader } from "react-spinners";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +22,8 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
     `/idea-details/${id}`,
     token
   );
+
+  const [isUpdating, setIsUpdating] = useState(false);
 
   // console.log(ideaDetails);
 
@@ -135,6 +138,7 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
       setUploadedPictures([]);
       setUploadedDocs(null);
       queryClient.invalidateQueries([`/idea-details/${id}`]);
+      setIsUpdating(false);
     },
     onError: (error) => {
       // console.log("Error:", error);
@@ -143,6 +147,7 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
   });
 
   const onSubmit = (data) => {
+    setIsUpdating(true);
     console.log("Form data:", data);
     console.log("Uploaded video:", uploadedVideo);
     console.log("Uploaded pictures:", uploadedPictures);
@@ -478,17 +483,21 @@ export function IdeaUpdatePopup({ isOpenPopup, setIsOpenPopup, id }) {
               )}
             </div>
 
-            <div className="flex gap-3 items-center justify-end pt-5">
+            <div className="flex gap-3 justify-end pt-5">
               <DialogClose asChild>
-                <button className="bg-transparent text-gray-900 border border-gray-300 px-7 py-2 font-medium rounded-[6px]">
+                <button className="bg-transparent text-gray-900 border border-gray-300 px-7 py-2 font-medium rounded-[6px] min-w-[110px]">
                   Cancel
                 </button>
               </DialogClose>
               <button
                 type="submit"
-                className="bg-primaryGreen text-white px-8 py-2 font-medium rounded-[6px]"
+                className="bg-primaryGreen text-white px-8 py-2 font-medium rounded-[6px] flex items-center justify-center min-h-full min-w-[110px]"
               >
-                Update
+                {isUpdating ? (
+                  <ClipLoader color="#ffffff" size={18} />
+                ) : (
+                  "Update"
+                )}
               </button>
             </div>
           </form>

@@ -15,6 +15,7 @@ import useAxios from "@/components/Hooks/Api/UseAxios";
 import toast from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import VideoUploader from "@/components/shared/VideoUploader";
+import { ClipLoader } from "react-spinners";
 
 export function IdeaPopup({ refetchIdeas }) {
   const [uploadedVideo, setUploadedVideo] = useState([]);
@@ -68,6 +69,8 @@ export function IdeaPopup({ refetchIdeas }) {
     formState: { errors },
   } = useForm();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   const { mutate } = useMutation({
     mutationFn: async (formData) => {
       return Axios.post("/idea-create", formData, {
@@ -88,6 +91,7 @@ export function IdeaPopup({ refetchIdeas }) {
       setUploadedPictures([]);
       setUploadedDocs(null);
       setUploadedThumbnails([]);
+      setIsLoading(false);
     },
     onError: (error) => {
       console.log("Error:", error);
@@ -96,6 +100,7 @@ export function IdeaPopup({ refetchIdeas }) {
   });
 
   const onSubmit = (data) => {
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("port_type", data.portType);
     formData.append("name", data.name);
@@ -341,17 +346,21 @@ export function IdeaPopup({ refetchIdeas }) {
             )}
           </div>
 
-          <div className="flex gap-3 items-center justify-end pt-5">
+          <div className="flex gap-3 justify-end pt-5">
             <DialogClose asChild>
-              <button className="bg-transparent text-gray-900 border border-gray-300 px-7 py-2 font-medium rounded-[6px]">
+              <button className="bg-transparent text-gray-900 border border-gray-300 px-7 py-2 font-medium rounded-[6px] min-w-[110px]">
                 Cancel
               </button>
             </DialogClose>
             <button
               type="submit"
-              className="bg-primaryGreen text-white px-8 py-2 font-medium rounded-[6px]"
+              className="bg-primaryGreen text-white px-8 py-2 font-medium rounded-[6px] flex items-center justify-center min-h-full min-w-[110px]"
             >
-              Post
+              {isLoading ? (
+                <ClipLoader color="#ffffff" size={18} />
+              ) : (
+                "Create Idea"
+              )}
             </button>
           </div>
         </form>
